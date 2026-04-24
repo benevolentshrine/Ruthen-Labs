@@ -8,6 +8,7 @@
 //!          When nuki is present, boru queries it for file context.
 
 use crate::cage::policy::SecurityMode;
+use crate::socket::config::EcosystemStatus;
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
