@@ -163,7 +163,8 @@ enum Commands {
     },
 
     /// Manage the hash database
-    Hash {
+    #[command(name = "db")]
+    Db {
         /// Add a hash to the database
         #[arg(long, value_name = "SHA256")]
         add: Option<String>,
@@ -540,7 +541,7 @@ fn run() -> Result<()> {
 
             let _ = handle.join();
         }
-        Commands::Hash {
+        Commands::Db {
             add,
             name,
             family,

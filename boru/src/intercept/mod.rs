@@ -68,6 +68,12 @@ pub enum InterceptEvent {
         classification: ClassificationResult,
         path: std::path::PathBuf,
     },
+    /// Known bad hash detected
+    KnownBadHash {
+        path: String,
+        hash: String,
+        entry: crate::threat::hashdb::HashEntry,
+    },
 }
 
 /// Centralized intercept layer that evaluates all rules
@@ -135,6 +141,9 @@ impl InterceptLayer {
             }
             InterceptEvent::ClassificationMismatch { classification, path } => {
                 self.evaluate_classification_mismatch(classification, path)
+            }
+            InterceptEvent::KnownBadHash { path, hash, entry } => {
+                self.evaluate_known_bad_hash(path, hash, entry)
             }
         };
 
@@ -326,6 +335,19 @@ impl InterceptLayer {
             );
         }
         Verdict::Allowed
+    }
+
+    /// Evaluate known bad hash
+    fn evaluate_known_bad_hash(
+        &self,
+        path: &str,
+        hash: &str,
+        entry: &crate::threat::hashdb::HashEntry,
+    ) -> Verdict {
+        let reason = format!("KNOWN_BAD_HASH: {} ({})", entry.name, entry.family);
+        // We do not auto-quarantine here as that's up to the caller to handle if they want to,
+        // but we unconditionally block.
+        Verdict::Blocked { reason }
     }
 
     /// Log blocked actions (GATE 7 compliance)

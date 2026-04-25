@@ -329,6 +329,27 @@ pub fn run_cage(
         }
     }
 
+    // STEP 5: Hash check
+    if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
+        if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
+            if let crate::threat::hashdb::HashStatus::KnownBad(entry) = hash_db.check_hash(&file_hash) {
+                let event = InterceptEvent::KnownBadHash {
+                    path: input.to_string_lossy().to_string(),
+                    hash: file_hash.clone(),
+                    entry: entry.clone(),
+                };
+                match intercept.evaluate(&event) {
+                    crate::intercept::Verdict::Blocked { reason } => {
+                        return Ok(CageResult::blocked(&reason));
+                    }
+                    _ => {
+                        return Ok(CageResult::blocked(&format!("KNOWN_BAD_HASH: {}", entry.name)));
+                    }
+                }
+            }
+        }
+    }
+
     // Route to appropriate runner
     use crate::runner::{RunnerRouter, RunnerVerdict};
 
@@ -420,6 +441,27 @@ pub fn check(input: PathBuf) -> Result<()> {
     }
 
     println!("  Magic match: ✅ true");
+
+    // STEP 5: Hash check
+    if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
+        if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
+            println!("  Hash: {}", file_hash);
+            if let crate::threat::hashdb::HashStatus::KnownBad(entry) = hash_db.check_hash(&file_hash) {
+                println!("\n🔴 CRITICAL — KNOWN_BAD_HASH");
+                println!("  Malware Name: {}", entry.name);
+                println!("  Family: {}", entry.family);
+                println!("  Severity: {}", entry.severity);
+                
+                log_intercept(
+                    Severity::Critical,
+                    "KNOWN_BAD_HASH",
+                    &format!("KNOWN BAD HASH detected at {}: {}", input.display(), entry.name),
+                    request_id,
+                );
+                std::process::exit(1);
+            }
+        }
+    }
 
     // Check dependencies
     let router = RunnerRouter::new();
