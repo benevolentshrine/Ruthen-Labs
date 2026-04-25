@@ -53,7 +53,12 @@ impl FileClassifier {
             .len();
 
         // Detect from magic bytes — this is the ONLY trusted classification
-        let detected_class = magic::detect_from_bytes(&header_preview);
+        let mut detected_class = magic::detect_from_bytes(&header_preview);
+
+        // Fallback to extension if magic bytes could not determine the type
+        if detected_class == magic::FileClass::Unknown && !claimed_extension.is_empty() {
+            detected_class = magic::class_from_extension(&claimed_extension);
+        }
 
         // Check for extension mismatch
         let mismatch = magic::check_extension_mismatch(path, &detected_class);

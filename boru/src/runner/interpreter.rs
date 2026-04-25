@@ -263,11 +263,15 @@ impl Runner for InterpreterRunner {
                 });
             }
 
+            let abs_path = std::path::Path::new(_path)
+                .canonicalize()
+                .unwrap_or_else(|_| std::path::PathBuf::from(_path));
+
             // Step 3: Execute with restrictions via std::process::Command
             // GATE 2 EXCEPTION: execution permitted in src/runner/ modules
             // This is the controlled execution path. Intercept layer wraps this.
             let output = match Command::new(&path_str)
-                .arg(_path)
+                .arg(abs_path)
                 .current_dir(workspace)
                 .env_clear()                    // strip all env vars
                 .env("HOME", workspace)         // fake home = workspace only

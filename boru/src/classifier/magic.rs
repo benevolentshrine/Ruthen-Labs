@@ -27,7 +27,11 @@ pub enum FileClass {
     Swift,
     Kotlin,
     Scala,
+    Rust,
+    Go,
+    Java,
     // Static documents
+    Text,
     Pdf,
     OfficeDoc,
     OfficeXlsx,
@@ -404,7 +408,7 @@ pub fn class_from_extension(ext: &str) -> FileClass {
         "exe" | "dll" | "scr" | "msi" | "bin" | "out" | "elf" | "so" | "appimage" | "dylib" | "app" | "dmg" => FileClass::Binary,
         "class" => FileClass::JavaClass,
         "py" => FileClass::Python,
-        "js" => FileClass::JavaScript,
+        "js" | "mjs" => FileClass::JavaScript,
         "ts" => FileClass::TypeScript,
         "rb" => FileClass::Ruby,
         "php" => FileClass::Php,
@@ -435,6 +439,10 @@ pub fn class_from_extension(ext: &str) -> FileClass {
         "iso" => FileClass::Iso,
         "deb" => FileClass::Deb,
         "rpm" => FileClass::Rpm,
+        "rs" => FileClass::Rust,
+        "go" => FileClass::Go,
+        "java" => FileClass::Java,
+        "txt" | "md" | "json" | "toml" | "yaml" | "yml" | "csv" => FileClass::Text,
         _ => FileClass::Unknown,
     }
 }
@@ -476,6 +484,10 @@ pub fn class_description(class: &FileClass) -> &'static str {
         FileClass::Iso => "ISO disk image",
         FileClass::Deb => "Debian package",
         FileClass::Rpm => "RPM package",
+        FileClass::Rust => "Rust source code",
+        FileClass::Go => "Go source code",
+        FileClass::Java => "Java source code",
+        FileClass::Text => "Plain text / Data file",
         FileClass::Unknown => "Unknown file type",
     }
 }
@@ -505,6 +517,7 @@ pub fn is_static_document(class: &FileClass) -> bool {
     matches!(
         class,
         FileClass::Pdf
+            | FileClass::Text
             | FileClass::OfficeDoc
             | FileClass::OfficeXlsx
             | FileClass::OfficePptx
