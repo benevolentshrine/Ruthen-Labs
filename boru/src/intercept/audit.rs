@@ -71,10 +71,10 @@ impl ChainedEntry {
             self.timestamp,
             self.severity,
             self.event_type,
-            self.verdict,
+            self.verdict.replace("\n", "\\n"),
             self.seq,
-            &self.entry_hash[..16],
-            &self.prev_hash[..16]
+            &self.entry_hash,
+            &self.prev_hash
         )
     }
 }
@@ -165,7 +165,7 @@ impl TamperChain {
         let timestamp = parts[0].trim_start_matches('[').to_string();
         let severity = parts[1].trim_start_matches('[').to_string();
         let event_type = parts[2].trim_start_matches('[').to_string();
-        let verdict = parts[3].trim_start_matches('[').to_string();
+        let verdict = parts[3].trim_start_matches('[').replace("\\n", "\n");
 
         let seq_part = parts[4];
         let seq = seq_part
@@ -203,55 +203,53 @@ impl TamperChain {
             return ChainVerification::Empty;
         }
 
-        let mut broken_at = None;
+        // Verify genesis link
+        if self.entries[0].prev_hash != GENESIS_HASH {
+            return ChainVerification::Broken {
+                at_entry: 1,
+                expected_prev: GENESIS_HASH.to_string(),
+                found_prev: self.entries[0].prev_hash.clone(),
+            };
+        }
 
-        for (i, entry) in self.entries.iter().enumerate() {
-            // Verify entry hash
-            if !entry.verify() {
+        for i in 0..self.entries.len() {
+            // Verify entry's own hash (deterministic check)
+            if !self.entries[i].verify() {
                 return ChainVerification::Invalid {
                     entry: i + 1,
-                    expected: entry.compute_hash(),
-                    found: entry.entry_hash.clone(),
+                    expected: self.entries[i].compute_hash(),
+                    found: self.entries[i].entry_hash.clone(),
                 };
             }
 
-            // Verify chain link (except for first entry)
             if i > 0 {
-                let prev_entry = &self.entries[i - 1];
-                if entry.prev_hash != prev_entry.entry_hash {
+                // Verify chain link
+                let expected_hash = compute_entry_hash(
+                    self.entries[i - 1].seq,
+                    &self.entries[i - 1].timestamp,
+                    &self.entries[i - 1].event_type,
+                    &self.entries[i - 1].verdict,
+                    &self.entries[i - 1].prev_hash,
+                );
+
+                if self.entries[i].prev_hash != expected_hash {
                     return ChainVerification::Broken {
                         at_entry: i + 1,
-                        expected_prev: prev_entry.entry_hash.clone(),
-                        found_prev: entry.prev_hash.clone(),
+                        expected_prev: expected_hash,
+                        found_prev: self.entries[i].prev_hash.clone(),
                     };
                 }
-            } else {
-                // First entry should use genesis hash
-                if entry.prev_hash != GENESIS_HASH {
-                    return ChainVerification::Broken {
-                        at_entry: 1,
-                        expected_prev: GENESIS_HASH.to_string(),
-                        found_prev: entry.prev_hash.clone(),
-                    };
-                }
-            }
 
-            // Check for deletions (sequence gaps)
-            if i > 0 {
+                // Check for sequence gaps
                 let expected_seq = self.entries[i - 1].seq + 1;
-                if entry.seq != expected_seq {
-                    broken_at = Some(i + 1);
-                    break;
+                if self.entries[i].seq != expected_seq {
+                    return ChainVerification::Gap { at_entry: i + 1 };
                 }
             }
         }
 
-        if let Some(at) = broken_at {
-            ChainVerification::Gap { at_entry: at }
-        } else {
-            ChainVerification::Valid {
-                entries: self.entries.len(),
-            }
+        ChainVerification::Valid {
+            entries: self.entries.len(),
         }
     }
 
@@ -534,5 +532,45 @@ mod tests {
 
         let gap = ChainVerification::Gap { at_entry: 3 };
         assert!(gap.message().contains("gap"));
+    }
+
+    #[test]
+    fn test_regression_tamper_chain() {
+        let e1_hash = compute_entry_hash(1, "2024-01-01", "TEST1", "ALLOW", GENESIS_HASH);
+        let e1 = ChainedEntry {
+            seq: 1, timestamp: "2024-01-01".to_string(), severity: "Low".to_string(),
+            event_type: "TEST1".to_string(), verdict: "ALLOW".to_string(),
+            entry_hash: e1_hash.clone(), prev_hash: GENESIS_HASH.to_string(),
+        };
+
+        let e2_hash = compute_entry_hash(2, "2024-01-02", "TEST2", "BLOCK", &e1_hash);
+        let mut e2 = ChainedEntry {
+            seq: 2, timestamp: "2024-01-02".to_string(), severity: "High".to_string(),
+            event_type: "TEST2".to_string(), verdict: "BLOCK".to_string(),
+            entry_hash: e2_hash.clone(), prev_hash: e1_hash.clone(),
+        };
+
+        let e3_hash = compute_entry_hash(3, "2024-01-03", "TEST3", "ALLOW", &e2_hash);
+        let e3 = ChainedEntry {
+            seq: 3, timestamp: "2024-01-03".to_string(), severity: "Low".to_string(),
+            event_type: "TEST3".to_string(), verdict: "ALLOW".to_string(),
+            entry_hash: e3_hash.clone(), prev_hash: e2_hash.clone(),
+        };
+
+        let mut chain = TamperChain { entries: vec![e1.clone(), e2.clone(), e3.clone()] };
+        assert!(chain.verify().is_valid());
+
+        // Tamper with entry 2 content
+        chain.entries[1].verdict = "ALLOW".to_string(); // tampered
+        let res = chain.verify();
+        assert!(matches!(res, ChainVerification::Invalid { entry: 2, .. }));
+
+        // What if someone updates e2's entry hash to match the tampered content?
+        let tampered_e2_hash = compute_entry_hash(2, "2024-01-02", "TEST2", "ALLOW", &e1_hash);
+        chain.entries[1].entry_hash = tampered_e2_hash.clone();
+        
+        // Then it should break at entry 3 because e3's prev_hash won't match!
+        let res2 = chain.verify();
+        assert!(matches!(res2, ChainVerification::Broken { at_entry: 3, .. }));
     }
 }

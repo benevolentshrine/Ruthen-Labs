@@ -567,7 +567,7 @@ pub fn log_intercept(severity: Severity, action: &str, reason: &str, request_id:
     // Write to ring buffer (GATE 6: bounded)
     let entry = AuditEntry {
         timestamp: timestamp.clone(),
-        severity,
+        severity: severity.clone(),
         action: action.to_string(),
         reason: reason.to_string(),
         request_id,
@@ -580,20 +580,14 @@ pub fn log_intercept(severity: Severity, action: &str, reason: &str, request_id:
         }
     }
 
-    // Also persist to audit log file (append)
-    let log_dir = dirs::data_dir().map(|d| d.join("boru"));
-    if let Some(ref dir) = log_dir {
-        let _ = std::fs::create_dir_all(dir);
-        let log_file = dir.join("audit.log");
-        let _ = std::fs::OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(&log_file)
-            .and_then(|mut f| {
-                use std::io::Write;
-                writeln!(f, "{}", log_line)
-            });
-    }
+    // Also persist to audit log file (append via tamper chain)
+    // GATE 7: The append_chained_entry function ensures the hash chain remains unbroken
+    let _ = crate::intercept::audit::append_chained_entry(
+        &timestamp,
+        &format!("{:?}", severity),
+        action,
+        reason,
+    );
 }
 
 /// Get all quarantined items
