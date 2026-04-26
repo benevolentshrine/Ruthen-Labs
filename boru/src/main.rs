@@ -165,13 +165,9 @@ enum Commands {
     /// Manage the hash database
     #[command(name = "db")]
     Db {
-        /// Add a hash to the database
-        #[arg(long, value_name = "SHA256")]
-        add: Option<String>,
-
-        /// Name for the hash entry
-        #[arg(long, value_name = "NAME")]
-        name: Option<String>,
+        /// Add a hash and name to the database
+        #[arg(long, value_names = ["SHA256", "NAME"], num_args = 2)]
+        add: Option<Vec<String>>,
 
         /// Family for the hash entry
         #[arg(long, value_name = "FAMILY")]
@@ -543,7 +539,6 @@ fn run() -> Result<()> {
         }
         Commands::Db {
             add,
-            name,
             family,
             check,
             remove,
@@ -553,12 +548,13 @@ fn run() -> Result<()> {
         } => {
             let mut db = threat::HashDB::load()?;
 
-            if let Some(hash) = add {
-                let entry_name = name.unwrap_or_else(|| "unknown".to_string());
+            if let Some(add_args) = add {
+                let hash = &add_args[0];
+                let entry_name = &add_args[1];
                 let entry_family = family.unwrap_or_else(|| "unknown".to_string());
 
                 db.add(
-                    &hash,
+                    hash,
                     threat::HashEntry {
                         name: entry_name.clone(),
                         severity: threat::Severity::Critical,
@@ -567,7 +563,7 @@ fn run() -> Result<()> {
                     },
                 );
                 db.save()?;
-                println!("Added hash: {} ({})", &hash[..16], entry_name);
+                println!("Added hash: {} ({})", &hash[..16.min(hash.len())], entry_name);
             }
 
             if let Some(path) = check {
