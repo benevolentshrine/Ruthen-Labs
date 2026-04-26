@@ -7,6 +7,19 @@ Status: PLANNED — implement after WSL2/Linux dev environment confirmed
 bubblewrap is a bridge. seccomp-bpf is the real answer.
 Operates at Linux kernel level. No userspace bypass possible.
 
+## Phase 1 Rollback Limitation
+
+Shadow backup currently intercepts BORU-mediated file operations only.
+Writes made by subprocess execution (interpreter runner) happen inside
+a child process — BORU cannot intercept these without kernel-level hooks.
+
+Phase 2 fix: seccomp-bpf will intercept all write() syscalls from child
+processes and route them through the shadow backup system before allowing.
+
+Current Phase 1 protection: filesystem isolation via workspace sandboxing.
+Scripts run in /tmp/momo/workspace/ — writes to absolute paths outside
+workspace are allowed but not shadow-backed.
+
 ## Crate
 
 seccompiler (Firecracker's implementation — battle-tested)

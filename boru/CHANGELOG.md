@@ -32,6 +32,9 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ## [Unreleased]
 
+### Security Notes
+- **Phase 1 Rollback Limitation:** Shadow backup currently intercepts BORU-mediated file operations only. Writes made by subprocess execution (interpreter runner) happen inside a child process — BORU cannot intercept these without kernel-level hooks. Phase 2 fix: seccomp-bpf will intercept all write() syscalls from child processes. Current Phase 1 protection: filesystem isolation via workspace sandboxing (/tmp/momo/workspace/).
+
 ### Added
 - Initial repository scaffold
 - Trinity socket contract stubs (`/tmp/momo/boru.sock`, `/tmp/momo/zuno.sock`, `/tmp/momo/saba.sock`)
