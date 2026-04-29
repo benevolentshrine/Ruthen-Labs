@@ -3,8 +3,10 @@ use crate::hasher::hash_file;
 use ignore::{WalkBuilder, WalkState};
 use std::path::{Path, PathBuf};
 use std::sync::mpsc;
-use tracing::{error, info, debug};
+use tracing::{error, info, warn};
 use chrono::Utc;
+use content_inspector::{inspect, ContentType};
+use std::io::Read;
 
 pub struct Walker {
     root_path: PathBuf,
@@ -77,8 +79,14 @@ impl Walker {
     }
 }
 
-fn process_file(path: &Path, root_path: &Path) -> Result<Option<FileRecord>, Box<dyn std::error::Error>> {
-    let metadata = path.symlink_metadata()?;
+pub fn process_file(path: &Path, root_path: &Path) -> Result<Option<FileRecord>, Box<dyn std::error::Error>> {
+    let metadata = match path.symlink_metadata() {
+        Ok(m) => m,
+        Err(e) => {
+            warn!("Skipping {:?}: {}", path, e);
+            return Ok(None);
+        }
+    };
     
     let is_symlink = metadata.file_type().is_symlink();
     
@@ -101,11 +109,37 @@ fn process_file(path: &Path, root_path: &Path) -> Result<Option<FileRecord>, Box
         .map(|e| format!(".{}", e))
         .unwrap_or_default();
         
-    let hash = match hash_file(path) {
-        Ok(h) => h,
-        Err(e) => {
-            debug!("Could not hash {:?}: {}", path, e);
-            return Ok(None);
+    let mut is_binary = false;
+    
+    // Check if binary and hash
+    let hash = if size_bytes > 0 {
+        let mut buffer = [0; 1024];
+        if let Ok(mut file) = std::fs::File::open(path) {
+            if let Ok(n) = file.read(&mut buffer) {
+                if inspect(&buffer[..n]) == ContentType::BINARY {
+                    is_binary = true;
+                }
+            }
+        }
+        
+        if is_binary {
+            String::from("binary_skipped")
+        } else {
+            match hash_file(path) {
+                Ok(h) => h,
+                Err(e) => {
+                    warn!("Could not hash {:?}: {}", path, e);
+                    String::from("unreadable")
+                }
+            }
+        }
+    } else {
+        match hash_file(path) {
+            Ok(h) => h,
+            Err(e) => {
+                warn!("Could not hash empty file {:?}: {}", path, e);
+                String::from("unreadable")
+            }
         }
     };
     
@@ -128,7 +162,7 @@ fn process_file(path: &Path, root_path: &Path) -> Result<Option<FileRecord>, Box
         mtime_unix,
         language,
         extension,
-        is_binary: false, // proper logic later
+        is_binary,
         is_symlink,
         permissions,
         indexed_at: Utc::now().to_rfc3339(),
