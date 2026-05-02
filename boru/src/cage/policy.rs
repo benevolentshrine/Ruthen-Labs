@@ -393,6 +393,151 @@ impl Default for SecurityPolicy {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Pre-Execution Source Scanner
+// ---------------------------------------------------------------------------
+
+/// Pattern descriptor for the source scanner
+struct ScanPattern {
+    pattern: &'static str,
+    reason: &'static str,
+}
+
+impl SecurityPolicy {
+    /// Scan script source text for dangerous patterns before execution.
+    ///
+    /// This is the **pre-execution gate** — it runs entirely in Rust before any
+    /// child process is forked. Even if Landlock degrades, this layer catches
+    /// dangerous code at the text level.
+    ///
+    /// Returns `Some(reason)` if execution must be blocked, `None` if clean.
+    pub fn scan_source(&self, source: &str) -> Option<String> {
+        match self.mode {
+            SecurityMode::Hard => Self::scan_hard(source),
+            SecurityMode::Mid => Self::scan_mid(source),
+            // EASY and AUDIT observe only — no pre-execution block
+            SecurityMode::Easy | SecurityMode::Custom | SecurityMode::Audit => None,
+        }
+    }
+
+    /// HARD mode: block all dangerous patterns — zero tolerance
+    fn scan_hard(source: &str) -> Option<String> {
+        // Forbidden path patterns: any access to system directories
+        const FORBIDDEN_PATH_PREFIXES: &[(&str, &str)] = &[
+            ("/etc/",   "forbidden path read: /etc/"),
+            ("/proc/",  "forbidden path read: /proc/"),
+            ("/sys/",   "forbidden path read: /sys/"),
+            ("/root/",  "forbidden path read: /root/"),
+            ("/home/",  "forbidden path read: /home/"),
+        ];
+
+        for (prefix, reason) in FORBIDDEN_PATH_PREFIXES {
+            if source.contains(prefix) {
+                return Some(format!("Pre-execution gate blocked — {}", reason));
+            }
+        }
+
+        // Forbidden import/module patterns
+        const HARD_BLOCKED_PATTERNS: &[ScanPattern] = &[
+            ScanPattern { pattern: "import os",          reason: "forbidden import: os module (filesystem/process access)" },
+            ScanPattern { pattern: "import shutil",      reason: "forbidden import: shutil module (destructive file ops)" },
+            ScanPattern { pattern: "import subprocess",  reason: "forbidden import: subprocess module (process spawn)" },
+            ScanPattern { pattern: "import socket",      reason: "forbidden import: socket module (network access)" },
+            ScanPattern { pattern: "import requests",    reason: "forbidden import: requests module (HTTP network)" },
+            ScanPattern { pattern: "import urllib",      reason: "forbidden import: urllib module (HTTP network)" },
+            ScanPattern { pattern: "import httplib",     reason: "forbidden import: httplib module (HTTP network)" },
+            ScanPattern { pattern: "import http.client", reason: "forbidden import: http.client module (HTTP network)" },
+            ScanPattern { pattern: "requests.",          reason: "forbidden call: requests (HTTP network)" },
+            ScanPattern { pattern: "urllib.",            reason: "forbidden call: urllib (HTTP network)" },
+            ScanPattern { pattern: "eval(",              reason: "forbidden call: eval() (arbitrary code execution)" },
+            ScanPattern { pattern: "exec(",              reason: "forbidden call: exec() (arbitrary code execution)" },
+            ScanPattern { pattern: "__import__(",        reason: "forbidden call: __import__() (dynamic module load)" },
+            ScanPattern { pattern: "os.system(",         reason: "forbidden syscall: os.system (process spawn)" },
+            ScanPattern { pattern: "os.popen(",          reason: "forbidden syscall: os.popen (process spawn)" },
+            ScanPattern { pattern: "os.remove(",         reason: "forbidden syscall: os.remove (file deletion)" },
+            ScanPattern { pattern: "os.unlink(",         reason: "forbidden syscall: os.unlink (file deletion)" },
+            ScanPattern { pattern: "os.rmdir(",          reason: "forbidden syscall: os.rmdir (directory deletion)" },
+            ScanPattern { pattern: "shutil.rmtree(",     reason: "forbidden syscall: shutil.rmtree (recursive deletion)" },
+            ScanPattern { pattern: "shutil.move(",       reason: "forbidden syscall: shutil.move (file move)" },
+            ScanPattern { pattern: "subprocess.run(",    reason: "forbidden syscall: subprocess.run (process spawn)" },
+            ScanPattern { pattern: "subprocess.Popen(",  reason: "forbidden syscall: subprocess.Popen (process spawn)" },
+            ScanPattern { pattern: "subprocess.call(",   reason: "forbidden syscall: subprocess.call (process spawn)" },
+            ScanPattern { pattern: "socket.socket(",     reason: "forbidden call: socket.socket (raw network socket)" },
+            ScanPattern { pattern: "socket.connect(",    reason: "forbidden call: socket.connect (network connection)" },
+        ];
+
+        for pat in HARD_BLOCKED_PATTERNS {
+            if source.contains(pat.pattern) {
+                return Some(format!("Pre-execution gate blocked — {}", pat.reason));
+            }
+        }
+
+        None
+    }
+
+    /// MID mode: block network, spawn, and out-of-workspace paths
+    fn scan_mid(source: &str) -> Option<String> {
+        // System path reads are forbidden in MID mode
+        const MID_FORBIDDEN_PATHS: &[(&str, &str)] = &[
+            ("/etc/",  "forbidden path read: /etc/"),
+            ("/proc/", "forbidden path read: /proc/"),
+            ("/sys/",  "forbidden path read: /sys/"),
+            ("/root/", "forbidden path read: /root/"),
+        ];
+
+        for (prefix, reason) in MID_FORBIDDEN_PATHS {
+            if source.contains(prefix) {
+                return Some(format!("Pre-execution gate blocked — {}", reason));
+            }
+        }
+
+        // Network access is always blocked in MID mode
+        const MID_NETWORK_PATTERNS: &[ScanPattern] = &[
+            ScanPattern { pattern: "import socket",      reason: "forbidden import: socket module (network access)" },
+            ScanPattern { pattern: "import requests",    reason: "forbidden import: requests module (HTTP network)" },
+            ScanPattern { pattern: "import urllib",      reason: "forbidden import: urllib module (HTTP network)" },
+            ScanPattern { pattern: "import httplib",     reason: "forbidden import: httplib module (HTTP network)" },
+            ScanPattern { pattern: "import http.client", reason: "forbidden import: http.client module (HTTP network)" },
+            ScanPattern { pattern: "requests.",          reason: "forbidden call: requests (HTTP network)" },
+            ScanPattern { pattern: "urllib.",            reason: "forbidden call: urllib (HTTP network)" },
+            ScanPattern { pattern: "socket.socket(",     reason: "forbidden call: socket.socket (raw network socket)" },
+            ScanPattern { pattern: "socket.connect(",    reason: "forbidden call: socket.connect (network connection)" },
+        ];
+
+        for pat in MID_NETWORK_PATTERNS {
+            if source.contains(pat.pattern) {
+                return Some(format!("Pre-execution gate blocked — {}", pat.reason));
+            }
+        }
+
+        // Process spawning is blocked in MID mode
+        const MID_SPAWN_PATTERNS: &[ScanPattern] = &[
+            ScanPattern { pattern: "subprocess.run(",   reason: "forbidden syscall: subprocess.run (process spawn)" },
+            ScanPattern { pattern: "subprocess.Popen(", reason: "forbidden syscall: subprocess.Popen (process spawn)" },
+            ScanPattern { pattern: "subprocess.call(",  reason: "forbidden syscall: subprocess.call (process spawn)" },
+            ScanPattern { pattern: "os.system(",        reason: "forbidden syscall: os.system (process spawn)" },
+            ScanPattern { pattern: "os.popen(",         reason: "forbidden syscall: os.popen (process spawn)" },
+            // Env var access blocked in MID mode
+            ScanPattern { pattern: "os.environ",        reason: "forbidden call: os.environ (environment variable access)" },
+            ScanPattern { pattern: "os.getenv(",        reason: "forbidden call: os.getenv (environment variable access)" },
+            // Destructive file ops blocked in MID mode
+            ScanPattern { pattern: "os.remove(",        reason: "forbidden syscall: os.remove (file deletion)" },
+            ScanPattern { pattern: "os.unlink(",        reason: "forbidden syscall: os.unlink (file deletion)" },
+            ScanPattern { pattern: "os.rmdir(",         reason: "forbidden syscall: os.rmdir (directory deletion)" },
+            ScanPattern { pattern: "shutil.rmtree(",    reason: "forbidden syscall: shutil.rmtree (recursive deletion)" },
+            ScanPattern { pattern: "shutil.move(",      reason: "forbidden syscall: shutil.move (file move)" },
+        ];
+
+        for pat in MID_SPAWN_PATTERNS {
+            if source.contains(pat.pattern) {
+                return Some(format!("Pre-execution gate blocked — {}", pat.reason));
+            }
+        }
+
+        None
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

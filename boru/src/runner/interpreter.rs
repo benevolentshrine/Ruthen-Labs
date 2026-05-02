@@ -1,9 +1,10 @@
-//! Interpreter Runner — Bubblewrap + seccomp for interpreted languages
+//! Interpreter Runner — v2.0 Zero-Trust Determinism
 //!
-//! PHASE 1 STRATEGY: Host interpreter via bubblewrap/unshare namespace
-//! - Check if interpreter exists on host
-//! - If found: wrap via bubblewrap → seccomp filter → BORU intercept
-//! - If NOT found: return Verdict::Unsupported
+//! PHASE 2.0 STRATEGY: Host interpreter wrapped in the full BORU sandbox:
+//! - Landlock v2 filesystem jail (workspace-only, symlink-safe)
+//! - Seccomp-BPF v2 (network air-gap including DNS/UDP)
+//! - Cgroups v2 (512MB RAM, 25% CPU, 20 PIDs)
+//! - Pre-Execution Gate validation
 //!
 //! FUTURE PATH (documented in code):
 //! - Python → rustpython.wasm
@@ -14,6 +15,8 @@
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::sandbox::{spawn_sandboxed_command, SandboxOptions};
+use crate::cage::policy::{SecurityMode, SecurityPolicy};
 use anyhow::{Context, Result};
 use std::path::Path;
 use std::process::Command;
@@ -229,10 +232,13 @@ impl Runner for InterpreterRunner {
     fn execute(
         &self,
         _path: &Path,
-        classification: &ClassificationResult,
+        _classification: &ClassificationResult,
+        mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
+        crate::cage::sandbox::validate_file_size(_path)?;
+
         let config = self
-            .get_config_for_class(&classification.class)
+            .get_config_for_class(&_classification.class)
             .context("No interpreter config for file class")?;
 
         // Check if interpreter is available
@@ -242,12 +248,6 @@ impl Runner for InterpreterRunner {
             // Log interpreter invocation
             let version = self.get_version(config.command, config.version_flag);
 
-            // TODO Phase 2: Replace Command::new with bubblewrap namespace isolation
-            // TODO Phase 2: Add seccomp-bpf profile per interpreter (see docs/SECCOMP_PLAN.md)
-            // Python  → rustpython.wasm
-            // JS/TS   → quickjs.wasm
-            // Ruby    → ruby.wasm
-
             tracing::info!(
                 "InterpreterRunner: {} at {:?} (version: {:?})",
                 config.command,
@@ -255,8 +255,35 @@ impl Runner for InterpreterRunner {
                 version
             );
 
+            // --- PRE-EXECUTION SOURCE SCAN GATE ---
+            // This runs BEFORE any fork() or spawn. Even if Landlock/Seccomp
+            // degrades, this layer catches dangerous patterns at the text level.
+            // GATE 7: log before returning verdict.
+            let request_id = uuid::Uuid::new_v4();
+            let source = match std::fs::read_to_string(_path) {
+                Ok(s) => s,
+                Err(e) => {
+                    return Ok(RunnerVerdict::Blocked {
+                        reason: format!("Failed to read script source for gate scan: {}", e),
+                    });
+                }
+            };
+
+            let policy = SecurityPolicy::new(mode);
+            if let Some(violation) = policy.scan_source(&source) {
+                crate::cage::log_intercept(
+                    crate::cage::Severity::High,
+                    "EXECUTE_BLOCKED",
+                    &format!("[PRE-EXEC GATE] {}", violation),
+                    request_id,
+                );
+                return Ok(RunnerVerdict::Blocked { reason: violation });
+            }
+            // --- END SOURCE SCAN GATE ---
+
             // Step 2: Set up workspace
-            let workspace = std::path::Path::new("/tmp/momo/workspace/");
+            let workspace_buf = crate::socket::config::boru_workspace_dir();
+            let workspace = workspace_buf.as_path();
             if let Err(e) = std::fs::create_dir_all(workspace) {
                 return Ok(RunnerVerdict::Blocked {
                     reason: format!("Failed to create workspace: {}", e),
@@ -267,29 +294,59 @@ impl Runner for InterpreterRunner {
                 .canonicalize()
                 .unwrap_or_else(|_| std::path::PathBuf::from(_path));
 
-            // Step 3: Execute with restrictions via std::process::Command
-            // GATE 2 EXCEPTION: execution permitted in src/runner/ modules
-            // This is the controlled execution path. Intercept layer wraps this.
-            let output = match Command::new(&path_str)
-                .arg(abs_path)
+            // Step 3: Execute inside v2.0 Zero-Trust Sandbox
+            // All four enforcement layers are applied:
+            // Landlock v2 → Seccomp-BPF v2 → Cgroups v2 → Pre-Exec Gate
+            //
+            // Load sandbox options from the Pre-Execution Gate policy.
+            let sandbox_opts = crate::cage::gate::PreExecutionGate::load()
+                .map(|gate| SandboxOptions::from_policy(gate.resource_limits()))
+                .unwrap_or_default();
+
+            let mut sandbox_cmd = Command::new(&path_str);
+            sandbox_cmd
+                .arg(&abs_path)
                 .current_dir(workspace)
                 .env_clear()                    // strip all env vars
                 .env("HOME", workspace)         // fake home = workspace only
                 .env("TMPDIR", workspace)
-                .output()
-            {
-                Ok(out) => out,
+                .env("RUST_LOG", "off")         // silence child tracing logs
+                .stdout(std::process::Stdio::piped())
+                .stderr(std::process::Stdio::piped());
+
+            let child = match spawn_sandboxed_command(sandbox_cmd, workspace, sandbox_opts, mode) {
+                Ok(c) => c,
                 Err(e) => {
                     return Ok(RunnerVerdict::Blocked {
-                        reason: format!("Execution failed: {}", e),
+                        reason: format!("Sandbox spawn failed: {}", e),
                     });
                 }
             };
 
-            // Step 4: Capture output
-            let stdout = String::from_utf8_lossy(&output.stdout).to_string();
+            let output = match child.wait_with_output() {
+                Ok(out) => out,
+                Err(e) => {
+                    return Ok(RunnerVerdict::Blocked {
+                        reason: format!("Failed to collect sandbox output: {}", e),
+                    });
+                }
+            };
+
+            // Step 4: Capture output — filter internal BORU log lines
+            let stdout_raw = String::from_utf8_lossy(&output.stdout).to_string();
+            let stdout = stdout_raw
+                .lines()
+                .filter(|line| !line.contains("boru::cage::sandbox")
+                    && !line.contains("INFO boru::")
+                    && !line.contains("WARN boru::")
+                    && !line.contains("ERROR boru::"))
+                .collect::<Vec<_>>()
+                .join("\n");
+            let stdout = if stdout.is_empty() { stdout_raw } else { stdout + "\n" };
             let stderr = String::from_utf8_lossy(&output.stderr).to_string();
             let exit_code = output.status.code().unwrap_or(-1);
+
+            crate::cage::sandbox::check_process_status(output.status);
 
             let combined_output = if !stderr.is_empty() {
                 format!("STDOUT:\n{}\nSTDERR:\n{}", stdout, stderr)
@@ -299,7 +356,6 @@ impl Runner for InterpreterRunner {
 
             // Step 5: Log execution event
             // Gate 7: ScriptExecuted event
-            let request_id = uuid::Uuid::new_v4();
             crate::cage::log_intercept(
                 crate::cage::Severity::Medium,
                 "SCRIPT_EXECUTED",
