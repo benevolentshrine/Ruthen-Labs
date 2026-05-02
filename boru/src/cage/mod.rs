@@ -377,7 +377,7 @@ pub fn run_cage(
         }
     }
 
-    // STEP 5: Hash check
+    // Hash database check
     if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
         if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
             if let crate::threat::hashdb::HashStatus::KnownBad(entry) = hash_db.check_hash(&file_hash) {
@@ -500,7 +500,7 @@ pub fn check(input: PathBuf) -> Result<()> {
 
     println!("  Magic match: ✅ true");
 
-    // STEP 5: Hash check
+    // Hash check against local malware signatures
     if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
         if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
             println!("  Hash: {}", file_hash);

@@ -281,7 +281,7 @@ impl Runner for InterpreterRunner {
             }
             // --- END SOURCE SCAN GATE ---
 
-            // Step 2: Set up workspace
+            // Set up ephemeral workspace
             let workspace_buf = crate::socket::config::boru_workspace_dir();
             let workspace = workspace_buf.as_path();
             if let Err(e) = std::fs::create_dir_all(workspace) {
@@ -294,7 +294,7 @@ impl Runner for InterpreterRunner {
                 .canonicalize()
                 .unwrap_or_else(|_| std::path::PathBuf::from(_path));
 
-            // Step 3: Execute inside v2.0 Zero-Trust Sandbox
+            // Execute inside v2.0 Zero-Trust Sandbox
             // All four enforcement layers are applied:
             // Landlock v2 → Seccomp-BPF v2 → Cgroups v2 → Pre-Exec Gate
             //
@@ -332,7 +332,7 @@ impl Runner for InterpreterRunner {
                 }
             };
 
-            // Step 4: Capture output — filter internal BORU log lines
+            // Capture output — filter internal BORU log lines
             let stdout_raw = String::from_utf8_lossy(&output.stdout).to_string();
             let stdout = stdout_raw
                 .lines()
@@ -354,7 +354,7 @@ impl Runner for InterpreterRunner {
                 stdout.clone()
             };
 
-            // Step 5: Log execution event
+            // Log execution event
             // Gate 7: ScriptExecuted event
             crate::cage::log_intercept(
                 crate::cage::Severity::Medium,

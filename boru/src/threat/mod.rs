@@ -6,4 +6,4 @@
 
 pub mod hashdb;
 
-pub use hashdb::{HashDB, HashEntry, HashStatus, Severity, compute_file_hash, compute_bytes_hash};
+pub use hashdb::{HashDB, HashEntry, HashStatus, Severity, compute_file_hash};

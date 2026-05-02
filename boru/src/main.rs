@@ -579,9 +579,6 @@ fn run() -> Result<()> {
                     threat::HashStatus::Clean => {
                         println!("✅ Clean — hash not in database");
                     }
-                    threat::HashStatus::Unknown => {
-                        println!("⚠️  Unknown — check failed");
-                    }
                 }
             }
 

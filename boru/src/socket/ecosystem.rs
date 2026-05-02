@@ -167,37 +167,13 @@ pub fn get_capabilities(mode: SecurityMode) -> ServiceCapabilities {
     }
 }
 
-/// Check if running in standalone mode (no siblings)
-pub fn standalone_mode() -> bool {
-    let status = status();
-    !status.nuki && !status.suji
-}
 
-/// Log ecosystem integration status
-pub fn log_status() {
-    let status = status();
-
-    tracing::info!("MOMO Ecosystem Status:");
-    tracing::info!("  BORU (this): active");
-    tracing::info!("  NUKI: {}", if status.nuki { "connected" } else { "not detected" });
-    tracing::info!("  SUJI: {}", if status.suji { "connected" } else { "not detected" });
-
-    if standalone_mode() {
-        tracing::info!("Mode: STANDALONE (no siblings detected)");
-    } else {
-        tracing::info!("Mode: ECOSYSTEM ({} services active)", status.service_count());
-    }
-}
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_standalone_detection() {
-        // Just verify the function runs
-        let _ = standalone_mode();
-    }
+
 
     #[test]
     fn test_get_capabilities() {

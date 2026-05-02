@@ -24,9 +24,8 @@ pub struct WatchdogConfig {
     /// Debounce delay in milliseconds
     pub debounce_ms: u64,
     /// Watch recursively
+    /// Watch recursively
     pub recursive: bool,
-    /// Show desktop notifications (if available)
-    pub notify_user: bool,
 }
 
 impl WatchdogConfig {
@@ -37,7 +36,6 @@ impl WatchdogConfig {
             mode: SecurityMode::Mid,
             debounce_ms: 500,
             recursive: true,
-            notify_user: false,
         }
     }
 
@@ -47,23 +45,12 @@ impl WatchdogConfig {
         self
     }
 
-    /// Set debounce delay
-    pub fn with_debounce(mut self, ms: u64) -> Self {
-        self.debounce_ms = ms;
-        self
-    }
-
     /// Set recursive
     pub fn with_recursive(mut self, recursive: bool) -> Self {
         self.recursive = recursive;
         self
     }
 
-    /// Enable notifications
-    pub fn with_notify(mut self, notify_user: bool) -> Self {
-        self.notify_user = notify_user;
-        self
-    }
 }
 
 /// Watchdog event types
@@ -258,26 +245,20 @@ impl Watchdog {
         Ok(())
     }
 
-    /// Get number of processed files
-    pub fn processed_count(&self) -> usize {
-        self.processed.lock().unwrap_or_else(|e| e.into_inner()).len()
-    }
+
 }
 
 /// Polling-based fallback watchdog (if notify is unavailable or too heavy)
 pub struct PollingWatchdog {
     config: WatchdogConfig,
-    scanner: DirectoryScanner,
     known_files: Arc<Mutex<HashSet<PathBuf>>>,
 }
 
 impl PollingWatchdog {
     /// Create new polling watchdog
     pub fn new(config: WatchdogConfig) -> Self {
-        let scanner = DirectoryScanner::new(config.mode);
         Self {
             config,
-            scanner,
             known_files: Arc::new(Mutex::new(HashSet::new())),
         }
     }
@@ -387,14 +368,8 @@ mod tests {
     #[test]
     fn test_watchdog_config() {
         let config = WatchdogConfig::new(PathBuf::from("/tmp"))
-            .with_mode(SecurityMode::Hard)
-            .with_debounce(1000)
-            .with_recursive(false)
-            .with_notify(true);
+            .with_mode(SecurityMode::Hard);
 
         assert_eq!(config.mode, SecurityMode::Hard);
-        assert_eq!(config.debounce_ms, 1000);
-        assert!(!config.recursive);
-        assert!(config.notify_user);
     }
 }
