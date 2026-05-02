@@ -7,12 +7,12 @@ Project MOMO is powered by three engines communicating over local Unix sockets. 
 ```
 UI / CLI
    │
-   └──► SABA  (Go router)          /tmp/momo/saba.sock   [NOT YET IMPLEMENTED]
+   └──► SABA  (Go router)          [TEMP]/momo/saba.sock   [NOT YET IMPLEMENTED]
            │
-           ├──► ZUNO  (Rust indexer)    /tmp/momo/zuno.sock   [NOT YET IMPLEMENTED]
+           ├──► ZUNO  (Rust indexer)    [TEMP]/momo/zuno.sock   [NOT YET IMPLEMENTED]
            │         context retrieval
            │
-           └──► BORU  (Rust cage)       /tmp/momo/boru.sock   [ACTIVE]
+           └──► BORU  (Rust cage)       [TEMP]/momo/boru.sock   [ACTIVE]
                        sandboxed execution
                             │
                             └──► Ollama  localhost:11434
@@ -41,7 +41,8 @@ BORU is the **Security Cage**. Every piece of AI-generated code that needs execu
 
 ## Socket Contract
 
-### BORU Socket — `/tmp/momo/boru.sock`
+### BORU Socket — Dynamic resolution via `std::env::temp_dir()`
+Formerly hardcoded to `/tmp/momo/boru.sock`, all socket paths now resolve dynamically based on the OS temporary directory (e.g., `$TMPDIR/momo/boru.sock` on Linux). This ensures compatibility with enterprise environments where `/tmp` may be restricted or mapped differently.
 
 **Request format (JSON over Unix socket):**
 ```json
@@ -72,12 +73,12 @@ BORU is the **Security Cage**. Every piece of AI-generated code that needs execu
 
 ```rust
 // ZUNO: context will arrive here
-// Socket: /tmp/momo/zuno.sock
+// Socket: [TEMP]/momo/zuno.sock
 // Expected payload: { "query": "...", "project_path": "..." }
 // Expected response: { "context": [...], "token_count": N }
 
 // SABA: execution requests route through this
-// Socket: /tmp/momo/saba.sock  
+// Socket: [TEMP]/momo/saba.sock  
 // Expected payload: { "prompt": "...", "context": [...], "model": "..." }
 // Expected response: { "code": "...", "explanation": "..." }
 ```

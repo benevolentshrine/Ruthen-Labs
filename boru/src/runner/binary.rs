@@ -6,6 +6,7 @@
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::policy::SecurityMode;
 use anyhow::Result;
 use std::path::Path;
 
@@ -51,6 +52,7 @@ impl Runner for BinaryRunner {
         &self,
         _path: &Path,
         _classification: &ClassificationResult,
+        _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // For Phase 1: Native binary execution is NOT supported
         // BORU is a WASM-first sandbox for security

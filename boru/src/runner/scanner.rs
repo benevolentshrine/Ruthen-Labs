@@ -9,6 +9,7 @@
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::policy::SecurityMode;
 use anyhow::Result;
 use std::path::Path;
 
@@ -113,6 +114,7 @@ impl Runner for ScannerRunner {
         &self,
         path: &Path,
         classification: &ClassificationResult,
+        _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // Read file data (limit to reasonable size for scanning)
         let data = std::fs::read(path)?;

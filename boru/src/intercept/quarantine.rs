@@ -1,7 +1,7 @@
 //! BORU Quarantine — File isolation and metadata tracking
 //!
 //! When a file is DENIED (auto or by user):
-//! 1. Move original to: /tmp/momo/quarantine/<timestamp>-<filename>/
+//! 1. Move original to: [TEMP]/momo/quarantine/<timestamp>-<filename>/
 //! 2. Write metadata.json alongside
 //! 3. Log to audit log with quarantine_ref
 
@@ -10,8 +10,10 @@ use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
-/// Quarantine directory
-const QUARANTINE_DIR: &str = "/tmp/momo/quarantine";
+/// Quarantine directory path
+pub fn quarantine_dir() -> std::path::PathBuf {
+    crate::socket::config::momo_base_dir().join("quarantine")
+}
 
 /// Quarantine metadata
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -47,7 +49,7 @@ pub fn quarantine_file(
     verdict: &str,
 ) -> Result<PathBuf> {
     // Create quarantine directory
-    let quarantine_base = PathBuf::from(QUARANTINE_DIR);
+    let quarantine_base = quarantine_dir();
     std::fs::create_dir_all(&quarantine_base)
         .with_context(|| format!("Failed to create quarantine dir: {}", quarantine_base.display()))?;
 
@@ -130,7 +132,7 @@ pub fn quarantine_file(
 
 /// Get all quarantined items
 pub fn list_quarantined() -> Result<Vec<QuarantineItem>> {
-    let quarantine_base = PathBuf::from(QUARANTINE_DIR);
+    let quarantine_base = quarantine_dir();
 
     if !quarantine_base.exists() {
         return Ok(vec![]);

@@ -3,57 +3,76 @@
 //! GATE 3: All socket paths centralized here. No hardcoded paths elsewhere.
 //!
 //! Socket paths for Project MOMO Ecosystem:
-//! - BORU: /tmp/momo/boru.sock (security engine)
-//! - NUKI: /tmp/momo/nuki.sock (search/memory engine)
-//! - SUJI: /tmp/momo/suji.sock (orchestrator/conductor)
-//! - ZUNO: /tmp/momo/zuno.sock (indexer - Phase 2 stub)
-//! - SABA: /tmp/momo/saba.sock (router - Phase 2 stub)
+//! - BORU: [TEMP]/momo/boru.sock (security engine)
+//! - NUKI: [TEMP]/momo/nuki.sock (search/memory engine)
+//! - SUJI: [TEMP]/momo/suji.sock (orchestrator/conductor)
+//! - ZUNO: [TEMP]/momo/zuno.sock (indexer - Phase 2 stub)
+//! - SABA: [TEMP]/momo/saba.sock (router - Phase 2 stub)
 //!
 //! Unix Philosophy: Auto-discover siblings via filesystem sockets.
 //! No hardcoded ports. No localhost HTTP. Pure Unix sockets.
 
-use std::path::Path;
+use std::path::{Path, PathBuf};
+
+/// Base directory for MOMO ecosystem
+pub fn momo_base_dir() -> PathBuf {
+    std::env::temp_dir().join("momo")
+}
 
 /// Default BORU socket path
-pub const BORU_SOCKET_PATH: &str = "/tmp/momo/boru.sock";
+pub fn boru_socket_path() -> PathBuf {
+    momo_base_dir().join("boru.sock")
+}
 
 /// NUKI socket path (search engine - auto-detected)
-pub const NUKI_SOCKET_PATH: &str = "/tmp/momo/nuki.sock";
+pub fn nuki_socket_path() -> PathBuf {
+    momo_base_dir().join("nuki.sock")
+}
 
 /// SUJI socket path (orchestrator - auto-detected)
-pub const SUJI_SOCKET_PATH: &str = "/tmp/momo/suji.sock";
+pub fn suji_socket_path() -> PathBuf {
+    momo_base_dir().join("suji.sock")
+}
 
 /// ZUNO socket path (Phase 2 - stub only)
 #[allow(dead_code)]
-pub const ZUNO_SOCKET_PATH: &str = "/tmp/momo/zuno.sock";
+pub fn zuno_socket_path() -> PathBuf {
+    momo_base_dir().join("zuno.sock")
+}
 
 /// SABA socket path (Phase 2 - stub only)
 #[allow(dead_code)]
-pub const SABA_SOCKET_PATH: &str = "/tmp/momo/saba.sock";
+pub fn saba_socket_path() -> PathBuf {
+    momo_base_dir().join("saba.sock")
+}
 
 /// Maximum request size: 10MB
 pub const MAX_REQUEST_SIZE: usize = 10 * 1024 * 1024;
 
 /// Socket directory path
-pub const SOCKET_DIR: &str = "/tmp/momo";
+pub fn socket_dir() -> PathBuf {
+    momo_base_dir()
+}
 
 /// BORU workspace directory for sandbox file operations
 #[allow(dead_code)]
-pub const BORU_WORKSPACE_DIR: &str = "/tmp/momo/workspace";
+pub fn boru_workspace_dir() -> PathBuf {
+    momo_base_dir().join("workspace")
+}
 
 /// Service discovery: Check if a sibling service is running
-pub fn is_service_available(socket_path: &str) -> bool {
-    Path::new(socket_path).exists()
+pub fn is_service_available<P: AsRef<Path>>(socket_path: P) -> bool {
+    socket_path.as_ref().exists()
 }
 
 /// Check if NUKI (search engine) is available
 pub fn nuki_available() -> bool {
-    is_service_available(NUKI_SOCKET_PATH)
+    is_service_available(nuki_socket_path())
 }
 
 /// Check if SUJI (orchestrator) is available
 pub fn suji_available() -> bool {
-    is_service_available(SUJI_SOCKET_PATH)
+    is_service_available(suji_socket_path())
 }
 
 /// Get ecosystem status - which siblings are present
@@ -62,8 +81,8 @@ pub fn ecosystem_status() -> EcosystemStatus {
         boru: true, // We're here
         nuki: nuki_available(),
         suji: suji_available(),
-        zuno: is_service_available(ZUNO_SOCKET_PATH),
-        saba: is_service_available(SABA_SOCKET_PATH),
+        zuno: is_service_available(zuno_socket_path()),
+        saba: is_service_available(saba_socket_path()),
     }
 }
 
@@ -102,9 +121,10 @@ mod tests {
 
     #[test]
     fn test_socket_paths() {
-        assert_eq!(BORU_SOCKET_PATH, "/tmp/momo/boru.sock");
-        assert_eq!(NUKI_SOCKET_PATH, "/tmp/momo/nuki.sock");
-        assert_eq!(SUJI_SOCKET_PATH, "/tmp/momo/suji.sock");
+        assert_eq!(boru_socket_path(), std::env::temp_dir().join("momo/boru.sock"));
+        assert_eq!(nuki_socket_path(), std::env::temp_dir().join("momo/nuki.sock"));
+        assert_eq!(suji_socket_path(), std::env::temp_dir().join("momo/suji.sock"));
+        assert_eq!(MAX_REQUEST_SIZE, 10 * 1024 * 1024);
     }
 
     #[test]

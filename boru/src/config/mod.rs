@@ -193,7 +193,7 @@ pub fn example_config() -> String {
 # Paths that are always allowed (exact match or glob)
 allowed_paths = [
     "/home/user/projects/safe",
-    "/tmp/momo/workspace/*",
+    "[TEMP]/momo/workspace/*",
 ]
 
 # Paths that are always denied
@@ -222,7 +222,7 @@ action = "prompt"
 reason = "Downloaded files require review"
 
 [[path_rules]]
-pattern = "/tmp/momo/trusted/*"
+pattern = "[TEMP]/momo/trusted/*"
 action = "allow"
 reason = "Trusted workspace"
 "#

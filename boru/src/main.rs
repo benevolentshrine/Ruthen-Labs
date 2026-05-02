@@ -59,8 +59,8 @@ enum Commands {
 
     /// Start the socket daemon
     Daemon {
-        /// Socket path (default uses socket::config::BORU_SOCKET_PATH)
-        #[arg(long, value_name = "PATH")]
+        /// Socket path (default uses std::env::temp_dir()/momo/boru.sock)
+        #[arg(long)]
         socket: Option<PathBuf>,
     },
 
@@ -391,13 +391,13 @@ fn run() -> Result<()> {
             }
 
             if let Some(id) = restore {
-                let quarantine_dir = std::path::PathBuf::from("/tmp/momo/quarantine").join(id);
+                let quarantine_dir = crate::intercept::quarantine::quarantine_dir().join(id);
                 let restored_path = intercept::quarantine::restore_quarantine(&quarantine_dir)?;
                 println!("Restored: {}", restored_path.display());
             }
 
             if let Some(id) = delete {
-                let quarantine_dir = std::path::PathBuf::from("/tmp/momo/quarantine").join(&id);
+                let quarantine_dir = crate::intercept::quarantine::quarantine_dir().join(&id);
                 intercept::quarantine::delete_quarantine(&quarantine_dir)?;
                 println!("Deleted quarantine: {}", id);
             }

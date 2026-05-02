@@ -86,7 +86,7 @@ async fn query_nuki_unix(file_path: &Path) -> Result<NukiContextResponse> {
         file_path: file_path.to_string_lossy().to_string(),
     };
 
-    let mut stream = UnixStream::connect(super::config::NUKI_SOCKET_PATH)
+    let mut stream = UnixStream::connect(super::config::nuki_socket_path())
         .await
         .context("Failed to connect to Nuki socket")?;
 
@@ -123,7 +123,7 @@ async fn notify_suji_unix(event: EcosystemEvent) -> Result<()> {
     use tokio::io::AsyncWriteExt;
     use tokio::net::UnixStream;
 
-    let mut stream = UnixStream::connect(super::config::SUJI_SOCKET_PATH)
+    let mut stream = UnixStream::connect(super::config::suji_socket_path())
         .await
         .context("Failed to connect to Suji socket")?;
 

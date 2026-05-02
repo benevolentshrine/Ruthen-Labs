@@ -9,6 +9,7 @@
 use crate::classifier::ClassificationResult;
 use crate::classifier::magic::FileClass;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::policy::SecurityMode;
 use anyhow::{Context, Result};
 use std::path::Path;
 
@@ -66,6 +67,7 @@ impl Runner for WasmRunner {
         &self,
         path: &Path,
         _classification: &ClassificationResult,
+        _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // Read WASM bytes
         let wasm_bytes = std::fs::read(path)

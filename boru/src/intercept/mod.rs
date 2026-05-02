@@ -98,7 +98,7 @@ impl InterceptLayer {
     pub fn new(request_id: uuid::Uuid) -> Self {
         Self {
             policy: SecurityPolicy::new(SecurityMode::Mid),
-            allowed_write_dirs: vec![std::path::PathBuf::from("/tmp/momo/workspace")],
+            allowed_write_dirs: vec![crate::socket::config::boru_workspace_dir()],
             request_id,
         }
     }
@@ -107,7 +107,7 @@ impl InterceptLayer {
     pub fn with_mode(request_id: uuid::Uuid, mode: SecurityMode) -> Self {
         Self {
             policy: SecurityPolicy::new(mode),
-            allowed_write_dirs: vec![std::path::PathBuf::from("/tmp/momo/workspace")],
+            allowed_write_dirs: vec![crate::socket::config::boru_workspace_dir()],
             request_id,
         }
     }

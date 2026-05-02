@@ -6,6 +6,7 @@
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::policy::SecurityMode;
 use anyhow::Result;
 use std::path::Path;
 
@@ -132,6 +133,7 @@ impl Runner for HeuristicRunner {
         &self,
         path: &Path,
         _classification: &ClassificationResult,
+        _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // Read first 4KB for heuristic analysis
         let data = std::fs::read(path)?;
