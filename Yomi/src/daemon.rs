@@ -25,7 +25,16 @@ struct JsonRpcResponse {
     id: u64,
 }
 
+// ── Directory & file paths ────────────────────────────────────────────────────
+
 fn get_yomi_dir() -> PathBuf {
+    if let Ok(env_dir) = std::env::var("YOMI_DATA_DIR") {
+        let dir = PathBuf::from(env_dir);
+        if !dir.exists() {
+            let _ = std::fs::create_dir_all(&dir);
+        }
+        return dir;
+    }
     if let Some(proj_dirs) = ProjectDirs::from("com", "momo", "yomi") {
         let data_dir = proj_dirs.data_dir();
         if !data_dir.exists() {
@@ -37,40 +46,135 @@ fn get_yomi_dir() -> PathBuf {
     }
 }
 
-fn get_port_file() -> PathBuf {
-    get_yomi_dir().join("port")
+fn get_port_file() -> PathBuf  { get_yomi_dir().join("port")       }
+fn get_token_file() -> PathBuf { get_yomi_dir().join("auth_token") }
+fn get_pid_file() -> PathBuf   { get_yomi_dir().join("daemon.pid") }
+fn get_log_file() -> PathBuf   { get_yomi_dir().join("daemon.log") }
+
+// ── PID helpers ───────────────────────────────────────────────────────────────
+
+/// Write the current process PID to the PID file.
+fn write_pid_file() -> std::io::Result<()> {
+    let pid = std::process::id();
+    let mut f = File::create(get_pid_file())?;
+    write!(f, "{}", pid)?;
+    Ok(())
 }
 
-fn get_token_file() -> PathBuf {
-    get_yomi_dir().join("auth_token")
+/// Read the PID stored in the PID file. Returns None if file is absent or unparseable.
+fn read_pid_file() -> Option<u32> {
+    let mut f = File::open(get_pid_file()).ok()?;
+    let mut s = String::new();
+    f.read_to_string(&mut s).ok()?;
+    s.trim().parse().ok()
 }
+
+/// Check whether a process with the given PID is still alive.
+/// On Unix we send signal 0; on Windows we use OpenProcess.
+#[cfg(unix)]
+fn pid_is_alive(pid: u32) -> bool {
+    use nix::sys::signal::{kill, Signal};
+    use nix::unistd::Pid;
+    kill(Pid::from_raw(pid as i32), Signal::SIGUSR1).is_ok()
+}
+
+#[cfg(not(unix))]
+fn pid_is_alive(pid: u32) -> bool {
+    // On Windows, try to open the process; if it succeeds it is still alive.
+    use std::process::Command;
+    Command::new("tasklist")
+        .args(["/FI", &format!("PID eq {}", pid), "/NH"])
+        .output()
+        .map(|o| String::from_utf8_lossy(&o.stdout).contains(&pid.to_string()))
+        .unwrap_or(false)
+}
+
+/// Remove all runtime state files (port, token, pid).
+fn cleanup_state_files() {
+    let _ = std::fs::remove_file(get_port_file());
+    let _ = std::fs::remove_file(get_token_file());
+    let _ = std::fs::remove_file(get_pid_file());
+}
+
+// ── CLI action entry-point ────────────────────────────────────────────────────
 
 pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn std::error::Error>> {
     match action {
         DaemonAction::Start => {
-            // Check if already running
-            if let Ok(_) = get_daemon_port() {
-                info!("Daemon is already running!");
+            // ── Internal run mode (already detached child) ──────────────────
+            if std::env::var("YOMI_DAEMON_INTERNAL").is_ok() {
+                run_daemon_server().await?;
                 return Ok(());
             }
-            
-            // On Windows, Command::new spawns a detached process. 
-            // We just need to spawn ourselves with a secret internal flag, but to avoid 
-            // complicated args, we can just run the daemon loop directly if we are the background process.
-            // Wait, to truly detach, we need to spawn `yomi daemon --internal-run`. 
-            // We'll just run it directly for now in the current terminal to test, 
-            // or spawn if we want it backgrounded. The user specified "Launch background service".
-            
-            // Let's spawn it in the background using a secret env var or argument.
-            // Since we didn't add a secret argument, let's just run the daemon loop here 
-            // for simplicity, or actually spawn the current executable.
-            info!("Starting daemon in foreground (for testing Phase 2)...");
-            run_daemon_server().await?;
+
+            // ── Check for a running daemon (stale-state-aware) ──────────────
+            if let Some(pid) = read_pid_file() {
+                if pid_is_alive(pid) {
+                    info!("Daemon is already running (PID {}).", pid);
+                    return Ok(());
+                }
+                info!("Stale PID file found (PID {} is dead). Cleaning up and restarting.", pid);
+                cleanup_state_files();
+            }
+
+            // ── Spawn detached background process ───────────────────────────
+            let exe = std::env::current_exe()?;
+            let log_path = get_log_file();
+            let log_file = File::create(&log_path)?;
+
+            #[cfg(unix)]
+            {
+                use std::os::unix::process::CommandExt;
+                let _child = std::process::Command::new(&exe)
+                    .args(["daemon", "start"])
+                    .env("YOMI_DAEMON_INTERNAL", "1")
+                    .stdin(std::process::Stdio::null())
+                    .stdout(log_file.try_clone()?)
+                    .stderr(log_file)
+                    // setsid() detaches from the controlling TTY
+                    .process_group(0)
+                    .spawn()?;
+            }
+            #[cfg(not(unix))]
+            {
+                // Windows: CREATE_NO_WINDOW flag via `creation_flags`
+                use std::os::windows::process::CommandExt;
+                const CREATE_NO_WINDOW: u32 = 0x08000000;
+                let _child = std::process::Command::new(&exe)
+                    .args(["daemon", "start"])
+                    .env("YOMI_DAEMON_INTERNAL", "1")
+                    .stdin(std::process::Stdio::null())
+                    .stdout(log_file.try_clone()?)
+                    .stderr(log_file)
+                    .creation_flags(CREATE_NO_WINDOW)
+                    .spawn()?;
+            }
+
+            info!("Daemon launched in background. Logs → {:?}", log_path);
         }
+
         DaemonAction::Status => {
-            let res = send_rpc("status", serde_json::json!({})).await?;
-            info!("Daemon status: {:?}", res);
+            // ── Stale-state detection before any TCP call ───────────────────
+            match read_pid_file() {
+                None => {
+                    info!("Daemon is not running (no PID file).");
+                    return Ok(());
+                }
+                Some(pid) if !pid_is_alive(pid) => {
+                    info!("Daemon is not running (PID {} is dead). Cleaning up stale files.", pid);
+                    cleanup_state_files();
+                    return Ok(());
+                }
+                Some(pid) => {
+                    info!("PID {} appears alive; querying via TCP.", pid);
+                }
+            }
+            match send_rpc("status", serde_json::json!({})).await {
+                Ok(res) => info!("Daemon status: {:?}", res),
+                Err(e)  => info!("Daemon unreachable: {}", e),
+            }
         }
+
         DaemonAction::Stop => {
             let res = send_rpc("stop", serde_json::json!({})).await?;
             info!("Daemon stop response: {:?}", res);
@@ -79,22 +183,22 @@ pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn s
     Ok(())
 }
 
+// ── Server loop ───────────────────────────────────────────────────────────────
+
 async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     let local_addr = listener.local_addr()?;
     let port = local_addr.port();
-    
-    // Save port
+
+    // Write runtime files
     let mut port_file = File::create(get_port_file())?;
     write!(port_file, "{}", port)?;
-    
-    // Generate and save token
+
     let token = Uuid::new_v4().to_string();
     let token_path = get_token_file();
     let mut token_file = File::create(&token_path)?;
     write!(token_file, "{}", token)?;
-    
-    // Set strict permissions on Unix
+
     #[cfg(unix)]
     {
         use std::os::unix::fs::PermissionsExt;
@@ -103,49 +207,153 @@ async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
         std::fs::set_permissions(&token_path, perms)?;
     }
 
-    info!("Daemon listening on {} with token auth", local_addr);
+    write_pid_file()?;
 
-    loop {
-        let (mut socket, _) = listener.accept().await?;
-        let token_ref = token.clone();
-        
+    info!("Daemon listening on {} (PID {})", local_addr, std::process::id());
+
+    // ── Graceful SIGTERM / SIGINT via a shutdown channel ───────────────────
+    let (shutdown_tx, mut shutdown_rx) = tokio::sync::oneshot::channel::<()>();
+    let shutdown_tx = std::sync::Arc::new(std::sync::Mutex::new(Some(shutdown_tx)));
+
+    #[cfg(unix)]
+    {
+        let tx_clone = shutdown_tx.clone();
         tokio::spawn(async move {
-            let mut buf = vec![0; 4096];
-            match socket.read(&mut buf).await {
-                Ok(n) if n > 0 => {
-                    if let Ok(req) = serde_json::from_slice::<JsonRpcRequest>(&buf[..n]) {
-                        // Verify token
-                        let provided_token = req.params.get("token").and_then(|v| v.as_str()).unwrap_or("");
-                        if provided_token != token_ref {
-                            error!("Invalid token provided");
-                            return;
-                        }
-                        
-                        let result = match req.method.as_str() {
-                            "status" => serde_json::json!({"status": "running"}),
-                            "stop" => {
-                                info!("Stop requested, shutting down daemon.");
-                                std::process::exit(0);
-                            },
-                            _ => serde_json::json!({"error": "Method not found"}),
-                        };
-                        
-                        let res = JsonRpcResponse {
-                            jsonrpc: "2.0".to_string(),
-                            result: Some(result),
-                            error: None,
-                            id: req.id,
-                        };
-                        
-                        let res_bytes = serde_json::to_vec(&res).unwrap();
-                        let _ = socket.write_all(&res_bytes).await;
-                    }
+            use tokio::signal::unix::{signal, SignalKind};
+            let mut sigterm = signal(SignalKind::terminate()).unwrap();
+            let mut sigint  = signal(SignalKind::interrupt()).unwrap();
+            tokio::select! {
+                _ = sigterm.recv() => info!("Received SIGTERM"),
+                _ = sigint.recv()  => info!("Received SIGINT"),
+            }
+            if let Ok(mut lock) = tx_clone.lock() {
+                if let Some(tx) = lock.take() {
+                    let _ = tx.send(());
                 }
-                _ => {}
             }
         });
     }
+    #[cfg(not(unix))]
+    {
+        let tx_clone = shutdown_tx.clone();
+        tokio::spawn(async move {
+            let _ = tokio::signal::ctrl_c().await;
+            info!("Received Ctrl-C");
+            if let Ok(mut lock) = tx_clone.lock() {
+                if let Some(tx) = lock.take() {
+                    let _ = tx.send(());
+                }
+            }
+        });
+    }
+
+    // ── Accept loop ────────────────────────────────────────────────────────
+    loop {
+        tokio::select! {
+            accept = listener.accept() => {
+                let (mut socket, _) = accept?;
+                let token_ref = token.clone();
+                let tx_clone  = shutdown_tx.clone();
+
+                tokio::spawn(async move {
+                    let mut buf = vec![0u8; 10 * 1024 * 1024]; // 10 MB cap
+                    match tokio::time::timeout(
+                        std::time::Duration::from_secs(60),
+                        socket.read(&mut buf),
+                    ).await {
+                        Ok(Ok(n)) if n > 0 => {
+                            match serde_json::from_slice::<JsonRpcRequest>(&buf[..n]) {
+                                Ok(req) => {
+                                    let provided = req.params
+                                        .get("token")
+                                        .and_then(|v| v.as_str())
+                                        .unwrap_or("");
+
+                                    if provided != token_ref {
+                                        error!("Invalid token provided"); // token value never logged
+                                        let res = serde_json::json!({
+                                            "jsonrpc": "2.0",
+                                            "error": {
+                                                "code": -32001,
+                                                "message": "Invalid or missing auth token"
+                                            },
+                                            "id": req.id
+                                        });
+                                        let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                        return;
+                                    }
+
+                                    match req.method.as_str() {
+                                        "status" => {
+                                            let res = JsonRpcResponse {
+                                                jsonrpc: "2.0".to_string(),
+                                                result: Some(serde_json::json!({"status": "running"})),
+                                                error: None,
+                                                id: req.id,
+                                            };
+                                            let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                        }
+                                        "stop" => {
+                                            info!("Stop requested via RPC, shutting down gracefully.");
+                                            let res = JsonRpcResponse {
+                                                jsonrpc: "2.0".to_string(),
+                                                result: Some(serde_json::json!({"status": "stopping"})),
+                                                error: None,
+                                                id: req.id,
+                                            };
+                                            let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                            // Trigger graceful shutdown
+                                            if let Ok(mut lock) = tx_clone.lock() {
+                                                if let Some(tx) = lock.take() {
+                                                    let _ = tx.send(());
+                                                }
+                                            }
+                                        }
+                                        _ => {
+                                            let res = JsonRpcResponse {
+                                                jsonrpc: "2.0".to_string(),
+                                                result: None,
+                                                error: Some(serde_json::json!({
+                                                    "code": -32601,
+                                                    "message": "Method not found"
+                                                })),
+                                                id: req.id,
+                                            };
+                                            let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                        }
+                                    }
+                                }
+                                Err(e) => {
+                                    error!("JSON parse error: {}", e);
+                                    let res = serde_json::json!({
+                                        "jsonrpc": "2.0",
+                                        "error": { "code": -32700, "message": "Parse error" },
+                                        "id": serde_json::Value::Null
+                                    });
+                                    let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                }
+                            }
+                        }
+                        Ok(Ok(_)) => { /* 0 bytes, client closed */ }
+                        Ok(Err(e)) => { error!("Socket read error: {}", e); }
+                        Err(_) => { info!("Connection idle timeout, dropping socket"); }
+                    }
+                });
+            }
+
+            _ = &mut shutdown_rx => {
+                // Graceful shutdown: clean up state files so status detects it immediately
+                info!("Graceful shutdown: removing state files and exiting.");
+                cleanup_state_files();
+                // Allow in-flight tokio tasks a moment to finish writes
+                tokio::time::sleep(std::time::Duration::from_millis(200)).await;
+                std::process::exit(0);
+            }
+        }
+    }
 }
+
+// ── Client helpers ─────────────────────────────────────────────────────────────
 
 fn get_daemon_port() -> Result<u16, Box<dyn std::error::Error>> {
     let mut file = File::open(get_port_file())?;
@@ -162,28 +370,26 @@ fn get_daemon_token() -> Result<String, Box<dyn std::error::Error>> {
 }
 
 async fn send_rpc(method: &str, mut params: serde_json::Value) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
-    let port = get_daemon_port()?;
+    let port  = get_daemon_port()?;
     let token = get_daemon_token()?;
-    
-    // Inject token into params
+
     if let Some(obj) = params.as_object_mut() {
         obj.insert("token".to_string(), serde_json::Value::String(token));
     }
-    
+
     let req = JsonRpcRequest {
         jsonrpc: "2.0".to_string(),
         method: method.to_string(),
         params,
         id: 1,
     };
-    
+
     let mut stream = TcpStream::connect(format!("127.0.0.1:{}", port)).await?;
-    let req_bytes = serde_json::to_vec(&req)?;
-    stream.write_all(&req_bytes).await?;
-    
-    let mut buf = vec![0; 4096];
+    stream.write_all(&serde_json::to_vec(&req)?).await?;
+
+    let mut buf = vec![0u8; 4096];
     let n = stream.read(&mut buf).await?;
-    
+
     let res: JsonRpcResponse = serde_json::from_slice(&buf[..n])?;
     Ok(res.result.unwrap_or(serde_json::json!({})))
 }

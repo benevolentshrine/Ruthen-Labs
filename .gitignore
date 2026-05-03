@@ -18,3 +18,7 @@ clippy_out.txt
 
 # Gemini/Claude local data
 .claude/
+
+# Yomi benchmarks
+Yomi/benchmarks/synthetic_*
+Yomi/index.json*

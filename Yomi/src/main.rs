@@ -3,14 +3,19 @@ mod walker;
 mod hasher;
 mod daemon;
 mod watcher;
+mod file_ops;
+mod index;
+mod output;
+use crate::output::Formatter;
 use clap::{Parser, Subcommand};
 use tracing::{info, error, Level};
 use tracing_subscriber::FmtSubscriber;
 use walker::Walker;
 use std::path::PathBuf;
 use std::fs::File;
-use std::io::{BufReader, Write};
-use directories::ProjectDirs;
+use std::io::Write;
+use std::sync::{Arc, Mutex};
+
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -49,25 +54,33 @@ enum Commands {
     /// Query the indexed files
     Query {
         pattern: String,
+        /// Filter by language
+        #[arg(short, long)]
+        lang: Option<String>,
+        /// Filter by path glob
+        #[arg(short, long)]
+        path: Option<String>,
+        /// Output as JSON array
+        #[arg(long)]
+        json: bool,
+        /// Output as newline-delimited JSON
+        #[arg(long)]
+        ndjson: bool,
+        /// Number of results to return
+        #[arg(long, default_value = "20")]
+        limit: usize,
+        /// Number of results to skip
+        #[arg(long, default_value = "0")]
+        offset: usize,
     },
 }
 
-fn get_index_path() -> PathBuf {
-    if let Some(proj_dirs) = ProjectDirs::from("com", "momo", "yomi") {
-        let data_dir = proj_dirs.data_dir();
-        if !data_dir.exists() {
-            std::fs::create_dir_all(data_dir).unwrap_or_else(|e| {
-                error!("Failed to create data directory: {}", e);
-            });
-        }
-        data_dir.join("index.json")
-    } else {
-        PathBuf::from("index.json")
-    }
-}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Shared write lock: guards index.json writes in-process.
+    // All disk writes also acquire the fs2 OS-level lock for cross-process safety.
+    let write_lock: Arc<Mutex<()>> = Arc::new(Mutex::new(()));
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::INFO)
         .finish();
@@ -81,53 +94,27 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             info!("Starting index command for {:?}", path);
             let walker = Walker::new(path);
             let records = walker.walk();
-            
-            let index_path = get_index_path();
-            
-            // Atomic Write: Save to temp file first, then rename
-            let tmp_path = index_path.with_extension("json.tmp");
-            match File::create(&tmp_path) {
-                Ok(file) => {
-                    if let Err(e) = serde_json::to_writer_pretty(file, &records) {
-                        error!("Failed to write to temp file {:?}: {}", tmp_path, e);
-                    } else {
-                        // Rename for atomic write
-                        if let Err(e) = std::fs::rename(&tmp_path, &index_path) {
-                            error!("Failed to atomically rename {:?} to {:?}: {}", tmp_path, index_path, e);
-                        } else {
-                            info!("Successfully processed {} files and saved atomically to {:?}", records.len(), index_path);
-                        }
-                    }
-                }
-                Err(e) => {
-                    error!("Failed to create temp file {:?}: {}", tmp_path, e);
-                }
+
+            let index_dir = file_ops::get_index_dir();
+            let storage = index::storage::Storage::open(&index_dir).expect("Failed to open index storage");
+            let manager = file_ops::IndexManager::new(storage, write_lock.clone());
+
+            match manager.write_index(records) {
+                Ok(_) => info!("Successfully indexed files into Sled store at {:?}", index_dir),
+                Err(e) => error!("Failed to save index: {}", e),
             }
 
             if *watch {
                 info!("Starting file watcher on {:?}", path);
-                watcher::start_watching(path.clone(), index_path.clone()).await?;
+                watcher::start_watching(path.clone(), index_dir.join("index.json"), write_lock.clone()).await?;
             }
         }
         Commands::List => {
-            let index_path = get_index_path();
-            match File::open(&index_path) {
-                Ok(file) => {
-                    let reader = BufReader::new(file);
-                    match serde_json::from_reader::<_, Vec<models::FileRecord>>(reader) {
-                        Ok(records) => {
-                            println!("Found {} indexed files in {:?}:", records.len(), index_path);
-                            for record in records {
-                                println!("- {} (Hash: {})", record.path, record.hash);
-                            }
-                        }
-                        Err(e) => error!("Failed to parse index.json: {}", e),
-                    }
-                }
-                Err(e) => {
-                    error!("Could not open {:?}: {}. Run 'yomi index' first.", index_path, e);
-                }
-            }
+            let index_dir = file_ops::get_index_dir();
+            let _storage = index::storage::Storage::open(&index_dir).expect("Failed to open index storage");
+
+            println!("Listing indexed files (Sled metadata store):");
+            // Note: List implementation will be fully fleshed out in query/storage modules
         }
         Commands::Init => {
             let config_path = PathBuf::from(".yomi.toml");
@@ -152,24 +139,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Commands::Daemon { action } => {
             daemon::handle_daemon_action(action).await?;
         }
-        Commands::Query { pattern } => {
-            // Read index and search
-            let index_path = get_index_path();
-            match File::open(&index_path) {
-                Ok(file) => {
-                    let reader = BufReader::new(file);
-                    match serde_json::from_reader::<_, Vec<models::FileRecord>>(reader) {
-                        Ok(records) => {
-                            let matches: Vec<_> = records.iter().filter(|r| r.path.contains(pattern)).collect();
-                            println!("Found {} matches for '{}':", matches.len(), pattern);
-                            for record in matches {
-                                println!("- {}", record.path);
-                            }
-                        }
-                        Err(e) => error!("Failed to parse index: {}", e),
+        Commands::Query { pattern, lang, path, json, ndjson, limit, offset } => {
+            let index_dir = file_ops::get_index_dir();
+            let storage = index::storage::Storage::open(&index_dir).expect("Failed to open index storage");
+            let engine = index::query::QueryEngine::new(storage);
+
+            let results = engine.execute(pattern, lang.as_deref(), path.as_deref(), *limit, *offset)
+                .expect("Query execution failed");
+
+            if *json {
+                let mut writer = std::io::BufWriter::new(std::io::stdout());
+                let formatter = output::JsonFormatter;
+                formatter.start_output(&mut writer).unwrap();
+                for (i, record) in results.iter().enumerate() {
+                    formatter.format_record(record, &mut writer).unwrap();
+                    if i < results.len() - 1 {
+                        writer.write_all(b",\n").unwrap();
                     }
                 }
-                Err(e) => error!("Could not open index: {}", e),
+                formatter.end_output(&mut writer).unwrap();
+            } else if *ndjson {
+                let mut writer = std::io::BufWriter::new(std::io::stdout());
+                let formatter = output::NdJsonFormatter;
+                for record in results {
+                    formatter.format_record(&record, &mut writer).unwrap();
+                }
+            } else {
+                println!("Found {} matches for '{}':", results.len(), pattern);
+                for record in results {
+                    println!("- {}", record.path);
+                }
             }
         }
     }
