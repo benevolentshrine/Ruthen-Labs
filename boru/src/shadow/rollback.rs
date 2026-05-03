@@ -9,7 +9,6 @@ use crate::cage::Severity;
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 /// Shadow backup metadata

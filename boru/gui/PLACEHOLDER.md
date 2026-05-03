@@ -19,7 +19,7 @@ This directory is reserved for BORU's Tauri-based GUI panel, which will be integ
 - Sandbox status indicator
 - Policy toggle (strict / permissive)
 - Per-session memory/CPU stats
-- ZUNO and SABA status panels (Trinity health view)
+- SUJI and YOMI status panels (Trinity health view)
 
 ---
 

@@ -349,8 +349,8 @@ impl InterceptLayer {
     /// Evaluate known bad hash
     fn evaluate_known_bad_hash(
         &self,
-        path: &str,
-        hash: &str,
+        _path: &str,
+        _hash: &str,
         entry: &crate::threat::hashdb::HashEntry,
     ) -> Verdict {
         let reason = format!("KNOWN_BAD_HASH: {} ({})", entry.name, entry.family);

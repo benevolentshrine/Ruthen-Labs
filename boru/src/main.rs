@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
@@ -6,13 +8,10 @@ use std::process::ExitCode;
 mod cage;
 mod classifier;
 mod config;
-mod iam;
 mod intercept;
 mod runner;
 mod scanner;
-mod session;
 mod shadow;
-mod sinkhole;
 mod socket;
 mod threat;
 mod tui;
@@ -194,21 +193,6 @@ enum Commands {
         list: bool,
     },
 
-    /// Session replay — view execution timelines
-    Replay {
-        /// Session ID to replay
-        #[arg(long, value_name = "ID")]
-        session: Option<String>,
-
-        /// List all sessions
-        #[arg(long)]
-        list: bool,
-
-        /// Export session to file
-        #[arg(long, value_name = "PATH")]
-        export: Option<PathBuf>,
-    },
-
     /// Filesystem rollback
     Rollback {
         /// Session ID to rollback
@@ -226,29 +210,6 @@ enum Commands {
         /// Clear shadow for a session
         #[arg(long, value_name = "ID")]
         clear: Option<String>,
-    },
-
-    /// Agent identity management
-    Iam {
-        /// Create a new agent
-        #[arg(long, value_name = "NAME")]
-        create_agent: Option<String>,
-
-        /// Agent description
-        #[arg(long, value_name = "DESC", default_value = "AI coding agent")]
-        description: String,
-
-        /// List all agents
-        #[arg(long)]
-        list: bool,
-
-        /// Revoke an agent's token
-        #[arg(long, value_name = "NAME")]
-        revoke: Option<String>,
-
-        /// Show agent details
-        #[arg(long, value_name = "NAME")]
-        show: Option<String>,
     },
 }
 
@@ -621,38 +582,6 @@ fn run() -> Result<()> {
                 }
             }
         }
-        Commands::Replay {
-            session,
-            list,
-            export,
-        } => {
-            if list {
-                let sessions = session::Session::list_all()?;
-                if sessions.is_empty() {
-                    println!("No sessions recorded.");
-                } else {
-                    println!("Sessions:");
-                    for info in sessions {
-                        println!(
-                            "  {} | {} | {} | {} events ({} blocked)",
-                            info.session_id, info.started, info.mode,
-                            info.total_events, info.blocked,
-                        );
-                    }
-                }
-            } else if let Some(session_id) = session {
-                let s = session::Session::load(&session_id)?;
-                println!("{}", s.to_timeline());
-
-                if let Some(export_path) = export {
-                    let json = s.to_json()?;
-                    std::fs::write(&export_path, json)?;
-                    println!("\nExported to {}", export_path.display());
-                }
-            } else {
-                println!("Usage: boru replay --list | --session <ID>");
-            }
-        }
         Commands::Rollback {
             session,
             dry_run,
@@ -698,54 +627,6 @@ fn run() -> Result<()> {
                 println!("Cleared shadow for session: {}", session_id);
             } else {
                 println!("Usage: boru rollback --list | --session <ID> [--dry-run] | --clear <ID>");
-            }
-        }
-        Commands::Iam {
-            create_agent,
-            description,
-            list,
-            revoke,
-            show,
-        } => {
-            let mut manager = iam::AgentManager::new()?;
-
-            if let Some(name) = create_agent {
-                let token = manager.create_agent(&name, &description, None)?;
-                println!("✅ Agent '{}' created", name);
-                println!();
-                println!("╔══════════════════════════════════════════════════╗");
-                println!("║  SAVE THIS TOKEN — IT WILL NOT BE SHOWN AGAIN   ║");
-                println!("╠══════════════════════════════════════════════════╣");
-                println!("║  {}  ║", token);
-                println!("╚══════════════════════════════════════════════════╝");
-                println!();
-                println!("The agent must include this token in socket requests.");
-            }
-
-            if list {
-                let agents = manager.list_agents();
-                if agents.is_empty() {
-                    println!("No agents registered.");
-                } else {
-                    println!("Registered Agents:");
-                    for agent in agents {
-                        let status = if agent.token.revoked { "REVOKED" } else { "ACTIVE" };
-                        println!(
-                            "  {} | {} | {} | {} requests",
-                            agent.name, status, agent.registered, agent.request_count,
-                        );
-                    }
-                }
-            }
-
-            if let Some(name) = revoke {
-                manager.revoke_agent(&name)?;
-                println!("🔴 Agent '{}' token revoked", name);
-            }
-
-            if let Some(name) = show {
-                let details = manager.show_agent(&name)?;
-                println!("{}", details);
             }
         }
     }

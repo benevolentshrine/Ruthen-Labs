@@ -7,5 +7,4 @@
 pub mod entropy;
 pub mod dirscan;
 
-pub use entropy::{EntropyResult, EntropyVerdict, scan_file, scan_bytes};
-pub use dirscan::{DirectoryScanner, ScanResult, ScanReport, Verdict, HashCheckResult};
+pub use dirscan::{DirectoryScanner, ScanResult, Verdict};

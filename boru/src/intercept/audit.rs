@@ -9,7 +9,6 @@
 use anyhow::{Context, Result};
 use sha2::{Digest, Sha256};
 use std::io::Write;
-use std::path::PathBuf;
 
 /// Genesis hash (all zeros)
 pub const GENESIS_HASH: &str = "0000000000000000000000000000000000000000000000000000000000000000";

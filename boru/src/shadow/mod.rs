@@ -7,7 +7,4 @@
 
 pub mod rollback;
 
-pub use rollback::{
-    RollbackManager, RollbackResult, ShadowManifest, ShadowFile, ShadowSessionInfo,
-    compute_path_hash,
-};
+pub use rollback::RollbackManager;

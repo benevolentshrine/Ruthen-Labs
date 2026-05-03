@@ -7,9 +7,9 @@ The SumiLabs AI Ecosystem is powered by three localized engines communicating ov
 ```
 UI / CLI
    │
-   └──► SABA  (Router / Agent)     $TMPDIR/momo/saba.sock   [NOT YET IMPLEMENTED]
+   └──► SUJI  (Router / Agent)     $TMPDIR/momo/suji.sock   [NOT YET IMPLEMENTED]
            │
-           ├──► ZUNO  (Indexer)    $TMPDIR/momo/zuno.sock   [NOT YET IMPLEMENTED]
+           ├──► YOMI  (Indexer)    $TMPDIR/momo/yomi.sock   [NOT YET IMPLEMENTED]
            │         context retrieval
            │
            └──► BORU  (Security)   $TMPDIR/momo/boru.sock   [ACTIVE]
@@ -34,8 +34,8 @@ BORU is the **Security Engine**. Every piece of AI-generated code that needs exe
 - **Never pass execution to the host OS without sandbox clearance.**
 
 ### What BORU Does NOT Do
-- Route requests (that is SABA's job).
-- Index the user's workspace (that is ZUNO's job).
+- Route requests (that is SUJI's job).
+- Index the user's workspace (that is YOMI's job).
 - Talk to the LLM directly.
 - Make any network calls.
 
@@ -104,8 +104,8 @@ BORU adheres strictly to the **Zero Bloat Law** to ensure it remains a lightweig
 | Engine | RAM Budget | Binary Size |
 |--------|-----------|-------------|
 | BORU   | < 20MB idle RSS | < 10MB release |
-| ZUNO   | < 15MB (target) | TBD |
-| SABA   | < 25MB (target) | TBD |
+| YOMI   | < 15MB (target) | TBD |
+| SUJI   | < 25MB (target) | TBD |
 
 ---
 

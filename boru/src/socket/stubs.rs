@@ -1,39 +1,39 @@
-//! BORU Socket Stubs — Reserved for ZUNO and SABA
+//! BORU Socket Stubs — Reserved for YOMI and SUJI
 //!
 //! These are placeholder stubs for the Trinity architecture.
-//! DO NOT implement ZUNO or SABA logic here — that lives in their own repositories.
+//! DO NOT implement YOMI or SUJI logic here — that lives in their own repositories.
 //!
 //! GATE 3: Socket Contract Freeze
-//! - ZUNO socket: [TEMP]/momo/zuno.sock
-//! - SABA socket: [TEMP]/momo/saba.sock
+//! - YOMI socket: [TEMP]/momo/yomi.sock
+//! - SUJI socket: [TEMP]/momo/suji.sock
 //! - BORU socket: [TEMP]/momo/boru.sock (active)
 
 #![allow(dead_code)]
 
 use std::path::Path;
-use crate::socket::config::{boru_socket_path, saba_socket_path, zuno_socket_path};
+use crate::socket::config::{boru_socket_path, suji_socket_path, yomi_socket_path};
 
-/// Stub function for ZUNO socket operations
+/// Stub function for YOMI socket operations
 ///
-/// ZUNO is the Rust indexer — context retrieval engine.
-/// BORU never calls ZUNO directly. ZUNO may call BORU.
-pub fn zuno_stub() -> anyhow::Result<()> {
+/// YOMI is the Rust indexer — context retrieval engine.
+/// BORU never calls YOMI directly. YOMI may call BORU.
+pub fn yomi_stub() -> anyhow::Result<()> {
     // This is intentionally a stub.
-    // ZUNO implementation lives in the ZUNO repository.
+    // YOMI implementation lives in the YOMI repository.
     Ok(())
 }
 
-/// Stub function for SABA socket operations
+/// Stub function for SUJI socket operations
 ///
-/// SABA is the Go router — request orchestration layer.
-/// BORU never calls SABA. SABA calls BORU.
-pub fn saba_stub() -> anyhow::Result<()> {
+/// SUJI is the Go router — request orchestration layer.
+/// BORU never calls SUJI. SUJI calls BORU.
+pub fn suji_stub() -> anyhow::Result<()> {
     // This is intentionally a stub.
-    // SABA implementation lives in the SABA repository.
+    // SUJI implementation lives in the SUJI repository.
     Ok(())
 }
 
 /// Validate that a socket path is one of the Trinity paths
 pub fn validate_trinity_path(path: &Path) -> bool {
-    path == boru_socket_path() || path == zuno_socket_path() || path == saba_socket_path()
+    path == boru_socket_path() || path == yomi_socket_path() || path == suji_socket_path()
 }

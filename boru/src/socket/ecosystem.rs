@@ -5,7 +5,7 @@
 //!
 //! Pattern: " boru check --input file.rs " works alone.
 //!          When suji is present, it calls boru via socket and renders results.
-//!          When nuki is present, boru queries it for file context.
+//!          When yomi is present, boru queries it for file context.
 
 use crate::cage::policy::SecurityMode;
 use crate::socket::config::EcosystemStatus;
@@ -33,15 +33,15 @@ pub struct EcosystemEvent {
     pub timestamp: String,
 }
 
-/// Context request to Nuki
+/// Context request to Yomi
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NukiContextRequest {
+pub struct YomiContextRequest {
     pub file_path: String,
 }
 
-/// Context response from Nuki
+/// Context response from Yomi
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NukiContextResponse {
+pub struct YomiContextResponse {
     pub file_path: String,
     pub references: Vec<String>,
     pub language: Option<String>,
@@ -53,18 +53,18 @@ pub fn status() -> EcosystemStatus {
     super::config::ecosystem_status()
 }
 
-/// Query Nuki for file context (if available)
-pub async fn query_nuki_context(file_path: &Path) -> Option<NukiContextResponse> {
-    if !super::config::nuki_available() {
+/// Query Yomi for file context (if available)
+pub async fn query_yomi_context(file_path: &Path) -> Option<YomiContextResponse> {
+    if !super::config::yomi_available() {
         return None;
     }
 
     #[cfg(unix)]
     {
-        match query_nuki_unix(file_path).await {
+        match query_yomi_unix(file_path).await {
             Ok(resp) => Some(resp),
             Err(e) => {
-                tracing::debug!("Failed to query Nuki: {}", e);
+                tracing::debug!("Failed to query Yomi: {}", e);
                 None
             }
         }
@@ -72,23 +72,23 @@ pub async fn query_nuki_context(file_path: &Path) -> Option<NukiContextResponse>
 
     #[cfg(windows)]
     {
-        // Windows: Nuki would use TCP localhost
+        // Windows: Yomi would use TCP localhost
         None // TODO: Implement Windows discovery
     }
 }
 
 #[cfg(unix)]
-async fn query_nuki_unix(file_path: &Path) -> Result<NukiContextResponse> {
+async fn query_yomi_unix(file_path: &Path) -> Result<YomiContextResponse> {
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
     use tokio::net::UnixStream;
 
-    let request = NukiContextRequest {
+    let request = YomiContextRequest {
         file_path: file_path.to_string_lossy().to_string(),
     };
 
-    let mut stream = UnixStream::connect(super::config::nuki_socket_path())
+    let mut stream = UnixStream::connect(super::config::yomi_socket_path())
         .await
-        .context("Failed to connect to Nuki socket")?;
+        .context("Failed to connect to Yomi socket")?;
 
     let request_bytes = serde_json::to_vec(&request)?;
     stream.write_all(&request_bytes).await?;
@@ -100,7 +100,7 @@ async fn query_nuki_unix(file_path: &Path) -> Result<NukiContextResponse> {
     let n = stream.read(&mut buffer).await?;
     buffer.truncate(n);
 
-    let response: NukiContextResponse = serde_json::from_slice(&buffer)?;
+    let response: YomiContextResponse = serde_json::from_slice(&buffer)?;
     Ok(response)
 }
 

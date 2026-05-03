@@ -52,6 +52,8 @@ pub struct SandboxOptions {
     pub pids_max: u32,
     /// Wallclock timeout in seconds (default: 30)
     pub timeout_secs: u64,
+    /// Enable Seccomp User Notifications (Phase 2 TUI prompt)
+    pub enable_user_notification: bool,
 }
 
 impl Default for SandboxOptions {
@@ -62,6 +64,7 @@ impl Default for SandboxOptions {
             cpu_period_us: 100_000,
             pids_max: 20,
             timeout_secs: 30,
+            enable_user_notification: false,
         }
     }
 }
@@ -76,6 +79,7 @@ impl SandboxOptions {
             cpu_period_us: 100_000,
             pids_max: limits.pids_max,
             timeout_secs: limits.max_execution_seconds,
+            enable_user_notification: false, // Feature-flagged off by default for now
         }
     }
 }
@@ -93,7 +97,7 @@ impl SandboxOptions {
 /// 1. Parent calls `command.spawn()` → fork()
 /// 2. Child (pre-exec): Landlock v2 applied → Seccomp-BPF v2 applied
 /// 3. Parent (post-fork): Cgroup v2 jail created → child PID added
-/// 4. Child: execvp() → AI code runs inside all four layers
+/// 4. Child: execvp() → Untrusted payload runs inside all four layers
 /// 5. Parent: waits for exit, cleans up cgroup
 pub fn spawn_sandboxed_command(
     mut command: Command,
@@ -103,6 +107,8 @@ pub fn spawn_sandboxed_command(
 ) -> Result<std::process::Child> {
     let workspace_owned = workspace.to_path_buf();
     let mode_for_child = mode;
+
+    let opts_for_child = opts.clone();
 
     // Install Landlock + Seccomp inside the child's pre-exec context.
     // This runs AFTER fork() but BEFORE execvp().
@@ -144,7 +150,7 @@ pub fn spawn_sandboxed_command(
             }
 
             // LAYER 2: Seccomp-BPF v2 — Syscall filter + network air-gap
-            if let Err(e) = apply_seccomp_policy() {
+            if let Err(e) = apply_seccomp_policy(&opts_for_child) {
                 eprintln!("[BORU SANDBOX] Seccomp enforcement failed: {}", e);
                 return Err(std::io::Error::new(
                     std::io::ErrorKind::PermissionDenied,
@@ -346,7 +352,7 @@ fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
 /// - Blocks `sendto` and `sendmsg` (covers raw UDP without connect())
 /// - Blocks `clone3` (modern container escape vector via new namespace flags)
 /// - Default action: Trap → SIGSYS (parent can detect and audit the violation)
-fn apply_seccomp_policy() -> Result<()> {
+fn apply_seccomp_policy(opts: &SandboxOptions) -> Result<()> {
     // Default action: Trap — the kernel sends SIGSYS to the violating process.
     // This is preferable to KillProcess for the default because it allows
     // the parent to detect the violation via waitpid() signal reporting.
@@ -440,10 +446,19 @@ fn apply_seccomp_policy() -> Result<()> {
         "setsockopt",   // Socket option modification
     ];
 
+    let network_action = if opts.enable_user_notification {
+        // Phase 2: Instead of EACCES, yield control to the parent process.
+        // The parent will receive a notification FD and can prompt the user
+        // via the TUI to dynamically allow or deny the connection.
+        ScmpAction::Notify
+    } else {
+        ScmpAction::Errno(libc::EACCES)
+    };
+
     for syscall_name in network_blocked {
         match ScmpSyscall::from_name(syscall_name) {
             Ok(syscall) => {
-                filter.add_rule(ScmpAction::Errno(libc::EACCES), syscall)
+                filter.add_rule(network_action, syscall)
                     .with_context(|| format!("Failed to block network syscall: {}", syscall_name))?;
             }
             Err(_) => {
@@ -569,7 +584,7 @@ pub fn establish_hard_cage(workspace_path: &Path) -> Result<()> {
     apply_landlock_policy(workspace_path)
         .map(|_| ())
         .context("Failed to apply Landlock filesystem policy")?;
-    apply_seccomp_policy()
+    apply_seccomp_policy(&SandboxOptions::default())
         .context("Failed to apply Seccomp v2 syscall policy")?;
     Ok(())
 }

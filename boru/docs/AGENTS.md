@@ -61,8 +61,8 @@ grep -rn "Command::new\|std::process::Command\|libc::exec" src/ \
 
 **Rules:**
 - [ ] BORU socket path is exactly: `/tmp/momo/boru.sock`
-- [ ] ZUNO socket path stub is exactly: `/tmp/momo/zuno.sock`
-- [ ] SABA socket path stub is exactly: `/tmp/momo/saba.sock`
+- [ ] YOMI socket path stub is exactly: `/tmp/momo/yomi.sock`
+- [ ] SUJI socket path stub is exactly: `/tmp/momo/suji.sock`
 - [ ] No socket paths are hardcoded outside `src/socket/config.rs`
 
 **BLOCK if:** Socket paths change or appear as string literals outside the config file.

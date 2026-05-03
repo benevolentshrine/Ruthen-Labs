@@ -367,11 +367,10 @@ pub fn check_extension_mismatch(path: &Path, detected: &FileClass) -> Option<(St
     }
 
     // Special case: ZIP-based Office formats (docx/xlsx/pptx are ZIP by magic)
-    if *detected == FileClass::Zip {
-        if matches!(expected, FileClass::OfficeDoc | FileClass::OfficeXlsx | FileClass::OfficePptx | FileClass::Zip) {
+    if *detected == FileClass::Zip
+        && matches!(expected, FileClass::OfficeDoc | FileClass::OfficeXlsx | FileClass::OfficePptx | FileClass::Zip) {
             return None; // Not a mismatch
         }
-    }
 
     // Special case: JavaClass and Binary share 0xCAFEBABE (Mach-O fat binary)
     if (*detected == FileClass::JavaClass && expected == FileClass::Binary)

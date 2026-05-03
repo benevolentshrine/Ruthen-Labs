@@ -148,12 +148,11 @@ impl Watchdog {
                         self.scan_file(&path, sender)?;
                     }
                 }
-                notify::EventKind::Modify(_) => {
-                    if self.should_process(&path) {
+                notify::EventKind::Modify(_)
+                    if self.should_process(&path) => {
                         let _ = sender.send(WatchdogEvent::FileModified(path.clone()));
                         self.scan_file(&path, sender)?;
                     }
-                }
                 notify::EventKind::Remove(_) => {
                     let _ = sender.send(WatchdogEvent::FileDeleted(path.clone()));
                 }
