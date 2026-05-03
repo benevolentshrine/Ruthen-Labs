@@ -25,7 +25,7 @@ const MAX_REQUEST_SIZE: usize = config::MAX_REQUEST_SIZE;
 ///
 /// GATE 3: Strict socket contract freeze
 pub async fn run_daemon(socket_path: Option<PathBuf>) -> Result<()> {
-    let path = socket_path.unwrap_or_else(|| PathBuf::from(config::BORU_SOCKET_PATH));
+    let path = socket_path.unwrap_or_else(|| config::boru_socket_path());
 
     tracing::info!("Starting BORU socket daemon on {:?}", path);
 
@@ -54,13 +54,27 @@ async fn run_unix_daemon(path: PathBuf) -> Result<()> {
     }
 
     // Remove old socket if it exists
+    let socket_path = config::boru_socket_path();
+    tracing::info!("Starting BORU socket daemon on {:?}", socket_path);
+
     if path.exists() {
         tokio::fs::remove_file(&path)
             .await
             .with_context(|| format!("Failed to remove old socket at {:?}", path))?;
     }
-
-    let listener = UnixListener::bind(&path)?;
+    let listener = match UnixListener::bind(&path) {
+        Ok(l) => l,
+        Err(e) => {
+            if e.kind() == std::io::ErrorKind::PermissionDenied {
+                tracing::error!(
+                    "[FATAL] Socket bind denied at {}.\nLikely cause: SELinux or AppArmor policy blocking socket creation.\nFix: sudo semanage permissive -a unconfined_t\nOr add MOMO to AppArmor exceptions.",
+                    config::boru_socket_path().display()
+                );
+                std::process::exit(2);
+            }
+            return Err(e.into());
+        }
+    };
     tracing::info!("Socket daemon listening on {:?}", path);
 
     loop {

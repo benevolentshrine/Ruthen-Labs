@@ -4,17 +4,14 @@
 //! DO NOT implement ZUNO or SABA logic here — that lives in their own repositories.
 //!
 //! GATE 3: Socket Contract Freeze
-//! - ZUNO socket: /tmp/momo/zuno.sock
-//! - SABA socket: /tmp/momo/saba.sock
-//! - BORU socket: /tmp/momo/boru.sock (active)
+//! - ZUNO socket: [TEMP]/momo/zuno.sock
+//! - SABA socket: [TEMP]/momo/saba.sock
+//! - BORU socket: [TEMP]/momo/boru.sock (active)
 
 #![allow(dead_code)]
 
-/// ZUNO socket path (reserved)
-pub const ZUNO_SOCKET_PATH: &str = "/tmp/momo/zuno.sock";
-
-/// SABA socket path (reserved)
-pub const SABA_SOCKET_PATH: &str = "/tmp/momo/saba.sock";
+use std::path::Path;
+use crate::socket::config::{boru_socket_path, saba_socket_path, zuno_socket_path};
 
 /// Stub function for ZUNO socket operations
 ///
@@ -37,9 +34,6 @@ pub fn saba_stub() -> anyhow::Result<()> {
 }
 
 /// Validate that a socket path is one of the Trinity paths
-pub fn validate_trinity_path(path: &str) -> bool {
-    matches!(
-        path,
-        "/tmp/momo/boru.sock" | "/tmp/momo/zuno.sock" | "/tmp/momo/saba.sock"
-    )
+pub fn validate_trinity_path(path: &Path) -> bool {
+    path == boru_socket_path() || path == zuno_socket_path() || path == saba_socket_path()
 }

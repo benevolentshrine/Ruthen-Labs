@@ -58,8 +58,6 @@ pub enum HashStatus {
     Clean,
     /// Known bad hash found
     KnownBad(HashEntry),
-    /// Hash check failed or skipped
-    Unknown,
 }
 
 impl std::fmt::Display for HashStatus {
@@ -67,7 +65,6 @@ impl std::fmt::Display for HashStatus {
         match self {
             HashStatus::Clean => write!(f, "Clean"),
             HashStatus::KnownBad(entry) => write!(f, "KNOWN BAD: {} ({})", entry.name, entry.family),
-            HashStatus::Unknown => write!(f, "Unknown"),
         }
     }
 }
@@ -135,16 +132,7 @@ impl HashDB {
         Ok(db)
     }
 
-    /// Load from specific path
-    pub fn load_from(path: &Path) -> Result<Self> {
-        let content = std::fs::read_to_string(path)
-            .with_context(|| format!("Failed to read hash database: {}", path.display()))?;
 
-        let db: HashDB = serde_json::from_str(&content)
-            .with_context(|| format!("Failed to parse hash database: {}", path.display()))?;
-
-        Ok(db)
-    }
 
     /// Save hash database to file
     pub fn save(&self) -> Result<()> {
@@ -202,15 +190,6 @@ impl HashDB {
         }
     }
 
-    /// Get total number of entries
-    pub fn len(&self) -> usize {
-        self.entries.len()
-    }
-
-    /// Check if database is empty
-    pub fn is_empty(&self) -> bool {
-        self.entries.is_empty()
-    }
 
     /// Get all entries as sorted vec
     pub fn entries_sorted(&self) -> Vec<(&String, &HashEntry)> {
@@ -325,12 +304,6 @@ pub fn compute_file_hash(path: &Path) -> Result<String> {
     Ok(format!("{:x}", hash))
 }
 
-/// Compute SHA-256 hash of bytes
-pub fn compute_bytes_hash(data: &[u8]) -> String {
-    let hash = Sha256::digest(data);
-    format!("{:x}", hash)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -427,21 +400,7 @@ mod tests {
         assert_eq!(stats.high, 1);
     }
 
-    #[test]
-    fn test_compute_bytes_hash() {
-        let hash1 = compute_bytes_hash(b"hello");
-        let hash2 = compute_bytes_hash(b"hello");
-        let hash3 = compute_bytes_hash(b"world");
 
-        assert_eq!(hash1, hash2);
-        assert_ne!(hash1, hash3);
-
-        // Verify against known SHA-256 of "hello"
-        assert_eq!(
-            hash1,
-            "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
-        );
-    }
 
     #[test]
     fn test_hash_status_display() {

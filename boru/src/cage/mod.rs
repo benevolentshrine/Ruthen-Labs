@@ -12,6 +12,9 @@ use std::sync::Mutex;
 
 pub mod policy;
 pub mod verdict;
+pub mod sandbox;
+pub mod cgroups;  // v2.0: Cgroups v2 resource jail
+pub mod gate;     // v2.0: Pre-Execution Policy Gate
 
 use policy::SecurityMode;
 use verdict::CageResult;
@@ -158,6 +161,9 @@ pub fn execute(input: PathBuf, policy_str: String, fuel: Option<u64>) -> Result<
         return Ok(Verdict::Blocked { reason });
     }
 
+    // Validate file size to prevent OOM
+    sandbox::validate_file_size(&input)?;
+
     // Read WASM bytes
     let wasm_bytes = std::fs::read(&input)
         .with_context(|| format!("Failed to read WASM file: {}", input.display()))?;
@@ -279,7 +285,8 @@ pub fn execute(input: PathBuf, policy_str: String, fuel: Option<u64>) -> Result<
 
 /// Run cage execution with new policy system
 ///
-/// This is the enhanced version that uses the 4 security modes
+/// This is the enhanced version that uses the 4 security modes.
+/// v2.0: Pre-Execution Gate validates the action before any fork().
 pub fn run_cage(
     input: PathBuf,
     mode: SecurityMode,
@@ -297,9 +304,50 @@ pub fn run_cage(
         mode
     );
 
+    // --- v2.0: PRE-EXECUTION GATE ---
+    // Validate the execution intent before any fork() happens.
+    // 'wasm_execute' covers WASM; 'file_read_workspace' covers interpreted scripts.
+    let action_category = match input.extension().and_then(|e| e.to_str()) {
+        Some("wasm") => "wasm_execute",
+        Some("py") | Some("js") | Some("ts") | Some("rb") |
+        Some("sh") | Some("bash") | Some("lua") | Some("php") => "file_read_workspace",
+        _ => "file_read_workspace",
+    };
+
+    match gate::PreExecutionGate::load() {
+        Ok(policy_gate) => {
+            match policy_gate.validate(action_category) {
+                gate::GateDecision::Block { reason } => {
+                    log_intercept(Severity::Critical, "GATE_BLOCKED", &reason, request_id);
+                    return Ok(CageResult::blocked(&format!("[GATE v2.0] {}", reason)));
+                }
+                gate::GateDecision::Proceed => {
+                    tracing::debug!("[{}] Pre-Execution Gate: PROCEED ({})", request_id, action_category);
+                }
+            }
+        }
+        Err(e) => {
+            // Gate load failure is non-fatal — log and continue with Landlock+Seccomp
+            tracing::warn!("[{}] Pre-Execution Gate unavailable ({}). Continuing with kernel enforcement.", request_id, e);
+        }
+    }
+    // --- END GATE ---
+
     // Validate input exists
     if !input.exists() {
         let reason = format!("Input file not found: {}", input.display());
+        log_intercept(Severity::High, "EXECUTE_BLOCKED", &reason, request_id);
+        return Ok(CageResult::blocked(&reason));
+    }
+
+    // Enforce 100MB limit (FIX B)
+    const MAX_FILE_SIZE: u64 = 100 * 1024 * 1024;
+    let metadata = std::fs::metadata(&input)?;
+    if metadata.len() > MAX_FILE_SIZE {
+        let reason = format!(
+            "File too large: {}MB. BORU limit is 100MB to prevent OOM.",
+            metadata.len() / 1024 / 1024
+        );
         log_intercept(Severity::High, "EXECUTE_BLOCKED", &reason, request_id);
         return Ok(CageResult::blocked(&reason));
     }
@@ -329,7 +377,7 @@ pub fn run_cage(
         }
     }
 
-    // STEP 5: Hash check
+    // Hash database check
     if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
         if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
             if let crate::threat::hashdb::HashStatus::KnownBad(entry) = hash_db.check_hash(&file_hash) {
@@ -355,7 +403,7 @@ pub fn run_cage(
 
     let router = RunnerRouter::new();
 
-    match router.route(&input, &classification) {
+    match router.route(&input, &classification, mode) {
         Ok(RunnerVerdict::Success { output }) => {
             log_intercept(Severity::Low, "EXECUTE_ALLOWED", &output, request_id);
             Ok(CageResult::allowed(&output))
@@ -396,6 +444,16 @@ pub fn check(input: PathBuf) -> Result<()> {
 
     if !input.exists() {
         bail!("Input file not found: {}", input.display());
+    }
+
+    // Enforce 100MB limit (FIX B)
+    const MAX_FILE_SIZE: u64 = 100 * 1024 * 1024;
+    let metadata = std::fs::metadata(&input)?;
+    if metadata.len() > MAX_FILE_SIZE {
+        return Err(anyhow::anyhow!(
+            "File too large: {}MB. BORU limit is 100MB to prevent OOM.",
+            metadata.len() / 1024 / 1024
+        ));
     }
 
     let request_id = uuid::Uuid::new_v4();
@@ -442,7 +500,7 @@ pub fn check(input: PathBuf) -> Result<()> {
 
     println!("  Magic match: ✅ true");
 
-    // STEP 5: Hash check
+    // Hash check against local malware signatures
     if let Ok(hash_db) = crate::threat::hashdb::HashDB::load() {
         if let Ok(file_hash) = crate::threat::hashdb::compute_file_hash(&input) {
             println!("  Hash: {}", file_hash);

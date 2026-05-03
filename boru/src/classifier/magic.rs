@@ -253,7 +253,7 @@ pub fn detect_from_bytes(bytes: &[u8]) -> FileClass {
         return FileClass::Unknown;
     }
 
-    // Step 1: Check magic byte database
+    // Check magic byte database
     for entry in MAGIC_DATABASE {
         let end = entry.offset + entry.bytes.len();
         if bytes.len() >= end && &bytes[entry.offset..end] == entry.bytes {
@@ -261,17 +261,17 @@ pub fn detect_from_bytes(bytes: &[u8]) -> FileClass {
         }
     }
 
-    // Step 2: MP3 sync word (0xFF followed by 0xFB, 0xF3, or 0xF2)
+    // Check MP3 sync word (0xFF followed by 0xFB, 0xF3, or 0xF2)
     if bytes.len() >= 2 && bytes[0] == 0xFF && (bytes[1] == 0xFB || bytes[1] == 0xF3 || bytes[1] == 0xF2) {
         return FileClass::Mp3;
     }
 
-    // Step 3: Shebang detection for interpreted scripts
+    // Apply shebang fallback for interpreted scripts
     if bytes.len() >= 2 && &bytes[0..2] == b"#!" {
         return detect_shebang(bytes);
     }
 
-    // Step 4: No match
+    // Fallback if no match is found
     FileClass::Unknown
 }
 

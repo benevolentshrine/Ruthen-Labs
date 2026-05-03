@@ -22,3 +22,23 @@ clippy_out.txt
 # Yomi benchmarks
 Yomi/benchmarks/synthetic_*
 Yomi/index.json*
+
+# Rust
+*.rs.bk
+
+# Go
+vendor/
+*.exe
+*.dll
+*.so
+
+# Node / Tauri
+node_modules/
+dist/
+.env
+src-tauri/target
+
+# SumiLabs Specific
+/tmp/sumilabs/
+audit_logs/
+.shadow_snapshots/

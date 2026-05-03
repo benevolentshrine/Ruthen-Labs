@@ -6,6 +6,7 @@
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use crate::runner::{DependencyStatus, Runner, RunnerVerdict};
+use crate::cage::policy::SecurityMode;
 use anyhow::Result;
 use std::path::Path;
 
@@ -129,6 +130,7 @@ impl Runner for ArchiveRunner {
         &self,
         path: &Path,
         classification: &ClassificationResult,
+        _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // List contents without extraction
         let contents = self.list_contents(path, &classification.class)?;

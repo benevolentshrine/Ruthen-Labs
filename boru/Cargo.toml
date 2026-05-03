@@ -51,6 +51,14 @@ sha2 = { version = "0.10", default-features = false }
 # File system events for watchdog (cross-platform, minimal features)
 notify = { version = "6", default-features = false, features = ["macos_fsevent"] }
 
+# Linux Kernel Security Primitives
+landlock = "0.4"
+libseccomp = "0.3"
+libc = "0.2"
+
+# YAML parsing for v2.0 Pre-Execution Policy Gate
+serde_yaml = "0.9"
+
 [profile.release]
 opt-level = "z"
 lto = true

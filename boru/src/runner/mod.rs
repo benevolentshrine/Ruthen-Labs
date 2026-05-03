@@ -8,6 +8,7 @@
 //! - ArchiveRunner: Extract + recurse for archives
 //! - HeuristicRunner: Magic byte matching for unknown files
 
+use crate::cage::policy::SecurityMode;
 use crate::classifier::magic::FileClass;
 use crate::classifier::ClassificationResult;
 use anyhow::Result;
@@ -41,7 +42,11 @@ pub trait Runner {
     /// Execute the file with the given runner
     ///
     /// Returns the verdict and any output
-    fn execute(&self, path: &Path, classification: &ClassificationResult,
+    fn execute(
+        &self,
+        path: &Path,
+        classification: &ClassificationResult,
+        mode: SecurityMode,
     ) -> Result<RunnerVerdict>;
 
     /// Check if required dependencies are available on the host
@@ -89,6 +94,7 @@ impl RunnerRouter {
         &self,
         path: &Path,
         classification: &ClassificationResult,
+        mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         let class = &classification.class;
 
@@ -109,7 +115,7 @@ impl RunnerRouter {
             &self.heuristic
         };
 
-        runner.execute(path, classification)
+        runner.execute(path, classification, mode)
     }
 
     /// Check all dependencies for all runners
