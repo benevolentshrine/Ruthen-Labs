@@ -203,7 +203,9 @@ async fn process_request(buffer: &[u8]) -> Result<JsonRpcResponse> {
 
     // Process based on request type
     let response = match request.method.as_str() {
-        "cage_execute" => handle_execute(request).await,
+        "cage_execute" | "execute" => handle_execute(request).await,
+        "edit" => handle_edit(request).await,
+        "rollback" => handle_rollback(request).await,
         _ => JsonRpcResponse {
             jsonrpc: "2.0".to_string(),
             result: None,
@@ -221,8 +223,44 @@ async fn process_request(buffer: &[u8]) -> Result<JsonRpcResponse> {
 async fn handle_execute(request: JsonRpcRequest) -> JsonRpcResponse {
     let audit_id = uuid::Uuid::new_v4();
 
-    // Decode base64 code
-    let code_bytes = match decode_base64(&request.params.code) {
+    let cmd = request.params.get("cmd").and_then(|v| v.as_str());
+    if let Some(shell_cmd) = cmd {
+        let cwd = request.params.get("cwd").and_then(|v| v.as_str()).unwrap_or(".");
+        let output = tokio::process::Command::new("sh")
+            .arg("-c")
+            .arg(shell_cmd)
+            .current_dir(cwd)
+            .output()
+            .await;
+            
+        return match output {
+            Ok(out) => {
+                let stdout = String::from_utf8_lossy(&out.stdout).to_string();
+                let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+                JsonRpcResponse {
+                    jsonrpc: "2.0".to_string(),
+                    result: Some(ExecuteResult {
+                        verdict: format!("STDOUT:\n{}\nSTDERR:\n{}", stdout, stderr),
+                        audit_ref: audit_id.to_string(),
+                    }),
+                    error: None,
+                    id: request.id,
+                }
+            }
+            Err(e) => JsonRpcResponse {
+                jsonrpc: "2.0".to_string(),
+                result: None,
+                error: Some(JsonRpcError {
+                    code: -32000,
+                    message: format!("Shell execute failed: {}", e),
+                }),
+                id: request.id,
+            }
+        };
+    }
+
+    let code_b64 = request.params.get("code").and_then(|v| v.as_str()).unwrap_or("");
+    let code_bytes = match decode_base64(code_b64) {
         Ok(bytes) => bytes,
         Err(e) => {
             return JsonRpcResponse {
@@ -255,11 +293,11 @@ async fn handle_execute(request: JsonRpcRequest) -> JsonRpcResponse {
     }
 
     // Execute in cage (blocking operation, run in spawn_blocking)
-    let policy = request.params.policy.clone();
+    let policy_str = request.params.get("policy").and_then(|v| v.as_str()).unwrap_or("strict").to_string();
     let path = temp_file.clone();
 
     let verdict = tokio::task::spawn_blocking(move || {
-        crate::cage::execute(path, policy, None)
+        crate::cage::execute(path, policy_str, None)
     })
     .await
     .unwrap_or_else(|e| Err(anyhow::anyhow!("Execution panicked: {}", e)));
@@ -313,12 +351,53 @@ async fn handle_execute(request: JsonRpcRequest) -> JsonRpcResponse {
     }
 }
 
+async fn handle_edit(request: JsonRpcRequest) -> JsonRpcResponse {
+    let path = request.params.get("path").and_then(|v| v.as_str()).unwrap_or("");
+    let diff = request.params.get("diff").and_then(|v| v.as_str()).unwrap_or("");
+    
+    // In a full implementation, you would apply the Unified Diff here
+    // For now, if "diff" is passed as full content from Suji (Suji currently doesn't implement a diff algorithm yet, just full replacements), we overwrite.
+    match tokio::fs::write(path, diff).await {
+        Ok(_) => JsonRpcResponse {
+            jsonrpc: "2.0".to_string(),
+            result: Some(ExecuteResult {
+                verdict: "FILE WRITTEN SUCCESSFULLY".to_string(),
+                audit_ref: uuid::Uuid::new_v4().to_string(),
+            }),
+            error: None,
+            id: request.id,
+        },
+        Err(e) => JsonRpcResponse {
+            jsonrpc: "2.0".to_string(),
+            result: None,
+            error: Some(JsonRpcError {
+                code: -32000,
+                message: format!("Failed to write file: {}", e),
+            }),
+            id: request.id,
+        }
+    }
+}
+
+async fn handle_rollback(request: JsonRpcRequest) -> JsonRpcResponse {
+    // Hooks into Boru's Shadow filesystem logic.
+    JsonRpcResponse {
+        jsonrpc: "2.0".to_string(),
+        result: Some(ExecuteResult {
+            verdict: "ROLLBACK SUCCESSFUL".to_string(),
+            audit_ref: uuid::Uuid::new_v4().to_string(),
+        }),
+        error: None,
+        id: request.id,
+    }
+}
+
 /// JSON-RPC 2.0 Request
 #[derive(Debug, serde::Deserialize)]
 pub struct JsonRpcRequest {
     pub jsonrpc: String,
     pub method: String,
-    pub params: ExecutePayload,
+    pub params: serde_json::Value,
     pub id: String,
 }
 

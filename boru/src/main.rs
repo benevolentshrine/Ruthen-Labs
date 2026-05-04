@@ -58,7 +58,7 @@ enum Commands {
 
     /// Start the socket daemon
     Daemon {
-        /// Socket path (default uses std::env::temp_dir()/momo/boru.sock)
+        /// Socket path (default uses std::env::temp_dir()/sumi/boru.sock)
         #[arg(long)]
         socket: Option<PathBuf>,
     },

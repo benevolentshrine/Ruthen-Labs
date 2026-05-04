@@ -2,37 +2,44 @@
 //!
 //! GATE 3: All socket paths centralized here. No hardcoded paths elsewhere.
 //!
-//! Socket paths for Project MOMO Ecosystem:
-//! - BORU: [TEMP]/momo/boru.sock (security engine)
-//! - NUKI: [TEMP]/momo/nuki.sock (search/memory engine)
-//! - SUJI: [TEMP]/momo/suji.sock (orchestrator/conductor)
-//! - YOMI: [TEMP]/momo/yomi.sock (indexer - Phase 2 stub)
-//! - SUJI: [TEMP]/momo/suji.sock (router - Phase 2 stub)
+//! Socket paths for Project SUMI Ecosystem:
+//! - BORU: [TEMP]/sumi/boru.sock (security engine)
+//! - NUKI: [TEMP]/sumi/nuki.sock (search/memory engine)
+//! - SUJI: [TEMP]/sumi/suji.sock (orchestrator/conductor)
+//! - YOMI: [TEMP]/sumi/yomi.sock (indexer - Phase 2 stub)
+//! - SUJI: [TEMP]/sumi/suji.sock (router - Phase 2 stub)
 //!
 //! Unix Philosophy: Auto-discover siblings via filesystem sockets.
 //! No hardcoded ports. No localhost HTTP. Pure Unix sockets.
 
 use std::path::{Path, PathBuf};
 
-/// Base directory for MOMO ecosystem
-pub fn momo_base_dir() -> PathBuf {
-    std::env::temp_dir().join("momo")
+/// Base directory for SUMI ecosystem
+pub fn sumi_base_dir() -> PathBuf {
+    #[cfg(unix)]
+    {
+        PathBuf::from("/tmp/sumi")
+    }
+    #[cfg(not(unix))]
+    {
+        std::env::temp_dir().join("sumi")
+    }
 }
 
 /// Default BORU socket path
 pub fn boru_socket_path() -> PathBuf {
-    momo_base_dir().join("boru.sock")
+    sumi_base_dir().join("boru.sock")
 }
 
 /// SUJI socket path (orchestrator)
 pub fn suji_socket_path() -> PathBuf {
-    momo_base_dir().join("suji.sock")
+    sumi_base_dir().join("suji.sock")
 }
 
 /// YOMI socket path (indexer)
 #[allow(dead_code)]
 pub fn yomi_socket_path() -> PathBuf {
-    momo_base_dir().join("yomi.sock")
+    sumi_base_dir().join("yomi.sock")
 }
 
 /// Maximum request size: 10MB
@@ -40,13 +47,13 @@ pub const MAX_REQUEST_SIZE: usize = 10 * 1024 * 1024;
 
 /// Socket directory path
 pub fn socket_dir() -> PathBuf {
-    momo_base_dir()
+    sumi_base_dir()
 }
 
 /// BORU workspace directory for sandbox file operations
 #[allow(dead_code)]
 pub fn boru_workspace_dir() -> PathBuf {
-    momo_base_dir().join("workspace")
+    sumi_base_dir().join("workspace")
 }
 
 /// Service discovery: Check if a sibling service is running
@@ -104,9 +111,9 @@ mod tests {
 
     #[test]
     fn test_socket_paths() {
-        assert_eq!(boru_socket_path(), std::env::temp_dir().join("momo/boru.sock"));
-        assert_eq!(suji_socket_path(), std::env::temp_dir().join("momo/suji.sock"));
-        assert_eq!(yomi_socket_path(), std::env::temp_dir().join("momo/yomi.sock"));
+        assert_eq!(boru_socket_path(), std::env::temp_dir().join("sumi/boru.sock"));
+        assert_eq!(suji_socket_path(), std::env::temp_dir().join("sumi/suji.sock"));
+        assert_eq!(yomi_socket_path(), std::env::temp_dir().join("sumi/yomi.sock"));
         assert_eq!(MAX_REQUEST_SIZE, 10 * 1024 * 1024);
     }
 

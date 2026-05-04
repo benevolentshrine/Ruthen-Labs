@@ -7,7 +7,7 @@
 
 # Paths that are always allowed (exact match or glob patterns)
 allowed_paths = [
-    "[TEMP]/momo/workspace",
+    "[TEMP]/sumi/workspace",
     "/home/user/projects/safe/*",
 ]
 
@@ -41,7 +41,7 @@ action = "prompt"
 reason = "Downloaded files require manual review"
 
 [[path_rules]]
-pattern = "[TEMP]/momo/trusted/*"
+pattern = "[TEMP]/sumi/trusted/*"
 action = "allow"
 reason = "Pre-verified safe workspace"
 

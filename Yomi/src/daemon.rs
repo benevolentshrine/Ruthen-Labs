@@ -5,9 +5,8 @@ use std::fs::File;
 use std::io::{Read, Write};
 use std::path::PathBuf;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::{TcpListener, TcpStream};
+use tokio::net::{UnixListener, UnixStream};
 use tracing::{error, info};
-use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct JsonRpcRequest {
@@ -35,7 +34,7 @@ fn get_yomi_dir() -> PathBuf {
         }
         return dir;
     }
-    if let Some(proj_dirs) = ProjectDirs::from("com", "momo", "yomi") {
+    if let Some(proj_dirs) = ProjectDirs::from("com", "sumi", "yomi") {
         let data_dir = proj_dirs.data_dir();
         if !data_dir.exists() {
             let _ = std::fs::create_dir_all(data_dir);
@@ -186,30 +185,23 @@ pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn s
 // ── Server loop ───────────────────────────────────────────────────────────────
 
 async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
-    let listener = TcpListener::bind("127.0.0.1:0").await?;
-    let local_addr = listener.local_addr()?;
-    let port = local_addr.port();
-
-    // Write runtime files
-    let mut port_file = File::create(get_port_file())?;
-    write!(port_file, "{}", port)?;
-
-    let token = Uuid::new_v4().to_string();
-    let token_path = get_token_file();
-    let mut token_file = File::create(&token_path)?;
-    write!(token_file, "{}", token)?;
-
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        let mut perms = std::fs::metadata(&token_path)?.permissions();
-        perms.set_mode(0o600);
-        std::fs::set_permissions(&token_path, perms)?;
+    let socket_path = "/tmp/sumi/yomi.sock";
+    
+    // Ensure parent directory exists
+    if let Some(parent) = std::path::Path::new(socket_path).parent() {
+        let _ = std::fs::create_dir_all(parent);
     }
+
+    // Remove existing socket if it exists
+    let _ = std::fs::remove_file(socket_path);
+
+    let listener = UnixListener::bind(socket_path)?;
+    info!("Yomi daemon listening on UDS: {} (PID {})", socket_path, std::process::id());
 
     write_pid_file()?;
 
-    info!("Daemon listening on {} (PID {})", local_addr, std::process::id());
+    // Token is no longer used for UDS as socket permissions handle security
+    let token = "uds-internal-trust".to_string();
 
     // ── Graceful SIGTERM / SIGINT via a shutdown channel ───────────────────
     let (shutdown_tx, mut shutdown_rx) = tokio::sync::oneshot::channel::<()>();
@@ -247,6 +239,15 @@ async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
         });
     }
 
+    let index_dir = crate::file_ops::get_index_dir();
+    let storage = match crate::index::storage::Storage::open(&index_dir) {
+        Ok(s) => s,
+        Err(e) => {
+            error!("Failed to open index storage for daemon: {}", e);
+            return Err(e.into());
+        }
+    };
+
     // ── Accept loop ────────────────────────────────────────────────────────
     loop {
         tokio::select! {
@@ -254,6 +255,7 @@ async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
                 let (mut socket, _) = accept?;
                 let token_ref = token.clone();
                 let tx_clone  = shutdown_tx.clone();
+                let storage_clone = storage.clone();
 
                 tokio::spawn(async move {
                     let mut buf = vec![0u8; 10 * 1024 * 1024]; // 10 MB cap
@@ -309,6 +311,65 @@ async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
                                                 }
                                             }
                                         }
+                                        "search" => {
+                                            let query = req.params.get("query").and_then(|v| v.as_str()).unwrap_or("");
+                                            let limit = req.params.get("limit").and_then(|v| v.as_u64()).unwrap_or(20) as usize;
+                                            let engine = crate::index::query::QueryEngine::new(storage_clone.clone());
+                                            
+                                            match engine.execute(query, None, None, limit, 0) {
+                                                Ok(results) => {
+                                                    let res = JsonRpcResponse {
+                                                        jsonrpc: "2.0".to_string(),
+                                                        result: Some(serde_json::json!(results)),
+                                                        error: None,
+                                                        id: req.id,
+                                                    };
+                                                    let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                                }
+                                                Err(e) => {
+                                                    let res = JsonRpcResponse {
+                                                        jsonrpc: "2.0".to_string(),
+                                                        result: None,
+                                                        error: Some(serde_json::json!({ "code": -32000, "message": e.to_string() })),
+                                                        id: req.id,
+                                                    };
+                                                    let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                                }
+                                            }
+                                        }
+                                        "read" => {
+                                            let path_str = req.params.get("path").and_then(|v| v.as_str()).unwrap_or("");
+                                            if path_str.contains("..") {
+                                                let res = JsonRpcResponse {
+                                                    jsonrpc: "2.0".to_string(),
+                                                    result: None,
+                                                    error: Some(serde_json::json!({ "code": -32000, "message": "Invalid path" })),
+                                                    id: req.id,
+                                                };
+                                                let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                            } else {
+                                                match std::fs::read_to_string(path_str) {
+                                                    Ok(content) => {
+                                                        let res = JsonRpcResponse {
+                                                            jsonrpc: "2.0".to_string(),
+                                                            result: Some(serde_json::json!({ "content": content })),
+                                                            error: None,
+                                                            id: req.id,
+                                                        };
+                                                        let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                                    }
+                                                    Err(e) => {
+                                                        let res = JsonRpcResponse {
+                                                            jsonrpc: "2.0".to_string(),
+                                                            result: None,
+                                                            error: Some(serde_json::json!({ "code": -32000, "message": e.to_string() })),
+                                                            id: req.id,
+                                                        };
+                                                        let _ = socket.write_all(&serde_json::to_vec(&res).unwrap()).await;
+                                                    }
+                                                }
+                                            }
+                                        }
                                         _ => {
                                             let res = JsonRpcResponse {
                                                 jsonrpc: "2.0".to_string(),
@@ -355,26 +416,11 @@ async fn run_daemon_server() -> Result<(), Box<dyn std::error::Error>> {
 
 // ── Client helpers ─────────────────────────────────────────────────────────────
 
-fn get_daemon_port() -> Result<u16, Box<dyn std::error::Error>> {
-    let mut file = File::open(get_port_file())?;
-    let mut s = String::new();
-    file.read_to_string(&mut s)?;
-    Ok(s.trim().parse()?)
-}
-
-fn get_daemon_token() -> Result<String, Box<dyn std::error::Error>> {
-    let mut file = File::open(get_token_file())?;
-    let mut s = String::new();
-    file.read_to_string(&mut s)?;
-    Ok(s.trim().to_string())
-}
-
 async fn send_rpc(method: &str, mut params: serde_json::Value) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
-    let port  = get_daemon_port()?;
-    let token = get_daemon_token()?;
-
+    let socket_path = "/tmp/sumi/yomi.sock";
+    
     if let Some(obj) = params.as_object_mut() {
-        obj.insert("token".to_string(), serde_json::Value::String(token));
+        obj.insert("token".to_string(), serde_json::Value::String("uds-internal-trust".to_string()));
     }
 
     let req = JsonRpcRequest {
@@ -384,7 +430,7 @@ async fn send_rpc(method: &str, mut params: serde_json::Value) -> Result<serde_j
         id: 1,
     };
 
-    let mut stream = TcpStream::connect(format!("127.0.0.1:{}", port)).await?;
+    let mut stream = UnixStream::connect(socket_path).await?;
     stream.write_all(&serde_json::to_vec(&req)?).await?;
 
     let mut buf = vec![0u8; 4096];

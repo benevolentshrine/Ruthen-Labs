@@ -4,9 +4,9 @@
 //! DO NOT implement YOMI or SUJI logic here — that lives in their own repositories.
 //!
 //! GATE 3: Socket Contract Freeze
-//! - YOMI socket: [TEMP]/momo/yomi.sock
-//! - SUJI socket: [TEMP]/momo/suji.sock
-//! - BORU socket: [TEMP]/momo/boru.sock (active)
+//! - YOMI socket: [TEMP]/sumi/yomi.sock
+//! - SUJI socket: [TEMP]/sumi/suji.sock
+//! - BORU socket: [TEMP]/sumi/boru.sock (active)
 
 #![allow(dead_code)]
 

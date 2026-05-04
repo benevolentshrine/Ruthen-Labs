@@ -39,7 +39,13 @@ impl RipgrepBridge {
            .arg("--no-ignore") // Ignore .gitignore for a more complete index search
            .arg(root);
 
-        let output = cmd.output().map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+        let output = cmd.output().map_err(|e| {
+            if e.kind() == io::ErrorKind::NotFound {
+                io::Error::new(io::ErrorKind::NotFound, "ripgrep ('rg') binary not found in PATH. Please install it (e.g., 'brew install ripgrep') for search to work.")
+            } else {
+                e
+            }
+        })?;
 
         if !output.status.success() {
             // rg returns 1 if no matches are found, which is not a fatal error.

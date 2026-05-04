@@ -28,9 +28,11 @@
 //!    (CVE-2026-25725 prevention: agent cannot create/modify startup hooks)
 
 use anyhow::{Context, Result};
+#[cfg(target_os = "linux")]
 use landlock::{
     Access, AccessFs, PathBeneath, PathFd, Ruleset, RulesetAttr, RulesetCreatedAttr, ABI,
 };
+#[cfg(target_os = "linux")]
 use libseccomp::*;
 use std::os::unix::process::CommandExt;
 use std::path::Path;
@@ -218,6 +220,7 @@ pub fn spawn_sandboxed_command(
 /// - System paths get Read-Only (so the interpreter can load)
 /// - Config dirs (.boru/, .antigravity/, .env): NOT in allowlist = INVISIBLE
 /// - Symlinks: kernel refuses to follow links to paths without `Refer` permission (v2 only)
+#[cfg(target_os = "linux")]
 fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
     // Try ABI::V2 first — enables AccessFs::Refer for symlink-safe resolution.
     // Fall back to ABI::V1 on older kernels (≤ 5.19).
@@ -340,6 +343,12 @@ fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
     Ok(achieved_v2)
 }
 
+#[cfg(not(target_os = "linux"))]
+fn apply_landlock_policy(_workspace: &Path) -> Result<bool> {
+    tracing::warn!("[BORU SANDBOX] Landlock is not supported on this OS. Skipping filesystem sandbox.");
+    Ok(false)
+}
+
 // ---------------------------------------------------------------------------
 // Layer 2: Seccomp-BPF v2 — Full Network Air-Gap
 // ---------------------------------------------------------------------------
@@ -352,6 +361,7 @@ fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
 /// - Blocks `sendto` and `sendmsg` (covers raw UDP without connect())
 /// - Blocks `clone3` (modern container escape vector via new namespace flags)
 /// - Default action: Trap → SIGSYS (parent can detect and audit the violation)
+#[cfg(target_os = "linux")]
 fn apply_seccomp_policy(opts: &SandboxOptions) -> Result<()> {
     // Default action: Trap — the kernel sends SIGSYS to the violating process.
     // This is preferable to KillProcess for the default because it allows
@@ -506,6 +516,12 @@ fn apply_seccomp_policy(opts: &SandboxOptions) -> Result<()> {
     filter.load().context("Failed to load Seccomp v2 filter into kernel")?;
 
     tracing::info!("[SECCOMP v2] Filter active. Network air-gap enforced (TCP+UDP+DNS blocked).");
+    Ok(())
+}
+
+#[cfg(not(target_os = "linux"))]
+fn apply_seccomp_policy(_opts: &SandboxOptions) -> Result<()> {
+    tracing::warn!("[BORU SANDBOX] Seccomp is not supported on this OS. Skipping syscall filter.");
     Ok(())
 }
 

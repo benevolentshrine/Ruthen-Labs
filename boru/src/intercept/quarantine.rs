@@ -12,7 +12,7 @@ use std::path::{Path, PathBuf};
 
 /// Quarantine directory path
 pub fn quarantine_dir() -> std::path::PathBuf {
-    crate::socket::config::momo_base_dir().join("quarantine")
+    crate::socket::config::sumi_base_dir().join("quarantine")
 }
 
 /// Quarantine metadata

@@ -4,6 +4,7 @@ use std::path::Path;
 use std::io;
 use bincode;
 
+#[derive(Clone)]
 pub struct Storage {
     db: Db,
     metadata: Tree,
@@ -24,6 +25,7 @@ impl Storage {
     }
 
     /// Store a file record and update the language index
+    #[allow(dead_code)]
     pub fn insert_record(&self, record: &FileRecord) -> io::Result<()> {
         let path_bytes = record.path.as_bytes();
         let encoded_record = bincode::serialize(record)

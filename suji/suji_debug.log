@@ -1,0 +1,1256 @@
+[20:04:29] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:04:29] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:04:30] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:04:31] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:04:32] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:32] RouteKey: key=/, focus=0, sm=Idle, empty=false
+[20:04:32] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:32] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:04:32] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:32] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:04:32] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:04:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:04:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:04:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:04:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:04:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:33] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:04:33] Action: Submit
+[20:04:33] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:04:33] Update: msg type=main.healthTickMsg, state=4, sm=Idle
+[20:04:38] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:04:38] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:04:38] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:04:38] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:04:39] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:04:40] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:40] RouteKey: key=h, focus=0, sm=Idle, empty=false
+[20:04:40] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:40] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:40] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:04:40] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:41] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:41] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:04:41] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:41] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:41] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:04:41] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:41] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:41] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:04:41] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:04:43] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:04:43] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:04:43] Action: Submit
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:04:43] Update: msg type=main.streamDoneMsg, state=2, sm=Streaming ●
+[20:05:15] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:05:15] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:05:16] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:05:16] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:05:16] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:05:17] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:05:17] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:05:17] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:05:17] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:05:18] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:18] RouteKey: key=/, focus=0, sm=Idle, empty=false
+[20:05:18] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:18] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:18] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:05:18] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:18] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:18] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:05:18] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:18] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:18] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:05:18] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:18] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:05:19] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:19] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:05:19] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:19] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:19] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:05:19] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:19] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:19] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:05:19] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:19] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:19] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:05:19] Action: Submit
+[20:05:19] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:05:19] Update: msg type=main.healthTickMsg, state=4, sm=Idle
+[20:05:20] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:05:20] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:05:21] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:05:21] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:05:21] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:05:26] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:26] RouteKey: key=h, focus=0, sm=Idle, empty=false
+[20:05:26] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:27] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:05:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:27] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:05:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:27] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:05:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:27] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:05:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:28] RouteKey: key= , focus=0, sm=Idle, empty=false
+[20:05:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:29] RouteKey: key=c, focus=0, sm=Idle, empty=false
+[20:05:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:29] RouteKey: key=a, focus=0, sm=Idle, empty=false
+[20:05:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:29] RouteKey: key=n, focus=0, sm=Idle, empty=false
+[20:05:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:29] RouteKey: key= , focus=0, sm=Idle, empty=false
+[20:05:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=u, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key= , focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=c, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:30] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:05:30] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:31] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:31] RouteKey: key=?, focus=0, sm=Idle, empty=false
+[20:05:31] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:05:31] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:05:31] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:05:31] Action: Submit
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:31] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:32] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:33] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:34] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:35] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:36] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:37] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.renderTickMsg, state=2, sm=Idle
+[20:05:38] Update: msg type=main.streamDoneMsg, state=2, sm=Idle
+[20:07:11] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:07:11] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:07:12] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:13] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:13] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:07:13] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:13] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:13] RouteKey: key=/, focus=0, sm=Idle, empty=false
+[20:07:13] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:07:14] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:14] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:07:14] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:14] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:14] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:07:14] Action: Submit
+[20:07:14] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:07:15] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:07:15] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:07:15] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:07:15] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:15] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:15] RouteKey: key=h, focus=0, sm=Idle, empty=false
+[20:07:15] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:15] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:15] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:07:15] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:16] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:16] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:07:16] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:16] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:16] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:07:16] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:16] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:07:16] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:16] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:07:16] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:07:16] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:07:16] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:07:16] Action: Submit
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:16] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:07:17] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:22] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:13:22] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:13:23] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:24] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:24] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:24] RouteKey: key=/, focus=0, sm=Idle, empty=false
+[20:13:24] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:24] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:24] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:13:24] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:24] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:13:24] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:24] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:24] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:13:24] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:24] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:24] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:13:24] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:25] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:25] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:13:25] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:25] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:25] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:13:25] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:25] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:25] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:25] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:13:25] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:25] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:13:25] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:25] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:25] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:13:25] Action: Submit
+[20:13:25] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:13:26] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:13:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:13:26] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:13:26] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:26] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:26] RouteKey: key=h, focus=0, sm=Idle, empty=false
+[20:13:26] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:27] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:13:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:27] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:13:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:27] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:27] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:13:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:27] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:13:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:13:27] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:13:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:13:28] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:13:28] Action: Submit
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.healthTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:13:28] Update: msg type=main.streamDoneMsg, state=2, sm=Streaming ●
+[20:16:24] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:16:24] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:16:24] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:16:25] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:26] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:26] RouteKey: key=/, focus=0, sm=Idle, empty=false
+[20:16:26] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:26] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:16:26] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:26] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:26] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:16:26] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:26] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:26] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:16:26] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:26] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:27] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:16:27] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:27] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:27] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:27] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:16:27] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:28] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:28] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:16:28] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:28] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:28] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:28] RouteKey: key=backspace, focus=0, sm=Idle, empty=false
+[20:16:28] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:28] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:29] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:16:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:29] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:16:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:29] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:29] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:16:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:29] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:16:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:29] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:29] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:16:29] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:29] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:30] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:30] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:16:30] Action: Submit
+[20:16:30] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:16:30] Update: msg type=main.healthTickMsg, state=4, sm=Idle
+[20:16:30] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:16:30] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:16:31] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:16:31] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:16:31] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:16:31] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:16:32] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:16:32] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:16:32] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:16:32] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:16:32] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:33] RouteKey: key=h, focus=0, sm=Idle, empty=false
+[20:16:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:33] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:33] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:16:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:33] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:16:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:33] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:16:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:33] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:33] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:33] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:16:33] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:16:34] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:34] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:16:35] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:16:35] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:16:35] Action: Submit
+[20:16:35] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:16:35] Update: msg type=main.streamDoneMsg, state=2, sm=Streaming ●
+[20:18:42] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:18:42] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:18:43] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:18:43] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=tea.KeyMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:18:44] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:18:44] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:45] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:45] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:45] RouteKey: key=/, focus=0, sm=Idle, empty=true
+[20:18:45] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:45] Update: msg type=main.welcomeExpiredMsg, state=2, sm=Idle
+[20:18:45] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:45] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:45] RouteKey: key=m, focus=0, sm=Idle, empty=false
+[20:18:45] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:46] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:18:46] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:46] RouteKey: key=d, focus=0, sm=Idle, empty=false
+[20:18:46] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:46] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:18:46] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:46] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:18:46] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:46] RouteKey: key=s, focus=0, sm=Idle, empty=false
+[20:18:46] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:46] Update: msg type=main.healthTickMsg, state=2, sm=Idle
+[20:18:46] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:47] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:47] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:47] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:18:47] Action: Submit
+[20:18:47] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:18:47] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:47] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:18:48] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:48] Update: msg type=main.healthTickMsg, state=4, sm=Idle
+[20:18:48] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:48] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:18:49] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:49] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:49] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:18:49] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:18:50] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:18:50] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:18:50] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:51] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:51] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:51] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:51] RouteKey: key=h, focus=0, sm=Idle, empty=true
+[20:18:51] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:52] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:52] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:52] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:18:52] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:52] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:52] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:18:52] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:52] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:52] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:18:52] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:52] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:52] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:18:52] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:18:52] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:18:52] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:18:52] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:18:52] Action: Submit
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:52] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:53] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:18:53] Update: msg type=main.streamDoneMsg, state=2, sm=Streaming ●
+[20:27:15] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:27:15] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:27:15] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:16] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:16] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:17] Update: msg type=main.healthTickMsg, state=0, sm=Idle
+[20:27:17] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:17] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.welcomeExpiredMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:27:18] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:19] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:19] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:20] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:20] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:21] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:21] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:22] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:22] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:22] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:22] RouteKey: key=/, focus=0, sm=Idle, empty=true
+[20:27:23] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:23] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:24] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:24] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:24] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:25] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:25] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:25] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:26] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:27] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:27] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:27] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:27] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:27] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:28] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:28] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:28] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:29] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:29] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:30] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:30] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:31] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:31] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:32] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:32] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:33] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:33] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:34] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:34] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:35] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:35] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:36] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:36] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:37] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:37] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:38] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:38] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:39] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:39] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:40] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:40] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:41] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:41] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:42] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:42] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:43] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:43] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:44] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:44] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:44] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:45] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:45] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:46] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:46] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:27:46] Action: Submit
+[20:27:46] Update: msg type=main.modelListMsg, state=2, sm=Idle
+[20:27:46] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:46] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:47] Update: msg type=main.watchdogTickMsg, state=4, sm=Idle
+[20:27:47] Update: msg type=tea.KeyMsg, state=4, sm=Idle
+[20:27:47] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:48] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:48] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:48] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:48] RouteKey: key=h, focus=0, sm=Idle, empty=true
+[20:27:48] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:27:48] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:48] RouteKey: key=e, focus=0, sm=Idle, empty=false
+[20:27:48] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:27:49] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:49] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:27:49] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:27:49] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:27:49] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:49] RouteKey: key=l, focus=0, sm=Idle, empty=false
+[20:27:49] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:27:49] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:49] RouteKey: key=o, focus=0, sm=Idle, empty=false
+[20:27:49] Update: msg type=cursor.blinkCanceled, state=2, sm=Idle
+[20:27:49] Update: msg type=tea.KeyMsg, state=2, sm=Idle
+[20:27:49] RouteKey: key=enter, focus=0, sm=Idle, empty=false
+[20:27:49] Action: Submit
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:49] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.watchdogTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.renderTickMsg, state=2, sm=Streaming ●
+[20:27:50] Update: msg type=main.streamDoneMsg, state=2, sm=Streaming ●
+[20:33:11] Update: msg type=tea.WindowSizeMsg, state=0, sm=Idle
+[20:33:11] Update: msg type=cursor.initialBlinkMsg, state=0, sm=Idle
+[20:33:11] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:12] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:12] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:13] Update: msg type=main.healthTickMsg, state=0, sm=Idle
+[20:33:13] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:13] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.welcomeExpiredMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.watchdogTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.fadeTickMsg, state=0, sm=Idle
+[20:33:14] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:15] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:15] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:16] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:16] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:17] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:17] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:18] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:18] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:19] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:19] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:20] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
+[20:33:20] Update: msg type=main.watchdogTickMsg, state=2, sm=Idle
