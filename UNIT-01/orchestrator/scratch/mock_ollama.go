@@ -16,7 +16,7 @@ type chunk struct {
 	Done bool `json:"done"`
 }
 
-func main() {
+func RunMockOllama() {
 	http.HandleFunc("/api/chat", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/x-ndjson")
 		flusher, _ := w.(http.Flusher)

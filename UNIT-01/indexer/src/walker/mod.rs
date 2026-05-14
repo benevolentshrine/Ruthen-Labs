@@ -1,4 +1,4 @@
-use crate::models::FileRecord;
+﻿use crate::models::FileRecord;
 use crate::hasher::hash_file;
 use ignore::{WalkBuilder, WalkState};
 use std::path::{Path, PathBuf};
@@ -29,7 +29,7 @@ impl Walker {
             .hidden(false) 
             .ignore(false) 
             .git_ignore(true) // Read .gitignore
-            .add_custom_ignore_filename(".yomiignore")
+            .add_custom_ignore_filename(".indexerignore")
             .build_parallel();
 
         walker.run(|| {

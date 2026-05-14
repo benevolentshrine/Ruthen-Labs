@@ -1,10 +1,10 @@
-# BORU v2.0 Security Policy Manifest
+﻿# SANDBOX v2.0 Security Policy Manifest
 # ============================================
 # This is the Pre-Execution Gate policy. It is validated BEFORE any fork()
 # happens. Changes to this file take effect on the NEXT execution — no restart needed.
 #
-# Location: ~/.config/boru/security_policy.yaml
-# (BORU will create this file on first run if it does not exist)
+# Location: ~/.config/sandbox/security_policy.yaml
+# (SANDBOX will create this file on first run if it does not exist)
 
 version: "2.0"
 
@@ -17,9 +17,9 @@ version: "2.0"
 # ---------------------------------------------------------------------------
 invisible_inside_sandbox:
   # Agent configuration directories
-  - "~/.config/boru"
+  - "~/.config/sandbox"
   - "~/.antigravity"
-  - "~/.boru"
+  - "~/.sandbox"
   - "~/.claude"
   - "~/.gemini"
   # Environment variable files
@@ -43,7 +43,7 @@ invisible_inside_sandbox:
 # Tool Call Category Gates
 #
 # These categories describe the TYPE of action a tool call is requesting.
-# BORU validates the category before routing to any runner.
+# SANDBOX validates the category before routing to any runner.
 # ---------------------------------------------------------------------------
 
 # Categories that are allowed to proceed to kernel enforcement

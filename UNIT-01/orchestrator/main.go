@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"bufio"
@@ -253,7 +253,7 @@ func main() {
 			}
 		}
 
-		// 1. GATHER CONTEXT (YOMI)
+		// 1. GATHER CONTEXT (INDEXER)
 		ws.Refresh() // Ensure ProjectMap is fresh
 		autoCtx := getAutoContext(input, ws)
 		
@@ -272,7 +272,7 @@ func main() {
 		history.Append(Message{Role: "assistant", Content: fullResponse, Timestamp: time.Now()})
 		renderResponse(fullResponse)
 
-		// 3. EXECUTE DIRECTIVES (BORU)
+		// 3. EXECUTE DIRECTIVES (SANDBOX)
 		if len(directives) > 0 {
 			for _, dir := range directives {
 				result := ExecuteTool(dir.Name, dir.Args, &Config{}, ws)

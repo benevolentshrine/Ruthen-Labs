@@ -1,4 +1,4 @@
-//! BORU Shadow — Filesystem rollback protection
+﻿//! SANDBOX Shadow — Filesystem rollback protection
 //!
 //! Provides:
 //! - Shadow backups before file writes

@@ -1,4 +1,4 @@
-//! BORU Sandbox — v2.0 Zero-Trust Determinism
+﻿//! SANDBOX Sandbox — v2.0 Zero-Trust Determinism
 //!
 //! This module implements the multi-layered kernel enforcement boundary.
 //! All four security layers are applied in the "fork-gap":
@@ -10,7 +10,7 @@
 //!    - Default-deny: child sees nothing outside the allowlist
 //!    - Workspace: Full RWX access
 //!    - System libs: Read-only (/lib, /usr/lib, /usr/bin/python3, etc.)
-//!    - Config dirs (.boru/, .antigravity/, .env): INVISIBLE (not in allowlist)
+//!    - Config dirs (.sandbox/, .antigravity/, .env): INVISIBLE (not in allowlist)
 //!    - Symlinks: `AccessFs::Refer` controlled — cannot follow to outside paths
 //!
 //! 2. **Seccomp-BPF v2** — Full network air-gap (including DNS/UDP leaks)
@@ -92,7 +92,7 @@ impl SandboxOptions {
 
 /// Spawn a command inside the Zero-Trust Determinism sandbox.
 ///
-/// This is the primary entrypoint for all sandboxed execution in BORU v2.0.
+/// This is the primary entrypoint for all sandboxed execution in SANDBOX v2.0.
 /// All four enforcement layers are applied in sequence.
 ///
 /// ## Execution Flow
@@ -127,7 +127,7 @@ pub fn spawn_sandboxed_command(
                         // In HARD mode this is unacceptable — abort.
                         if mode_for_child == SecurityMode::Hard {
                             eprintln!(
-                                "[BORU SANDBOX] HARD mode abort: Landlock ABI v2 not supported \
+                                "[SANDBOX SANDBOX] HARD mode abort: Landlock ABI v2 not supported \
                                  on this kernel. Cannot guarantee filesystem isolation."
                             );
                             return Err(std::io::Error::new(
@@ -137,13 +137,13 @@ pub fn spawn_sandboxed_command(
                         }
                         // MID/EASY: degrade gracefully, log warning
                         eprintln!(
-                            "[BORU SANDBOX] WARNING: Landlock ABI v1 applied (kernel < 5.19). \
+                            "[SANDBOX SANDBOX] WARNING: Landlock ABI v1 applied (kernel < 5.19). \
                              Symlink-follow control unavailable. Seccomp still active."
                         );
                     }
                 }
                 Err(e) => {
-                    eprintln!("[BORU SANDBOX] Landlock enforcement failed: {}", e);
+                    eprintln!("[SANDBOX SANDBOX] Landlock enforcement failed: {}", e);
                     return Err(std::io::Error::new(
                         std::io::ErrorKind::PermissionDenied,
                         "Landlock enforcement failed",
@@ -153,7 +153,7 @@ pub fn spawn_sandboxed_command(
 
             // LAYER 2: Seccomp-BPF v2 — Syscall filter + network air-gap
             if let Err(e) = apply_seccomp_policy(&opts_for_child) {
-                eprintln!("[BORU SANDBOX] Seccomp enforcement failed: {}", e);
+                eprintln!("[SANDBOX SANDBOX] Seccomp enforcement failed: {}", e);
                 return Err(std::io::Error::new(
                     std::io::ErrorKind::PermissionDenied,
                     "Seccomp enforcement failed",
@@ -171,7 +171,7 @@ pub fn spawn_sandboxed_command(
     // The child is alive but hasn't execvp()'d yet (pre_exec blocks execvp).
     // We use the child PID to place it in the cgroup BEFORE it runs any code.
     let child_pid = child.id();
-    let cgroup_name = format!("boru-{}", child_pid);
+    let cgroup_name = format!("sandbox-{}", child_pid);
     let jail = crate::cage::cgroups::CgroupJail::new(&cgroup_name);
 
     if jail.is_active() {
@@ -218,7 +218,7 @@ pub fn spawn_sandboxed_command(
 /// - Default-deny: the process sees an empty filesystem by default
 /// - The workspace gets full RWX (so the script can run)
 /// - System paths get Read-Only (so the interpreter can load)
-/// - Config dirs (.boru/, .antigravity/, .env): NOT in allowlist = INVISIBLE
+/// - Config dirs (.sandbox/, .antigravity/, .env): NOT in allowlist = INVISIBLE
 /// - Symlinks: kernel refuses to follow links to paths without `Refer` permission (v2 only)
 #[cfg(target_os = "linux")]
 fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
@@ -309,9 +309,9 @@ fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
         });
 
     // NOTE: The following paths are intentionally NOT added:
-    //   - ~/.config/boru/     (agent config — CVE-2026-25725)
+    //   - ~/.config/sandbox/     (agent config — CVE-2026-25725)
     //   - ~/.antigravity/     (AI agent data — CVE-2026-25725)
-    //   - ~/.boru/            (BORU state — CVE-2026-25725)
+    //   - ~/.sandbox/            (SANDBOX state — CVE-2026-25725)
     //   - ~/.ssh/             (SSH keys)
     //   - ~/.aws/             (Cloud credentials)
     //   - **/.env files       (Secrets)
@@ -345,7 +345,7 @@ fn apply_landlock_policy(workspace: &Path) -> Result<bool> {
 
 #[cfg(not(target_os = "linux"))]
 fn apply_landlock_policy(_workspace: &Path) -> Result<bool> {
-    tracing::warn!("[BORU SANDBOX] Landlock is not supported on this OS. Skipping filesystem sandbox.");
+    tracing::warn!("[SANDBOX SANDBOX] Landlock is not supported on this OS. Skipping filesystem sandbox.");
     Ok(false)
 }
 
@@ -521,7 +521,7 @@ fn apply_seccomp_policy(opts: &SandboxOptions) -> Result<()> {
 
 #[cfg(not(target_os = "linux"))]
 fn apply_seccomp_policy(_opts: &SandboxOptions) -> Result<()> {
-    tracing::warn!("[BORU SANDBOX] Seccomp is not supported on this OS. Skipping syscall filter.");
+    tracing::warn!("[SANDBOX SANDBOX] Seccomp is not supported on this OS. Skipping syscall filter.");
     Ok(())
 }
 
@@ -540,7 +540,7 @@ pub fn validate_file_size(path: &Path) -> Result<()> {
 
     if file_size > MAX_FILE_SIZE {
         return Err(anyhow::anyhow!(
-            "File too large: {}MB. BORU limit is 100MB to prevent OOM. Path: {}",
+            "File too large: {}MB. SANDBOX limit is 100MB to prevent OOM. Path: {}",
             file_size / (1024 * 1024),
             path.display()
         ));
@@ -611,7 +611,7 @@ mod tests {
 
     #[test]
     fn test_file_size_validation_passes_small_file() {
-        let tmp = std::env::temp_dir().join("boru_v2_test_small.bin");
+        let tmp = std::env::temp_dir().join("sandbox_v2_test_small.bin");
         std::fs::write(&tmp, b"hello world").unwrap();
         assert!(validate_file_size(&tmp).is_ok());
         let _ = std::fs::remove_file(&tmp);
@@ -655,7 +655,7 @@ mod tests {
     fn test_network_blocking_via_sandbox() {
         // Spawn a process that tries to open a network socket inside the sandbox.
         // Uses 'nc' or falls back gracefully.
-        let workspace = std::env::temp_dir().join("boru_v2_test_net");
+        let workspace = std::env::temp_dir().join("sandbox_v2_test_net");
         let _ = std::fs::remove_dir_all(&workspace);
         std::fs::create_dir_all(&workspace).unwrap();
 
@@ -679,7 +679,7 @@ mod tests {
     fn test_filesystem_isolation_via_sandbox() {
         // A sandboxed 'cat /etc/passwd' should fail because /etc/passwd
         // is not in the Landlock allowlist.
-        let workspace = std::env::temp_dir().join("boru_v2_test_fs");
+        let workspace = std::env::temp_dir().join("sandbox_v2_test_fs");
         let _ = std::fs::remove_dir_all(&workspace);
         std::fs::create_dir_all(&workspace).unwrap();
 

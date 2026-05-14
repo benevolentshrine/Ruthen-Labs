@@ -1,7 +1,7 @@
-//! BORU Quarantine — File isolation and metadata tracking
+﻿//! SANDBOX Quarantine — File isolation and metadata tracking
 //!
 //! When a file is DENIED (auto or by user):
-//! 1. Move original to: [TEMP]/momo/quarantine/<timestamp>-<filename>/
+//! 1. Move original to: [TEMP]/ruthenlabs/quarantine/<timestamp>-<filename>/
 //! 2. Write metadata.json alongside
 //! 3. Log to audit log with quarantine_ref
 

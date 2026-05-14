@@ -1,9 +1,9 @@
-/// File Watcher & Incremental Sync — Integration Tests
+﻿/// File Watcher & Incremental Sync — Integration Tests
 ///
 /// Run with:
 ///   cargo test --test watcher_tests
 ///
-/// Each test spawns a real `yomi index --watch` process in a fresh YOMI_DATA_DIR
+/// Each test spawns a real `indexer index --watch` process in a fresh INDEXER_DATA_DIR
 /// temp dir, exercises filesystem scenarios, and asserts index.json state.
 
 use std::fs;
@@ -26,12 +26,12 @@ impl WatcherProc {
 
         let child = Command::new("cargo")
             .args([
-                "run", "--bin", "yomi", "--",
+                "run", "--bin", "indexer", "--",
                 "index",
                 "--path", watch_dir.to_str().unwrap(),
                 "--watch",
             ])
-            .env("YOMI_DATA_DIR", &data_dir)
+            .env("INDEXER_DATA_DIR", &data_dir)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()

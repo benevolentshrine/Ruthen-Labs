@@ -1,4 +1,4 @@
-//! BORU Scanner — File analysis and detection utilities
+﻿//! SANDBOX Scanner — File analysis and detection utilities
 //!
 //! This module provides:
 //! - Entropy scanning for packed/obfuscated detection

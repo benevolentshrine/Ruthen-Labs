@@ -1,16 +1,16 @@
-# BORU 🥊
+﻿# SANDBOX 🥊
 
 > **"What runs here, stays here."**
 
-BORU is the **Security Engine** — the foundational layer of the [SumiLabs AI Ecosystem](https://github.com/ZenK-GH/SumiLabs).
+SANDBOX is the **Security Engine** — the foundational layer of the [SumiLabs AI Ecosystem](https://github.com/ZenK-GH/SumiLabs).
 
-Built in Rust. Powered by a deterministic 4-Layer Zero-Trust Sandbox. Zero network calls. Zero trust in AI-generated code until BORU says so.
+Built in Rust. Powered by a deterministic 4-Layer Zero-Trust Sandbox. Zero network calls. Zero trust in AI-generated code until SANDBOX says so.
 
 ---
 
-## What BORU Does
+## What SANDBOX Does
 
-BORU intercepts and sandboxes AI-generated code before it ever touches your system. It acts as a physical security membrane between your local LLM and your file system.
+SANDBOX intercepts and sandboxes AI-generated code before it ever touches your system. It acts as a physical security membrane between your local LLM and your file system.
 
 - 🔒 **Sandboxes** AI output via a 4-Layer Execution Jail (Pre-exec, Landlock, Seccomp, Cgroups).
 - 🛡️ **Intercepts** unauthorized syscalls, destructive file access, and all network calls.
@@ -24,11 +24,11 @@ BORU intercepts and sandboxes AI-generated code before it ever touches your syst
 
 ## Architecture & Features
 
-For a deep dive into how BORU works, check out the core documentation:
+For a deep dive into how SANDBOX works, check out the core documentation:
 
-- 📖 **[BORU Architecture](ARCHITECTURE.md)**: Explains the 4-Layer Security Model and the SumiLabs Trinity Ecosystem.
+- 📖 **[SANDBOX Architecture](ARCHITECTURE.md)**: Explains the 4-Layer Security Model and the SumiLabs Trinity Ecosystem.
 - ⚙️ **[Feature Deep Dive](FEATURES.md)**: Detailed breakdown of the Unix Pipelines, Resource Quotas, and Static Gates.
-- 📚 **[Docs Folder](docs/BORU_DOCUMENTATION.md)**: The single source of truth for CLI usage and socket integration contracts.
+- 📚 **[Docs Folder](docs/SANDBOX_DOCUMENTATION.md)**: The single source of truth for CLI usage and socket integration contracts.
 
 ---
 
@@ -52,13 +52,13 @@ For a deep dive into how BORU works, check out the core documentation:
 ```bash
 # Clone the repository
 git clone https://github.com/ZenK-GH/SumiLabs.git
-cd SumiLabs/boru
+cd SumiLabs/sandbox
 
 # Build from source (requires Rust)
 cargo build --release
 
 # Install the binary
-sudo install -Dm755 target/release/boru /usr/local/bin/boru
+sudo install -Dm755 target/release/sandbox /usr/local/bin/sandbox
 ```
 
 ### Basic Usage
@@ -67,22 +67,22 @@ sudo install -Dm755 target/release/boru /usr/local/bin/boru
 Execute untrusted code inside the 4-Layer Sandbox:
 ```bash
 # Basic execution with default security (mid)
-boru cage --input target.py --mode mid
+sandbox cage --input target.py --mode mid
 
 # Strict mode — maximum restrictions (zero-tolerance)
-boru cage --input target.py --mode hard
+sandbox cage --input target.py --mode hard
 ```
 
 **2. Daemon Mode (SumiLabs Ecosystem Integration)**
-Run BORU as a background service listening on a Unix socket:
+Run SANDBOX as a background service listening on a Unix socket:
 ```bash
-boru daemon &
+sandbox daemon &
 ```
 
 **3. Visual Dashboard**
 Launch the terminal UI to monitor live intercepts and executions:
 ```bash
-boru tui
+sandbox tui
 ```
 
 ---
@@ -105,4 +105,4 @@ Before any code change is merged, all 7 Protocol Gates must pass. See [AGENTS.md
 
 ## Name
 
-**BORU** (ぼる) — Japanese for round, blocky, punchy. Exactly what a security cage should be.
+**SANDBOX** (ぼる) — Japanese for round, blocky, punchy. Exactly what a security cage should be.

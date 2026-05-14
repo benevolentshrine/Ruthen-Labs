@@ -1,6 +1,6 @@
-//! BORU Cage — WASM sandbox core
+﻿//! SANDBOX Cage — WASM sandbox core
 //!
-//! This module contains the heart of BORU: the WASM sandbox execution engine.
+//! This module contains the heart of SANDBOX: the WASM sandbox execution engine.
 //! All execution paths MUST go through here. No exceptions.
 //!
 //! GATE 2: Sandbox Invariant — all external input execution originates here.
@@ -182,8 +182,8 @@ pub fn execute(input: PathBuf, policy_str: String, fuel: Option<u64>) -> Result<
 
     // Create WASI context with minimal capabilities (Preview 1 / core modules)
     let wasi_ctx = wasmtime_wasi::WasiCtxBuilder::new()
-        .inherit_stdout()  // Captured by BORU
-        .inherit_stderr()  // Captured by BORU
+        .inherit_stdout()  // Captured by SANDBOX
+        .inherit_stderr()  // Captured by SANDBOX
         // No network. No host FS. No env vars. Deny-by-default.
         .build_p1();
 
@@ -345,7 +345,7 @@ pub fn run_cage(
     let metadata = std::fs::metadata(&input)?;
     if metadata.len() > MAX_FILE_SIZE {
         let reason = format!(
-            "File too large: {}MB. BORU limit is 100MB to prevent OOM.",
+            "File too large: {}MB. SANDBOX limit is 100MB to prevent OOM.",
             metadata.len() / 1024 / 1024
         );
         log_intercept(Severity::High, "EXECUTE_BLOCKED", &reason, request_id);
@@ -451,7 +451,7 @@ pub fn check(input: PathBuf) -> Result<()> {
     let metadata = std::fs::metadata(&input)?;
     if metadata.len() > MAX_FILE_SIZE {
         return Err(anyhow::anyhow!(
-            "File too large: {}MB. BORU limit is 100MB to prevent OOM.",
+            "File too large: {}MB. SANDBOX limit is 100MB to prevent OOM.",
             metadata.len() / 1024 / 1024
         ));
     }
@@ -606,7 +606,7 @@ pub fn clear_logs() -> Result<()> {
 pub fn get_audit_log_path() -> PathBuf {
     dirs::data_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("boru")
+        .join("sandbox")
         .join("audit.log")
 }
 
@@ -723,7 +723,7 @@ mod tests {
     #[test]
     fn test_execute_invalid_wasm() {
         // Create a temp file with invalid content
-        let tmp = std::env::temp_dir().join("boru_test_invalid.wasm");
+        let tmp = std::env::temp_dir().join("sandbox_test_invalid.wasm");
         std::fs::write(&tmp, b"not wasm bytes").unwrap();
         let result = execute(tmp.clone(), "strict".to_string(), None);
         let _ = std::fs::remove_file(&tmp);

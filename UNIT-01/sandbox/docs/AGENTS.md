@@ -1,6 +1,6 @@
-# BORU Protocol Gates
+﻿# SANDBOX Protocol Gates
 
-> These gates are BORU's immune system. Every code change must pass all applicable gates before proceeding.
+> These gates are SANDBOX's immune system. Every code change must pass all applicable gates before proceeding.
 > If any gate fails — **STOP. Explain. Fix. Then proceed.**
 
 ---
@@ -20,14 +20,14 @@ Gate status: `✅ PASS` | `❌ BLOCK` | `⚠️ REVIEW`
 **Rules:**
 - [ ] RAM cost of this crate is documented in the PR/commit
 - [ ] Crate is `no_std` compatible OR justification is written in commit message
-- [ ] Release binary after adding crate is still **< 10MB** (`ls -lh target/release/boru`)
+- [ ] Release binary after adding crate is still **< 10MB** (`ls -lh target/release/sandbox`)
 - [ ] Crate does NOT pull in: `tokio` (full), `openssl`, `serde` (all-features), `hyper` (full)
 
 **BLOCK if:** Binary exceeds 10MB or banned transitive deps appear.
 
 ```bash
 # Check binary size
-cargo build --release && ls -lh target/release/boru
+cargo build --release && ls -lh target/release/sandbox
 
 # Check dependency tree for banned deps
 cargo tree | grep -E "openssl|hyper|tokio-full"
@@ -57,12 +57,12 @@ grep -rn "Command::new\|std::process::Command\|libc::exec" src/ \
 
 ## GATE 3 — Socket Contract Freeze
 
-**Trigger:** Any change to `src/socket/` or `/tmp/momo/` path strings
+**Trigger:** Any change to `src/socket/` or `/tmp/ruthenlabs/` path strings
 
 **Rules:**
-- [ ] BORU socket path is exactly: `/tmp/momo/boru.sock`
-- [ ] YOMI socket path stub is exactly: `/tmp/momo/yomi.sock`
-- [ ] SUJI socket path stub is exactly: `/tmp/momo/suji.sock`
+- [ ] SANDBOX socket path is exactly: `/tmp/ruthenlabs/sandbox.sock`
+- [ ] INDEXER socket path stub is exactly: `/tmp/ruthenlabs/indexer.sock`
+- [ ] ORCHESTRATOR socket path stub is exactly: `/tmp/ruthenlabs/orchestrator.sock`
 - [ ] No socket paths are hardcoded outside `src/socket/config.rs`
 
 **BLOCK if:** Socket paths change or appear as string literals outside the config file.
@@ -81,8 +81,8 @@ grep -rn "\.sock" src/ | grep -v "src/socket/config.rs"
 
 **Rules:**
 - [ ] No `reqwest`, `hyper`, `ureq`, or any HTTP client crate added
-- [ ] No TCP `bind()` or `connect()` outside `// MOMO-NETWORK-ALLOWED` zones
-- [ ] BORU communicates only via Unix sockets
+- [ ] No TCP `bind()` or `connect()` outside `// RUTHENLABS-NETWORK-ALLOWED` zones
+- [ ] SANDBOX communicates only via Unix sockets
 
 **BLOCK if:** Any network-capable crate appears in `Cargo.toml`.
 
@@ -119,16 +119,16 @@ grep -i "tauri" Cargo.toml
 **Trigger:** Any new feature, data structure, or background task
 
 **Rules:**
-- [ ] BORU idle RSS stays **< 20MB** (measure after feature is running)
+- [ ] SANDBOX idle RSS stays **< 20MB** (measure after feature is running)
 - [ ] No unbounded `Vec`, `HashMap`, or channel buffers without explicit capacity limits
 - [ ] Audit log uses ring buffer (max 10,000 entries) — no unbounded growth
 
 **Measure:**
 ```bash
-# Run BORU daemon, then check RSS
-./target/release/boru daemon &
+# Run SANDBOX daemon, then check RSS
+./target/release/sandbox daemon &
 sleep 2
-ps aux | grep boru | awk '{print $6}' # RSS in KB, must be < 20480
+ps aux | grep sandbox | awk '{print $6}' # RSS in KB, must be < 20480
 ```
 
 ---

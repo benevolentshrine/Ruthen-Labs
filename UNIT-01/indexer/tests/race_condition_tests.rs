@@ -1,9 +1,9 @@
-/// Race Condition: Concurrent CLI + Watcher — Integration Tests
+﻿/// Race Condition: Concurrent CLI + Watcher — Integration Tests
 ///
 /// Run with:
 ///   cargo test --test race_condition_tests
 ///
-/// Spawns 3 concurrent `yomi index` processes against the same index file while
+/// Spawns 3 concurrent `indexer index` processes against the same index file while
 /// a watcher is also running. The fs2 exclusive lock must prevent all corruption.
 /// Asserts: all processes exit 0, final index.json is valid JSON, no .tmp leftover.
 
@@ -41,12 +41,12 @@ fn test_concurrent_index_no_corruption() {
     // Start watcher background process
     let mut watcher = Command::new("cargo")
         .args([
-            "run", "--bin", "yomi", "--",
+            "run", "--bin", "indexer", "--",
             "index",
             "--path", watch_dir.to_str().unwrap(),
             "--watch",
         ])
-        .env("YOMI_DATA_DIR", &data_dir)
+        .env("INDEXER_DATA_DIR", &data_dir)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .spawn()
@@ -55,16 +55,16 @@ fn test_concurrent_index_no_corruption() {
     // Wait for initial index.json to be written
     assert!(wait_for_file(&index_path, 15_000), "Watcher never created index.json");
 
-    // Spawn 3 concurrent `yomi index` processes
+    // Spawn 3 concurrent `indexer index` processes
     let mut indexers: Vec<_> = (0..3)
         .map(|_| {
             Command::new("cargo")
                 .args([
-                    "run", "--bin", "yomi", "--",
+                    "run", "--bin", "indexer", "--",
                     "index",
                     "--path", watch_dir.to_str().unwrap(),
                 ])
-                .env("YOMI_DATA_DIR", &data_dir)
+                .env("INDEXER_DATA_DIR", &data_dir)
                 .stdout(Stdio::null())
                 .stderr(Stdio::null())
                 .spawn()

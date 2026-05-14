@@ -1,4 +1,4 @@
-/// Atomic Writes & Data Integrity — Integration Tests
+﻿/// Atomic Writes & Data Integrity — Integration Tests
 ///
 /// Run with:
 ///   cargo test --test atomic_write_tests
@@ -11,15 +11,15 @@ use std::process::{Command, Stdio};
 use std::time::Duration;
 use tempfile::TempDir;
 
-fn run_yomi_index(watch_dir: &PathBuf, data_dir: &PathBuf) -> std::process::Output {
+fn run_indexer_index(watch_dir: &PathBuf, data_dir: &PathBuf) -> std::process::Output {
     Command::new("cargo")
-        .args(["run", "--bin", "yomi", "--", "index", "--path",
+        .args(["run", "--bin", "indexer", "--", "index", "--path",
                watch_dir.to_str().unwrap()])
-        .env("YOMI_DATA_DIR", data_dir)
+        .env("INDEXER_DATA_DIR", data_dir)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .output()
-        .expect("Failed to run yomi index")
+        .expect("Failed to run indexer index")
 }
 
 fn read_index(data_dir: &PathBuf) -> Vec<serde_json::Value> {
@@ -36,19 +36,19 @@ fn read_index(data_dir: &PathBuf) -> Vec<serde_json::Value> {
 // src/file_ops.rs and always runs in CI without any multi-partition setup.
 //
 // This integration test verifies end-to-end behaviour with a real cross-FS
-// setup. It is #[ignore] because it requires YOMI_CROSS_FS_DIR to point to
+// setup. It is #[ignore] because it requires INDEXER_CROSS_FS_DIR to point to
 // a path on a different partition/volume than the temp dir.
 //
 // Run manually:
-//   $env:YOMI_CROSS_FS_DIR = "D:\tmp_yomi"   # Windows second volume
+//   $env:INDEXER_CROSS_FS_DIR = "D:\tmp_indexer"   # Windows second volume
 //   cargo test --test atomic_write_tests test_cross_filesystem_fallback -- --include-ignored
 #[test]
 #[ignore]
 fn test_cross_filesystem_fallback() {
-    let cross_fs_dir = match std::env::var("YOMI_CROSS_FS_DIR") {
+    let cross_fs_dir = match std::env::var("INDEXER_CROSS_FS_DIR") {
         Ok(d) => PathBuf::from(d),
         Err(_) => {
-            eprintln!("YOMI_CROSS_FS_DIR not set — skipping");
+            eprintln!("INDEXER_CROSS_FS_DIR not set — skipping");
             return;
         }
     };
@@ -57,16 +57,16 @@ fn test_cross_filesystem_fallback() {
     fs::write(watch_tmp.path().join("file.txt"), b"hello").unwrap();
 
     let output = Command::new("cargo")
-        .args(["run", "--bin", "yomi", "--", "index",
+        .args(["run", "--bin", "indexer", "--", "index",
                "--path", watch_tmp.path().to_str().unwrap()])
-        .env("YOMI_DATA_DIR", data_tmp.path())
-        .env("YOMI_TMP_DIR", &cross_fs_dir)
+        .env("INDEXER_DATA_DIR", data_tmp.path())
+        .env("INDEXER_TMP_DIR", &cross_fs_dir)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .output()
-        .expect("Failed to run yomi index");
+        .expect("Failed to run indexer index");
 
-    assert!(output.status.success(), "yomi index failed on cross-FS setup: {}",
+    assert!(output.status.success(), "indexer index failed on cross-FS setup: {}",
         String::from_utf8_lossy(&output.stderr));
     let records = read_index(&data_tmp.path().to_path_buf());
     assert!(!records.is_empty(), "No records indexed");
@@ -88,16 +88,16 @@ fn test_disk_full_index_untouched() {
 
     fs::write(watch_tmp.path().join("a.txt"), b"content").unwrap();
 
-    // Inject disk-full via YOMI_FAIL_WRITE=1
+    // Inject disk-full via INDEXER_FAIL_WRITE=1
     let output = Command::new("cargo")
-        .args(["run", "--bin", "yomi", "--", "index",
+        .args(["run", "--bin", "indexer", "--", "index",
                "--path", watch_tmp.path().to_str().unwrap()])
-        .env("YOMI_DATA_DIR", &data_dir)
-        .env("YOMI_FAIL_WRITE", "1")
+        .env("INDEXER_DATA_DIR", &data_dir)
+        .env("INDEXER_FAIL_WRITE", "1")
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .output()
-        .expect("Failed to run yomi index");
+        .expect("Failed to run indexer index");
 
     // index.json must be byte-for-byte unchanged
     let after = fs::read(&index_path).expect("index.json disappeared");
@@ -130,21 +130,21 @@ fn test_json_corruption_recovery() {
 
     // Scenario A: truncated JSON
     fs::write(&index_path, b"{ truncated garbage [[[").unwrap();
-    let out = run_yomi_index(&watch_tmp.path().to_path_buf(), &data_dir);
+    let out = run_indexer_index(&watch_tmp.path().to_path_buf(), &data_dir);
     assert!(out.status.success(), "Panicked on truncated index.json");
     let records = read_index(&data_dir);
     assert_eq!(records.len(), 5, "Not all files re-indexed after truncation: {}", records.len());
 
     // Scenario B: invalid UTF-8
     fs::write(&index_path, &[0xFF, 0xFE, 0xFD, 0x00, 0x01]).unwrap();
-    let out = run_yomi_index(&watch_tmp.path().to_path_buf(), &data_dir);
+    let out = run_indexer_index(&watch_tmp.path().to_path_buf(), &data_dir);
     assert!(out.status.success(), "Panicked on invalid UTF-8 index.json");
     let records = read_index(&data_dir);
     assert_eq!(records.len(), 5, "Not all files re-indexed after UTF-8 corruption");
 
     // Scenario C: empty file
     fs::write(&index_path, b"").unwrap();
-    let out = run_yomi_index(&watch_tmp.path().to_path_buf(), &data_dir);
+    let out = run_indexer_index(&watch_tmp.path().to_path_buf(), &data_dir);
     assert!(out.status.success(), "Panicked on empty index.json");
     let records = read_index(&data_dir);
     assert_eq!(records.len(), 5, "Not all files re-indexed after empty index.json");
@@ -164,7 +164,7 @@ fn test_idempotent_index() {
     }
 
     // First run
-    let out1 = run_yomi_index(&watch_tmp.path().to_path_buf(), &data_dir);
+    let out1 = run_indexer_index(&watch_tmp.path().to_path_buf(), &data_dir);
     assert!(out1.status.success(), "First index run failed");
 
     let content1 = fs::read(&index_path).expect("index.json missing after first run");
@@ -174,7 +174,7 @@ fn test_idempotent_index() {
     std::thread::sleep(Duration::from_millis(2100));
 
     // Second run — identical directory
-    let out2 = run_yomi_index(&watch_tmp.path().to_path_buf(), &data_dir);
+    let out2 = run_indexer_index(&watch_tmp.path().to_path_buf(), &data_dir);
     assert!(out2.status.success(), "Second index run failed");
 
     let content2 = fs::read(&index_path).expect("index.json missing after second run");

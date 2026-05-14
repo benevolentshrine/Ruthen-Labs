@@ -1,4 +1,4 @@
-use std::fs;
+﻿use std::fs;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::process::{Command, Child};
@@ -19,11 +19,11 @@ impl DaemonContext {
         let mut child = Command::new("cargo")
             .arg("run")
             .arg("--bin")
-            .arg("yomi")
+            .arg("indexer")
             .arg("--")
             .arg("daemon")
             .arg("start")
-            .env("YOMI_DATA_DIR", &dir_path)
+            .env("INDEXER_DATA_DIR", &dir_path)
             .spawn()
             .expect("Failed to spawn daemon");
 

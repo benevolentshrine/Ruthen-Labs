@@ -1,9 +1,9 @@
-#!/bin/bash
+﻿#!/bin/bash
 # scripts/prepare_benchmarks.sh
 
 # Create benchmarks directory if it doesn't exist
-mkdir -p "C:\Momo\Indexer\Yomi/benchmarks"
-cd "C:\Momo\Indexer\Yomi/benchmarks"
+mkdir -p "C:\RuthenLabs\Indexer\Indexer/benchmarks"
+cd "C:\RuthenLabs\Indexer\Indexer/benchmarks"
 
 echo "🚀 Starting dataset preparation..."
 

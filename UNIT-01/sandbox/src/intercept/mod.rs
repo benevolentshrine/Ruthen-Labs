@@ -1,4 +1,4 @@
-//! BORU Intercept — Syscall/file/network intercept rules
+﻿//! SANDBOX Intercept — Syscall/file/network intercept rules
 //!
 //! This module defines all interception policies. No bare execution
 //! outside this module and the cage.
@@ -471,7 +471,7 @@ pub mod net {
 
     /// BLOCK all outbound network calls
     ///
-    /// GATE 4: No network calls outside MOMO-NETWORK-ALLOWED zones
+    /// GATE 4: No network calls outside RUTHENLABS-NETWORK-ALLOWED zones
     pub fn allow_network() -> Verdict {
         Verdict::Blocked {
             reason: "Network access blocked by cage policy".to_string(),

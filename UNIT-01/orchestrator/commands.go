@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// HandleCommandCLI processes slash commands in the Suji terminal.
+// HandleCommandCLI processes slash commands in the Orchestrator terminal.
 func HandleCommandCLI(input string, cfg *Config, history *History, llm *LLMClient, ws *Workspace) {
 	parts := strings.Fields(input)
 	if len(parts) == 0 {
@@ -52,7 +52,7 @@ func showHelp() {
 	fmt.Println(" /doctor   - Run health check on Engine")
 	fmt.Println(" /undo     - Revert the last file change (via Sandbox)")
 	fmt.Println(" /model    - Switch active Ollama engine/tier")
-	fmt.Println(" /reindex  - Force Yomi to re-scan your workspace")
+	fmt.Println(" /reindex  - Force Indexer to re-scan your workspace")
 	fmt.Println(" /clear    - Wipe conversation history")
 	fmt.Println(" /exit     - Terminate session")
 	fmt.Println()

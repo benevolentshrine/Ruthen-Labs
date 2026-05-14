@@ -1,4 +1,4 @@
-//! Binary Runner — seccomp + Linux namespaces for native binaries
+﻿//! Binary Runner — seccomp + Linux namespaces for native binaries
 //!
 //! Handles ELF, PE, Mach-O, and other native executable formats.
 //! Uses ptrace or bubblewrap for sandboxing.
@@ -55,7 +55,7 @@ impl Runner for BinaryRunner {
         _mode: SecurityMode,
     ) -> Result<RunnerVerdict> {
         // For Phase 1: Native binary execution is NOT supported
-        // BORU is a WASM-first sandbox for security
+        // SANDBOX is a WASM-first sandbox for security
         //
         // Future work:
         // - Use ptrace to intercept syscalls
@@ -65,7 +65,7 @@ impl Runner for BinaryRunner {
 
         Ok(RunnerVerdict::Unsupported {
             reason: "Native binary execution is not supported in Phase 1. \
-                      BORU is a WASM-first security sandbox. \
+                      SANDBOX is a WASM-first security sandbox. \
                       Convert your binary to WASM or use the interpreter runner."
                 .to_string(),
         })

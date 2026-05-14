@@ -1,4 +1,4 @@
-use crate::DaemonAction;
+﻿use crate::DaemonAction;
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
@@ -26,8 +26,8 @@ struct JsonRpcResponse {
 
 // ── Directory & file paths ────────────────────────────────────────────────────
 
-fn get_yomi_dir() -> PathBuf {
-    if let Ok(env_dir) = std::env::var("YOMI_DATA_DIR") {
+fn get_indexer_dir() -> PathBuf {
+    if let Ok(env_dir) = std::env::var("INDEXER_DATA_DIR") {
         let dir = PathBuf::from(env_dir);
         if !dir.exists() {
             let _ = std::fs::create_dir_all(&dir);
@@ -45,10 +45,10 @@ fn get_yomi_dir() -> PathBuf {
     }
 }
 
-fn get_port_file() -> PathBuf  { get_yomi_dir().join("port")       }
-fn get_token_file() -> PathBuf { get_yomi_dir().join("auth_token") }
-fn get_pid_file() -> PathBuf   { get_yomi_dir().join("daemon.pid") }
-fn get_log_file() -> PathBuf   { get_yomi_dir().join("daemon.log") }
+fn get_port_file() -> PathBuf  { get_indexer_dir().join("port")       }
+fn get_token_file() -> PathBuf { get_indexer_dir().join("auth_token") }
+fn get_pid_file() -> PathBuf   { get_indexer_dir().join("daemon.pid") }
+fn get_log_file() -> PathBuf   { get_indexer_dir().join("daemon.log") }
 
 // ── PID helpers ───────────────────────────────────────────────────────────────
 
@@ -101,7 +101,7 @@ pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn s
     match action {
         DaemonAction::Start => {
             // ── Internal run mode (already detached child) ──────────────────
-            if std::env::var("YOMI_DAEMON_INTERNAL").is_ok() {
+            if std::env::var("INDEXER_DAEMON_INTERNAL").is_ok() {
                 run_daemon_server().await?;
                 return Ok(());
             }
@@ -126,7 +126,7 @@ pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn s
                 use std::os::unix::process::CommandExt;
                 let _child = std::process::Command::new(&exe)
                     .args(["daemon", "start"])
-                    .env("YOMI_DAEMON_INTERNAL", "1")
+                    .env("INDEXER_DAEMON_INTERNAL", "1")
                     .stdin(std::process::Stdio::null())
                     .stdout(log_file.try_clone()?)
                     .stderr(log_file)
@@ -141,7 +141,7 @@ pub async fn handle_daemon_action(action: &DaemonAction) -> Result<(), Box<dyn s
                 const CREATE_NO_WINDOW: u32 = 0x08000000;
                 let _child = std::process::Command::new(&exe)
                     .args(["daemon", "start"])
-                    .env("YOMI_DAEMON_INTERNAL", "1")
+                    .env("INDEXER_DAEMON_INTERNAL", "1")
                     .stdin(std::process::Stdio::null())
                     .stdout(log_file.try_clone()?)
                     .stderr(log_file)

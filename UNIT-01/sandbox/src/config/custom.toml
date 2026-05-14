@@ -1,8 +1,8 @@
-# BORU Custom Configuration
-# Place this file at ~/.config/boru/boru.custom.toml
+﻿# SANDBOX Custom Configuration
+# Place this file at ~/.config/sandbox/sandbox.custom.toml
 # or use the --config flag to specify a custom path
 
-# SECURITY WARNING: This file controls what BORU allows in CUSTOM mode.
+# SECURITY WARNING: This file controls what SANDBOX allows in CUSTOM mode.
 # Use with caution and review all rules carefully.
 
 # Paths that are always allowed (exact match or glob patterns)

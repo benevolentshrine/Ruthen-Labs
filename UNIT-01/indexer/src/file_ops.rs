@@ -1,4 +1,4 @@
-
+﻿
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use tracing::{error, info};
@@ -37,14 +37,14 @@ impl IndexManager {
 
 /// Legacy support for path resolution
 pub fn get_index_dir() -> PathBuf {
-    if let Ok(env_dir) = std::env::var("YOMI_DATA_DIR") {
+    if let Ok(env_dir) = std::env::var("INDEXER_DATA_DIR") {
         let dir = PathBuf::from(env_dir);
         if !dir.exists() {
             let _ = std::fs::create_dir_all(&dir);
         }
         return dir;
     }
-    if let Some(proj_dirs) = directories::ProjectDirs::from("com", "momo", "yomi") {
+    if let Some(proj_dirs) = directories::ProjectDirs::from("com", "ruthenlabs", "indexer") {
         let data_dir = proj_dirs.data_dir().to_path_buf();
         if !data_dir.exists() {
             std::fs::create_dir_all(&data_dir).unwrap_or_else(|e| {
@@ -53,6 +53,6 @@ pub fn get_index_dir() -> PathBuf {
         }
         data_dir
     } else {
-        PathBuf::from("yomi_index")
+        PathBuf::from("indexer_index")
     }
 }

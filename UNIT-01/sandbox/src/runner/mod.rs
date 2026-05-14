@@ -1,4 +1,4 @@
-//! BORU Runners — Execution strategies for different file types
+﻿//! SANDBOX Runners — Execution strategies for different file types
 //!
 //! Execution strategies:
 //! - WasmRunner: wasmtime sandbox (strongest isolation)

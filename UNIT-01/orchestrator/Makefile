@@ -1,4 +1,4 @@
-BINARY=unit-01
+﻿BINARY=unit-01
 VERSION=0.1.0
 BUILD_DIR=bin
 
@@ -7,7 +7,7 @@ BUILD_DIR=bin
 all: build
 
 build:
-	@echo "Building Suji $(VERSION)..."
+	@echo "Building Orchestrator $(VERSION)..."
 	@go build -o $(BINARY) .
 
 run:

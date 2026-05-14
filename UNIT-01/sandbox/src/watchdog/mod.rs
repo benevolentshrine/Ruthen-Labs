@@ -1,4 +1,4 @@
-//! BORU Watchdog — Real-time file monitoring
+﻿//! SANDBOX Watchdog — Real-time file monitoring
 //!
 //! Monitors a directory continuously.
 //! Any new file dropped -> auto-scanned instantly.

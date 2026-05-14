@@ -1,7 +1,7 @@
-Format: https://www.openssl.org/source/license.html
+﻿Format: https://www.openssl.org/source/license.html
 Upstream-Name: boru
-Upstream-Contact: BORU Team <boru@projectmomo.dev>
-Source: https://github.com/sayan5069/Momo.co
+Upstream-Contact: BORU Team <boru@projectruthenlabs.dev>
+Source: https://github.com/sayan5069/RuthenLabs.co
 
 Files: *
 Copyright: 2024-2026 BORU Team

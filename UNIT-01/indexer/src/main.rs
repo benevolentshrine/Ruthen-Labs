@@ -1,4 +1,4 @@
-mod models;
+﻿mod models;
 mod walker;
 mod hasher;
 mod daemon;
@@ -44,9 +44,9 @@ enum Commands {
     },
     /// List indexed files
     List,
-    /// Create .yomi.toml configuration
+    /// Create .indexer.toml configuration
     Init,
-    /// Manage the Yomi background daemon
+    /// Manage the Indexer background daemon
     Daemon {
         #[command(subcommand)]
         action: DaemonAction,
@@ -117,21 +117,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             // Note: List implementation will be fully fleshed out in query/storage modules
         }
         Commands::Init => {
-            let config_path = PathBuf::from(".yomi.toml");
+            let config_path = PathBuf::from(".indexer.toml");
             if config_path.exists() {
-                info!(".yomi.toml already exists!");
+                info!(".indexer.toml already exists!");
             } else {
                 match File::create(&config_path) {
                     Ok(mut file) => {
-                        let default_config = "[indexer]\nthreads = 4\n\n[ignore]\ncustom_ignore = \".yomiignore\"\n";
+                        let default_config = "[indexer]\nthreads = 4\n\n[ignore]\ncustom_ignore = \".indexerignore\"\n";
                         if let Err(e) = file.write_all(default_config.as_bytes()) {
-                            error!("Failed to write to .yomi.toml: {}", e);
+                            error!("Failed to write to .indexer.toml: {}", e);
                         } else {
-                            info!("Successfully created .yomi.toml configuration file.");
+                            info!("Successfully created .indexer.toml configuration file.");
                         }
                     }
                     Err(e) => {
-                        error!("Failed to create .yomi.toml: {}", e);
+                        error!("Failed to create .indexer.toml: {}", e);
                     }
                 }
             }

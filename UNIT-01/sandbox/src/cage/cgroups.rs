@@ -1,4 +1,4 @@
-//! BORU Cgroups v2 — Resource Determinism Layer
+﻿//! SANDBOX Cgroups v2 — Resource Determinism Layer
 //!
 //! This module implements Phase 2.0: Resource Determinism via Linux Cgroups v2.
 //!
@@ -37,9 +37,9 @@ const CGROUP_ROOT: &str = "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.s
 ///
 /// Created before fork(), child added after fork(), auto-destroyed on Drop.
 pub struct CgroupJail {
-    /// Unique name: "boru-<uuid>"
+    /// Unique name: "sandbox-<uuid>"
     name: String,
-    /// Full path: /sys/fs/cgroup/boru-<uuid>
+    /// Full path: /sys/fs/cgroup/sandbox-<uuid>
     cgroup_path: PathBuf,
     /// Whether the cgroup was successfully created
     active: bool,

@@ -1,13 +1,13 @@
-%define _name boru
+﻿%define _name sandbox
 %define _version 0.3.0
 %define _release 1
 
 Name:           %{_name}
 Version:        %{_version}
 Release:        %{_release}%{?dist}
-Summary:        Security Cage engine for AI-generated code — Project MOMO
+Summary:        Security Cage engine for AI-generated code — Project RUTHENLABS
 License:        Apache-2.0
-URL:            https://github.com/sayan5069/Momo.co
+URL:            https://github.com/sayan5069/RuthenLabs.co
 Source0:        %{_name}-%{_version}.tar.gz
 
 BuildRequires:  cargo >= 1.75
@@ -15,11 +15,11 @@ BuildRequires:  rust >= 1.75
 BuildRequires:  gcc
 BuildRequires:  make
 
-# BORU runs exclusively on Unix-like systems (Linux + macOS)
+# SANDBOX runs exclusively on Unix-like systems (Linux + macOS)
 ExclusiveArch:  x86_64 aarch64
 
 %description
-BORU is the Security Cage engine of Project MOMO, a local-first sovereign
+SANDBOX is the Security Cage engine of Project RUTHENLABS, a local-first sovereign
 AI development suite. It intercepts and sandboxes AI-generated code before
 it touches your system using WebAssembly (wasmtime) sandboxing.
 
@@ -42,61 +42,61 @@ cargo build --release
 
 %install
 # Binary
-install -Dm755 target/release/boru %{buildroot}%{_bindir}/boru
+install -Dm755 target/release/sandbox %{buildroot}%{_bindir}/sandbox
 
 # Man page (if exists)
-if [ -f docs/boru.1 ]; then
-    install -Dm644 docs/boru.1 %{buildroot}%{_mandir}/man1/boru.1
+if [ -f docs/sandbox.1 ]; then
+    install -Dm644 docs/sandbox.1 %{buildroot}%{_mandir}/man1/sandbox.1
 fi
 
 # Create runtime directories
-install -dm755 %{buildroot}/tmp/momo
-install -dm700 %{buildroot}/tmp/momo/quarantine
+install -dm755 %{buildroot}/tmp/ruthenlabs
+install -dm700 %{buildroot}/tmp/ruthenlabs/quarantine
 
 %post
 # Create runtime directories if they don't exist
-if [ ! -d "/tmp/momo" ]; then
-    mkdir -p /tmp/momo
-    chmod 0755 /tmp/momo
+if [ ! -d "/tmp/ruthenlabs" ]; then
+    mkdir -p /tmp/ruthenlabs
+    chmod 0755 /tmp/ruthenlabs
 fi
 
-if [ ! -d "/tmp/momo/quarantine" ]; then
-    mkdir -p /tmp/momo/quarantine
-    chmod 0700 /tmp/momo/quarantine
+if [ ! -d "/tmp/ruthenlabs/quarantine" ]; then
+    mkdir -p /tmp/ruthenlabs/quarantine
+    chmod 0700 /tmp/ruthenlabs/quarantine
 fi
 
-if [ ! -d "/var/log/boru" ]; then
-    mkdir -p /var/log/boru
-    chmod 0755 /var/log/boru
+if [ ! -d "/var/log/sandbox" ]; then
+    mkdir -p /var/log/sandbox
+    chmod 0755 /var/log/sandbox
 fi
 
-if [ ! -d "/var/lib/boru" ]; then
-    mkdir -p /var/lib/boru
-    chmod 0755 /var/lib/boru
+if [ ! -d "/var/lib/sandbox" ]; then
+    mkdir -p /var/lib/sandbox
+    chmod 0755 /var/lib/sandbox
 fi
 
 echo ""
 echo "  ╔═══════════════════════════════════════════╗"
-echo "  ║   BORU installed successfully 🥊          ║"
+echo "  ║   SANDBOX installed successfully 🥊          ║"
 echo "  ║                                           ║"
-echo "  ║   Run 'boru daemon' to start the server   ║"
-echo "  ║   Run 'boru tui' for the dashboard        ║"
+echo "  ║   Run 'sandbox daemon' to start the server   ║"
+echo "  ║   Run 'sandbox tui' for the dashboard        ║"
 echo "  ╚═══════════════════════════════════════════╝"
 echo ""
 
 %postun
 if [ "$1" = 0 ]; then
     # Full removal — clean up socket only (preserve user data)
-    rm -f /tmp/momo/boru.sock 2>/dev/null || true
+    rm -f /tmp/ruthenlabs/sandbox.sock 2>/dev/null || true
 fi
 
 %files
 %license LICENSE
 %doc README.md ARCHITECTURE.md AGENTS.md CHANGELOG.md
-%{_bindir}/boru
+%{_bindir}/sandbox
 
 %changelog
-* Thu Apr 24 2026 BORU Team <boru@projectmomo.dev> - 0.3.0-1
+* Thu Apr 24 2026 SANDBOX Team <sandbox@projectruthenlabs.dev> - 0.3.0-1
 - Initial RPM package release
 - WASM sandboxing with wasmtime
 - TUI dashboard (ratatui)

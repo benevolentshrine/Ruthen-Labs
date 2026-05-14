@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-Welcome to SumiLabs. This guide outlines the strict rules for the 3 founders (Lichi, Sayan, Kshitij) to maintain high-quality code and ensure operational discipline.
+Welcome to RuthenLabs. This guide outlines the strict rules for the 3 founders (Lichi, Sayan, Kshitij) to maintain high-quality code and ensure operational discipline.
 
 ## 1. DCO Enforcement
 Every commit **MUST** be signed to indicate your agreement to the Developer Certificate of Origin (DCO).
@@ -23,4 +23,4 @@ Every commit **MUST** be signed to indicate your agreement to the Developer Cert
 - **Rust:** All Rust code must be formatted using `cargo fmt` and pass `cargo clippy`.
 - **Go:** All Go code must be formatted using `gofmt` and pass `go vet`.
 
-By strictly following these rules, we ensure the integrity, security, and quality of SumiLabs.
+By strictly following these rules, we ensure the integrity, security, and quality of RuthenLabs.

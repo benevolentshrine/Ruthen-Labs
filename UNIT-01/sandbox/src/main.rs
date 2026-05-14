@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+﻿#![allow(dead_code)]
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
@@ -17,11 +17,11 @@ mod threat;
 mod tui;
 mod watchdog;
 
-/// BORU — Security Cage Engine for Project MOMO
+/// SANDBOX — Security Cage Engine for Project RUTHENLABS
 /// "What runs here, stays here."
 #[derive(Parser)]
-#[command(name = "boru")]
-#[command(about = "BORU Security Cage — Universal file sandbox")]
+#[command(name = "sandbox")]
+#[command(about = "SANDBOX Security Cage — Universal file sandbox")]
 #[command(version = "0.3.0")]
 struct Cli {
     #[command(subcommand)]
@@ -58,7 +58,7 @@ enum Commands {
 
     /// Start the socket daemon
     Daemon {
-        /// Socket path (default uses std::env::temp_dir()/sumi/boru.sock)
+        /// Socket path (default uses std::env::temp_dir()/sumi/sandbox.sock)
         #[arg(long)]
         socket: Option<PathBuf>,
     },
@@ -216,7 +216,7 @@ enum Commands {
 fn main() -> ExitCode {
     // Initialize tracing
     let _ = tracing_subscriber::fmt()
-        .with_env_filter("boru=info")
+        .with_env_filter("sandbox=info")
         .try_init();
 
     if let Err(e) = run() {
@@ -366,7 +366,7 @@ fn run() -> Result<()> {
         Commands::Deps => {
             use runner::RunnerRouter;
 
-            println!("BORU Dependency Status");
+            println!("SANDBOX Dependency Status");
             println!("=======================");
             println!();
 
@@ -453,7 +453,7 @@ fn run() -> Result<()> {
                 .with_mode(security_mode)
                 .with_recursive(recursive);
 
-            println!("🔍 BORU Watchdog — watching {} ({:?} mode)", path.display(), security_mode);
+            println!("🔍 SANDBOX Watchdog — watching {} ({:?} mode)", path.display(), security_mode);
             println!("Press Ctrl+C to stop.\n");
 
             let (tx, rx) = std::sync::mpsc::channel();
@@ -626,7 +626,7 @@ fn run() -> Result<()> {
                 manager.clear(&session_id)?;
                 println!("Cleared shadow for session: {}", session_id);
             } else {
-                println!("Usage: boru rollback --list | --session <ID> [--dry-run] | --clear <ID>");
+                println!("Usage: sandbox rollback --list | --session <ID> [--dry-run] | --clear <ID>");
             }
         }
     }

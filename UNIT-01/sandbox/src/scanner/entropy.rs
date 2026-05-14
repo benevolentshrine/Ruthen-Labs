@@ -1,4 +1,4 @@
-//! BORU Entropy Scanner — Shannon entropy detection for packed/obfuscated files
+﻿//! SANDBOX Entropy Scanner — Shannon entropy detection for packed/obfuscated files
 //!
 //! High entropy = likely encrypted, packed, or obfuscated = suspicious.
 //!

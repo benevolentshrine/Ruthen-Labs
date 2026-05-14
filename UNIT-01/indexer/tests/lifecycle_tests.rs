@@ -1,9 +1,9 @@
-/// Daemon Lifecycle & Crash Recovery — Integration Tests
+﻿/// Daemon Lifecycle & Crash Recovery — Integration Tests
 ///
 /// Run with:
 ///   cargo test --test lifecycle_tests
 ///
-/// Each test spawns a real `yomi` binary in a fresh temp dir via YOMI_DATA_DIR,
+/// Each test spawns a real `indexer` binary in a fresh temp dir via INDEXER_DATA_DIR,
 /// exercises the scenario, and asserts daemon state through file inspection and
 /// TCP probing. No mocks, no stubs.
 
@@ -36,9 +36,9 @@ impl DaemonCtx {
 
     fn start_in(dir: PathBuf, _tmp: Option<TempDir>) -> Self {
         let child = Command::new("cargo")
-            .args(["run", "--bin", "yomi", "--", "daemon", "start"])
-            .env("YOMI_DATA_DIR", &dir)
-            .env("YOMI_DAEMON_INTERNAL", "1") // skip re-spawn; run server directly
+            .args(["run", "--bin", "indexer", "--", "daemon", "start"])
+            .env("INDEXER_DATA_DIR", &dir)
+            .env("INDEXER_DAEMON_INTERNAL", "1") // skip re-spawn; run server directly
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()
@@ -229,10 +229,10 @@ fn test_stale_state_detection() {
     fs::write(dir.join("auth_token"), b"stale-token").unwrap();
     fs::write(dir.join("daemon.pid"), stale_pid.to_string().as_bytes()).unwrap();
 
-    // Run `yomi daemon status` — must not hang, must not report "running"
+    // Run `indexer daemon status` — must not hang, must not report "running"
     let output = Command::new("cargo")
-        .args(["run", "--bin", "yomi", "--", "daemon", "status"])
-        .env("YOMI_DATA_DIR", &dir)
+        .args(["run", "--bin", "indexer", "--", "daemon", "status"])
+        .env("INDEXER_DATA_DIR", &dir)
         .output()
         .expect("Failed to run status");
 
@@ -261,12 +261,12 @@ fn test_background_detachment() {
     let tmp = TempDir::new().unwrap();
     let dir = tmp.path().to_path_buf();
 
-    // Call `yomi daemon start` WITHOUT YOMI_DAEMON_INTERNAL so it runs the
+    // Call `indexer daemon start` WITHOUT INDEXER_DAEMON_INTERNAL so it runs the
     // real detach path. It should return immediately.
     let before = std::time::Instant::now();
     let status = Command::new("cargo")
-        .args(["run", "--bin", "yomi", "--", "daemon", "start"])
-        .env("YOMI_DATA_DIR", &dir)
+        .args(["run", "--bin", "indexer", "--", "daemon", "start"])
+        .env("INDEXER_DATA_DIR", &dir)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .status()

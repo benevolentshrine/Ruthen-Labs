@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+﻿use std::collections::HashSet;
 use std::path::PathBuf;
 use std::sync::mpsc::RecvTimeoutError;
 use std::sync::{Arc, Mutex};
@@ -12,7 +12,7 @@ use crate::index::storage::Storage;
 use crate::models::FileRecord;
 use crate::walker::{process_file, Walker};
 
-// TODO: Make DEBOUNCE_MS configurable via .yomi.toml in Phase 3 if users request it.
+// TODO: Make DEBOUNCE_MS configurable via .indexer.toml in Phase 3 if users request it.
 const DEBOUNCE_MS: u64 = 200;
 const BURST_CAP: usize = 500;
 

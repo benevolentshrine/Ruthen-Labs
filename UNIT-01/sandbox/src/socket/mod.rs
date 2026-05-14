@@ -1,6 +1,6 @@
-//! BORU Socket — Unix socket server
+﻿//! SANDBOX Socket — Unix socket server
 //!
-//! Handles incoming execution requests from SUJI/YOMI over local Unix sockets.
+//! Handles incoming execution requests from ORCHESTRATOR/INDEXER over local Unix sockets.
 //! No network code here — Unix sockets only.
 
 use anyhow::{Context, Result};
@@ -30,10 +30,10 @@ type SharedState = Arc<Mutex<DaemonState>>;
 /// Socket configuration (GATE 3: all paths centralized here)
 pub mod config;
 
-/// Ecosystem integration (auto-discovery with Nuki/Suji)
+/// Ecosystem integration (auto-discovery with Nuki/Orchestrator)
 pub mod ecosystem;
 
-/// Socket stubs for YOMI and SUJI (Phase 2)
+/// Socket stubs for INDEXER and ORCHESTRATOR (Phase 2)
 pub mod stubs;
 
 /// Maximum request size: 10MB
@@ -48,7 +48,7 @@ const MAX_REQUEST_SIZE: usize = config::MAX_REQUEST_SIZE;
 pub async fn run_daemon(socket_path: Option<PathBuf>) -> Result<()> {
     let path = socket_path.unwrap_or_else(config::sandbox_socket_path);
 
-    tracing::info!("Starting BORU socket daemon on {:?}", path);
+    tracing::info!("Starting SANDBOX socket daemon on {:?}", path);
 
     #[cfg(unix)]
     {
@@ -76,7 +76,7 @@ async fn run_unix_daemon(path: PathBuf) -> Result<()> {
 
     // Remove old socket if it exists
     let socket_path = config::sandbox_socket_path();
-    tracing::info!("Starting BORU socket daemon on {:?}", socket_path);
+    tracing::info!("Starting SANDBOX socket daemon on {:?}", socket_path);
 
     if path.exists() {
         tokio::fs::remove_file(&path)
@@ -88,7 +88,7 @@ async fn run_unix_daemon(path: PathBuf) -> Result<()> {
         Err(e) => {
             if e.kind() == std::io::ErrorKind::PermissionDenied {
                 tracing::error!(
-                    "[FATAL] Socket bind denied at {}.\nLikely cause: SELinux or AppArmor policy blocking socket creation.\nFix: sudo semanage permissive -a unconfined_t\nOr add MOMO to AppArmor exceptions.",
+                    "[FATAL] Socket bind denied at {}.\nLikely cause: SELinux or AppArmor policy blocking socket creation.\nFix: sudo semanage permissive -a unconfined_t\nOr add RUTHENLABS to AppArmor exceptions.",
                     config::sandbox_socket_path().display()
                 );
                 std::process::exit(2);
@@ -120,7 +120,7 @@ async fn handle_unix_connection(mut stream: tokio::net::UnixStream, state: Share
     let mut reader = BufReader::new(&mut stream);
     let mut line = String::new();
     
-    // Read until newline (matching Suji's UDS client)
+    // Read until newline (matching Orchestrator's UDS client)
     let n = reader.read_line(&mut line).await.context("Failed to read from socket")?;
 
     if n == 0 {
@@ -152,7 +152,7 @@ async fn run_named_pipe_daemon() -> Result<()> {
     );
 
     // Write the port to a file so clients can find it
-    let info_path = std::env::temp_dir().join("boru").join("socket.info");
+    let info_path = std::env::temp_dir().join("sandbox").join("socket.info");
     if let Some(parent) = info_path.parent() {
         let _ = tokio::fs::create_dir_all(parent).await;
     }
@@ -336,7 +336,7 @@ async fn handle_execute(request: JsonRpcRequest) -> JsonRpcResponse {
     };
 
     // Write code to temp file
-    let temp_dir = std::env::temp_dir().join("boru").join("workspace");
+    let temp_dir = std::env::temp_dir().join("sandbox").join("workspace");
     let _ = tokio::fs::create_dir_all(&temp_dir).await;
     let temp_file = temp_dir.join(format!("{}.wasm", request.id));
 
@@ -571,7 +571,7 @@ async fn handle_delete(request: JsonRpcRequest, state: &SharedState) -> JsonRpcR
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
-/// Create a shadow backup of a file using Boru's RollbackManager.
+/// Create a shadow backup of a file using Sandbox's RollbackManager.
 fn shadow_backup(path: &Path, session_id: &str) -> Result<()> {
     let manager = crate::shadow::RollbackManager::new()?;
     manager.backup(path, session_id)?;

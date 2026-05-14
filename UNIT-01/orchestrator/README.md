@@ -1,12 +1,12 @@
-# Suji: Sovereign AI Orchestrator
+﻿# Orchestrator: Sovereign AI Orchestrator
 
-Suji is a high-performance, TUI-driven AI orchestrator designed to be the central brain of the MOMO ecosystem. It prioritizes local execution, security sandboxing, and structured context management.
+Orchestrator is a high-performance, TUI-driven AI orchestrator designed to be the central brain of the RUTHENLABS ecosystem. It prioritizes local execution, security sandboxing, and structured context management.
 
 ## Features
 
 - **TUI State Machine**: Robust handling of chat, tools, and reviews via `bubbletea`.
-- **Dynamic Context**: Inject files via `@file` or search via the Yomi indexer.
-- **Security Modes**: Hardware-enforced policy sync with the Boru sandbox.
+- **Dynamic Context**: Inject files via `@file` or search via the Indexer indexer.
+- **Security Modes**: Hardware-enforced policy sync with the Sandbox sandbox.
 - **MCP Support**: Connect to any Model Context Protocol server via stdio.
 - **Memory Management**: Automatic token counting and context compaction.
 
@@ -15,7 +15,7 @@ Suji is a high-performance, TUI-driven AI orchestrator designed to be the centra
 1. **Prerequisites**:
    - Go 1.21+
    - Ollama (running locally)
-   - Boru & Yomi daemons (optional but recommended)
+   - Sandbox & Indexer daemons (optional but recommended)
 
 2. **Installation**:
    ```bash
@@ -23,11 +23,11 @@ Suji is a high-performance, TUI-driven AI orchestrator designed to be the centra
    ```
 
 3. **Configuration**:
-   Configs are stored in `~/.config/suji/config.toml`.
+   Configs are stored in `~/.config/orchestrator/config.toml`.
 
 ## Commands
 
-- `/search <q>`: Query the Yomi indexer.
+- `/search <q>`: Query the Indexer indexer.
 - `/context`: Manage active files and tokens.
 - `/models`: Switch Ollama models.
 - `/style`: Toggle Casual/Context/Build modes.
@@ -36,4 +36,4 @@ Suji is a high-performance, TUI-driven AI orchestrator designed to be the centra
 
 ## Architecture
 
-Suji uses a "Clean Room" orchestration model. It communicates with sidecar daemons via Unix Domain Sockets (UDS) using JSON-RPC 2.0, ensuring that the AI never has direct, ungated access to your host shell.
+Orchestrator uses a "Clean Room" orchestration model. It communicates with sidecar daemons via Unix Domain Sockets (UDS) using JSON-RPC 2.0, ensuring that the AI never has direct, ungated access to your host shell.

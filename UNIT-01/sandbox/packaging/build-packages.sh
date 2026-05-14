@@ -1,14 +1,14 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 # ╔═══════════════════════════════════════════════════════════╗
-# ║  BORU Package Builder                                     ║
+# ║  SANDBOX Package Builder                                     ║
 # ║  Builds .deb, .rpm, and Homebrew-ready tarballs          ║
 # ╚═══════════════════════════════════════════════════════════╝
 
 set -euo pipefail
 
-BORU_VERSION="0.3.0"
-BORU_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BUILD_DIR="${BORU_DIR}/build-pkg"
+SANDBOX_VERSION="0.3.0"
+SANDBOX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BUILD_DIR="${SANDBOX_DIR}/build-pkg"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -24,11 +24,11 @@ error()   { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 
 # ── Build release binary ──────────────────────────────────
 build_release() {
-    info "Building BORU v${BORU_VERSION} (release mode)..."
-    cd "$BORU_DIR"
+    info "Building SANDBOX v${SANDBOX_VERSION} (release mode)..."
+    cd "$SANDBOX_DIR"
     cargo build --release
 
-    local binary="target/release/boru"
+    local binary="target/release/sandbox"
     if [ ! -f "$binary" ]; then
         error "Build failed: $binary not found"
     fi
@@ -59,45 +59,45 @@ build_deb() {
     # Create directory structure
     mkdir -p "${deb_root}/DEBIAN"
     mkdir -p "${deb_root}/usr/bin"
-    mkdir -p "${deb_root}/usr/share/doc/boru"
+    mkdir -p "${deb_root}/usr/share/doc/sandbox"
 
     # Control file
     cat > "${deb_root}/DEBIAN/control" << EOF
-Package: boru
-Version: ${BORU_VERSION}
+Package: sandbox
+Version: ${SANDBOX_VERSION}
 Section: utils
 Priority: optional
 Architecture: $(dpkg --print-architecture 2>/dev/null || echo "amd64")
-Maintainer: BORU Team <boru@projectmomo.dev>
-Description: Security Cage engine for AI-generated code — Project MOMO
- BORU intercepts and sandboxes AI-generated code before it touches your
+Maintainer: SANDBOX Team <sandbox@projectruthenlabs.dev>
+Description: Security Cage engine for AI-generated code — Project RUTHENLABS
+ SANDBOX intercepts and sandboxes AI-generated code before it touches your
  system using WebAssembly (wasmtime) sandboxing. Zero network calls.
  Tamper-proof audit logging. TUI dashboard. Quarantine & rollback.
  .
  "What runs here, stays here."
-Homepage: https://github.com/sayan5069/Momo.co
+Homepage: https://github.com/sayan5069/RuthenLabs.co
 EOF
 
     # postinst
-    cp "${BORU_DIR}/packaging/debian/boru.postinst" "${deb_root}/DEBIAN/postinst"
+    cp "${SANDBOX_DIR}/packaging/debian/sandbox.postinst" "${deb_root}/DEBIAN/postinst"
     chmod 755 "${deb_root}/DEBIAN/postinst"
 
     # postrm
-    cp "${BORU_DIR}/packaging/debian/boru.postrm" "${deb_root}/DEBIAN/postrm"
+    cp "${SANDBOX_DIR}/packaging/debian/sandbox.postrm" "${deb_root}/DEBIAN/postrm"
     chmod 755 "${deb_root}/DEBIAN/postrm"
 
     # Binary
-    cp "${BORU_DIR}/target/release/boru" "${deb_root}/usr/bin/boru"
-    chmod 755 "${deb_root}/usr/bin/boru"
+    cp "${SANDBOX_DIR}/target/release/sandbox" "${deb_root}/usr/bin/sandbox"
+    chmod 755 "${deb_root}/usr/bin/sandbox"
 
     # Docs
-    cp "${BORU_DIR}/README.md" "${deb_root}/usr/share/doc/boru/"
-    cp "${BORU_DIR}/ARCHITECTURE.md" "${deb_root}/usr/share/doc/boru/"
-    cp "${BORU_DIR}/AGENTS.md" "${deb_root}/usr/share/doc/boru/"
-    cp "${BORU_DIR}/CHANGELOG.md" "${deb_root}/usr/share/doc/boru/"
+    cp "${SANDBOX_DIR}/README.md" "${deb_root}/usr/share/doc/sandbox/"
+    cp "${SANDBOX_DIR}/ARCHITECTURE.md" "${deb_root}/usr/share/doc/sandbox/"
+    cp "${SANDBOX_DIR}/AGENTS.md" "${deb_root}/usr/share/doc/sandbox/"
+    cp "${SANDBOX_DIR}/CHANGELOG.md" "${deb_root}/usr/share/doc/sandbox/"
 
     # Build
-    local deb_file="${BUILD_DIR}/boru_${BORU_VERSION}_$(dpkg --print-architecture 2>/dev/null || echo "amd64").deb"
+    local deb_file="${BUILD_DIR}/sandbox_${SANDBOX_VERSION}_$(dpkg --print-architecture 2>/dev/null || echo "amd64").deb"
     dpkg-deb --build "$deb_root" "$deb_file"
 
     success "DEB package: $deb_file"
@@ -118,24 +118,24 @@ build_rpm() {
     mkdir -p "${rpm_root}"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
     # Create tarball
-    local tarball_name="boru-${BORU_VERSION}"
+    local tarball_name="sandbox-${SANDBOX_VERSION}"
     local tarball="${rpm_root}/SOURCES/${tarball_name}.tar.gz"
 
-    cd "$BORU_DIR/.."
+    cd "$SANDBOX_DIR/.."
     tar czf "$tarball" \
-        --transform "s,^boru,${tarball_name}," \
+        --transform "s,^sandbox,${tarball_name}," \
         --exclude='target' \
         --exclude='.git' \
         --exclude='build-pkg' \
-        boru/
+        sandbox/
 
     # Copy spec
-    cp "${BORU_DIR}/packaging/rpm/boru.spec" "${rpm_root}/SPECS/"
+    cp "${SANDBOX_DIR}/packaging/rpm/sandbox.spec" "${rpm_root}/SPECS/"
 
     # Build
     rpmbuild \
         --define "_topdir ${rpm_root}" \
-        -bb "${rpm_root}/SPECS/boru.spec"
+        -bb "${rpm_root}/SPECS/sandbox.spec"
 
     local rpm_file
     rpm_file=$(find "${rpm_root}/RPMS" -name "*.rpm" -print -quit)
@@ -149,15 +149,15 @@ build_rpm() {
 build_tarball() {
     info "Building source tarball..."
 
-    local tarball="${BUILD_DIR}/boru-${BORU_VERSION}.tar.gz"
+    local tarball="${BUILD_DIR}/sandbox-${SANDBOX_VERSION}.tar.gz"
 
-    cd "$BORU_DIR/.."
+    cd "$SANDBOX_DIR/.."
     tar czf "$tarball" \
-        --transform "s,^boru,boru-${BORU_VERSION}," \
+        --transform "s,^sandbox,sandbox-${SANDBOX_VERSION}," \
         --exclude='target' \
         --exclude='.git' \
         --exclude='build-pkg' \
-        boru/
+        sandbox/
 
     local sha256
     sha256=$(sha256sum "$tarball" 2>/dev/null | awk '{print $1}' || shasum -a 256 "$tarball" | awk '{print $1}')
@@ -165,16 +165,16 @@ build_tarball() {
     info "SHA-256: $sha256"
 
     # Update Homebrew formula with real hash
-    if [ -f "${BORU_DIR}/packaging/macos/boru.rb" ]; then
-        sed -i.bak "s/PLACEHOLDER_SHA256/${sha256}/" "${BORU_DIR}/packaging/macos/boru.rb"
-        rm -f "${BORU_DIR}/packaging/macos/boru.rb.bak"
+    if [ -f "${SANDBOX_DIR}/packaging/macos/sandbox.rb" ]; then
+        sed -i.bak "s/PLACEHOLDER_SHA256/${sha256}/" "${SANDBOX_DIR}/packaging/macos/sandbox.rb"
+        rm -f "${SANDBOX_DIR}/packaging/macos/sandbox.rb.bak"
         info "Updated Homebrew formula with SHA-256"
     fi
 }
 
 # ── Main ───────────────────────────────────────────────────
 usage() {
-    echo "BORU Package Builder v${BORU_VERSION}"
+    echo "SANDBOX Package Builder v${SANDBOX_VERSION}"
     echo ""
     echo "Usage: $0 [target...]"
     echo ""
@@ -191,7 +191,7 @@ main() {
     local targets=("${@:-all}")
 
     echo ""
-    echo -e "${BOLD}BORU Package Builder v${BORU_VERSION}${NC}"
+    echo -e "${BOLD}SANDBOX Package Builder v${SANDBOX_VERSION}${NC}"
     echo ""
 
     mkdir -p "$BUILD_DIR"

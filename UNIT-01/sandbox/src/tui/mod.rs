@@ -1,4 +1,4 @@
-//! BORU TUI — Ratatui dashboard (Phase 1)
+﻿//! SANDBOX TUI — Ratatui dashboard (Phase 1)
 //!
 //! Terminal UI for monitoring the cage, viewing logs, and managing execution.
 //! Phase 1 only — Phase 2 will use the Tauri GUI.
@@ -161,7 +161,7 @@ fn ui(f: &mut Frame, app: &App) {
     let header = Paragraph::new(Text::from(vec![
         Line::from(vec![
             Span::styled(
-                "BORU",
+                "SANDBOX",
                 Style::default()
                     .fg(Color::Cyan)
                     .add_modifier(Modifier::BOLD),
@@ -282,7 +282,7 @@ fn ui(f: &mut Frame, app: &App) {
     .block(
         Block::default()
             .title(if app.logs.is_empty() {
-                "Audit Logs (empty - run 'boru cage' to generate logs)"
+                "Audit Logs (empty - run 'sandbox cage' to generate logs)"
             } else {
                 "Audit Logs"
             })
@@ -388,7 +388,7 @@ impl App {
     fn new() -> Self {
         let log_path = dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("boru")
+            .join("sandbox")
             .join("audit.log");
 
         let mut table_state = TableState::default();

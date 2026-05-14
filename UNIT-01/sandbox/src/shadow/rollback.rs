@@ -1,7 +1,7 @@
-//! BORU Filesystem Rollback — Shadow backup and restore
+﻿//! SANDBOX Filesystem Rollback — Shadow backup and restore
 //!
-//! Before BORU allows any FILE_WRITE on an existing file,
-//! it silently copies the original to .momo_shadow/<session_id>/.
+//! Before SANDBOX allows any FILE_WRITE on an existing file,
+//! it silently copies the original to .ruthenlabs_shadow/<session_id>/.
 //! On rollback, every modified file is restored.
 
 use crate::cage::log_intercept;
@@ -96,7 +96,7 @@ impl RollbackManager {
         let data_dir = dirs::data_dir()
             .or_else(|| dirs::home_dir().map(|h| h.join(".local/share")))
             .context("Could not find data directory")?;
-        Ok(data_dir.join("boru").join("shadow"))
+        Ok(data_dir.join("sandbox").join("shadow"))
     }
 
     /// Get shadow directory for a session

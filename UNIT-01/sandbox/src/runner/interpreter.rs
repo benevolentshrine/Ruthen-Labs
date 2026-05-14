@@ -1,6 +1,6 @@
-//! Interpreter Runner — v2.0 Zero-Trust Determinism
+﻿//! Interpreter Runner — v2.0 Zero-Trust Determinism
 //!
-//! PHASE 2.0 STRATEGY: Host interpreter wrapped in the full BORU sandbox:
+//! PHASE 2.0 STRATEGY: Host interpreter wrapped in the full SANDBOX sandbox:
 //! - Landlock v2 filesystem jail (workspace-only, symlink-safe)
 //! - Seccomp-BPF v2 (network air-gap including DNS/UDP)
 //! - Cgroups v2 (512MB RAM, 25% CPU, 20 PIDs)
@@ -332,14 +332,14 @@ impl Runner for InterpreterRunner {
                 }
             };
 
-            // Capture output — filter internal BORU log lines
+            // Capture output — filter internal SANDBOX log lines
             let stdout_raw = String::from_utf8_lossy(&output.stdout).to_string();
             let stdout = stdout_raw
                 .lines()
-                .filter(|line| !line.contains("boru::cage::sandbox")
-                    && !line.contains("INFO boru::")
-                    && !line.contains("WARN boru::")
-                    && !line.contains("ERROR boru::"))
+                .filter(|line| !line.contains("sandbox::cage::sandbox")
+                    && !line.contains("INFO sandbox::")
+                    && !line.contains("WARN sandbox::")
+                    && !line.contains("ERROR sandbox::"))
                 .collect::<Vec<_>>()
                 .join("\n");
             let stdout = if stdout.is_empty() { stdout_raw } else { stdout + "\n" };

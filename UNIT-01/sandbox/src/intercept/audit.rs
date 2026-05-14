@@ -1,10 +1,10 @@
-//! BORU Audit Tamper Chain — Tamper-evident audit logging
+﻿//! SANDBOX Audit Tamper Chain — Tamper-evident audit logging
 //!
 //! Each audit log entry hashes its own content + previous entry's hash.
 //! Creating a tamper-evident chain. If anyone edits or deletes an entry,
 //! the chain breaks.
 //!
-//! Format: boru log --verify checks the entire chain integrity.
+//! Format: sandbox log --verify checks the entire chain integrity.
 
 use anyhow::{Context, Result};
 use sha2::{Digest, Sha256};

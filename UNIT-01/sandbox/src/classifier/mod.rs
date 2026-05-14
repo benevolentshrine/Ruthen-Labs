@@ -1,4 +1,4 @@
-//! BORU Classifier — Universal file type detection
+﻿//! SANDBOX Classifier — Universal file type detection
 //!
 //! HOTFIX 1: Detection is magic-bytes-first. Extensions are NEVER trusted.
 //! detect_from_bytes() is the sole source of truth for file classification.
@@ -160,7 +160,7 @@ mod tests {
 
     #[test]
     fn test_classify_wasm_file() {
-        let temp_dir = std::env::temp_dir().join("boru_test");
+        let temp_dir = std::env::temp_dir().join("sandbox_test");
         let _ = std::fs::create_dir_all(&temp_dir);
         let temp_file = temp_dir.join("test.wasm");
 
@@ -182,7 +182,7 @@ mod tests {
     #[test]
     fn test_extension_mismatch_detection() {
         // Create a file with .jpg extension but PNG magic bytes
-        let temp_dir = std::env::temp_dir().join("boru_test");
+        let temp_dir = std::env::temp_dir().join("sandbox_test");
         let _ = std::fs::create_dir_all(&temp_dir);
         let temp_file = temp_dir.join("fake_image.jpg");
 
@@ -203,7 +203,7 @@ mod tests {
 
     #[test]
     fn test_no_extension_file_classifies_without_crash() {
-        let temp_dir = std::env::temp_dir().join("boru_test");
+        let temp_dir = std::env::temp_dir().join("sandbox_test");
         let _ = std::fs::create_dir_all(&temp_dir);
         let temp_file = temp_dir.join("noextension");
 
@@ -224,7 +224,7 @@ mod tests {
 
     #[test]
     fn test_random_binary_disguised_as_pdf() {
-        let temp_dir = std::env::temp_dir().join("boru_test");
+        let temp_dir = std::env::temp_dir().join("sandbox_test");
         let _ = std::fs::create_dir_all(&temp_dir);
         let temp_file = temp_dir.join("fake_invoice.pdf");
 

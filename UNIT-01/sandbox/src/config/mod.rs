@@ -1,6 +1,6 @@
-//! BORU Configuration — User-saved custom rules
+﻿//! SANDBOX Configuration — User-saved custom rules
 //!
-//! Loads boru.custom.toml for CUSTOM mode preferences.
+//! Loads sandbox.custom.toml for CUSTOM mode preferences.
 //! Format supports:
 //! - "Always allow this path"
 //! - "Always deny this type"
@@ -11,9 +11,9 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 /// Configuration file path
-pub const CONFIG_FILE_NAME: &str = "boru.custom.toml";
+pub const CONFIG_FILE_NAME: &str = "sandbox.custom.toml";
 
-/// Custom configuration for BORU
+/// Custom configuration for SANDBOX
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Config {
     /// Allowed paths (exact matches)
@@ -111,7 +111,7 @@ impl Config {
             .or_else(|| dirs::home_dir().map(|h| h.join(".config")))
             .context("Could not find config directory")?;
 
-        Ok(config_dir.join("boru").join(CONFIG_FILE_NAME))
+        Ok(config_dir.join("sandbox").join(CONFIG_FILE_NAME))
     }
 
     /// Apply this config to a security policy
@@ -187,13 +187,13 @@ impl Default for Config {
 
 /// Example config file content
 pub fn example_config() -> String {
-    r#"# BORU Custom Configuration
-# Place this file at ~/.config/boru/boru.custom.toml
+    r#"# SANDBOX Custom Configuration
+# Place this file at ~/.config/sandbox/sandbox.custom.toml
 
 # Paths that are always allowed (exact match or glob)
 allowed_paths = [
     "/home/user/projects/safe",
-    "[TEMP]/momo/workspace/*",
+    "[TEMP]/ruthenlabs/workspace/*",
 ]
 
 # Paths that are always denied
@@ -222,7 +222,7 @@ action = "prompt"
 reason = "Downloaded files require review"
 
 [[path_rules]]
-pattern = "[TEMP]/momo/trusted/*"
+pattern = "[TEMP]/ruthenlabs/trusted/*"
 action = "allow"
 reason = "Trusted workspace"
 "#

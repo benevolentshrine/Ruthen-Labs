@@ -1,4 +1,4 @@
-//! BORU Hash Database — Local malware hash detection
+﻿//! SANDBOX Hash Database — Local malware hash detection
 //!
 //! Offline file of known malware hashes. SHA-256 hash lookup.
 //! No cloud. No API. Fully offline security.
@@ -13,7 +13,7 @@ use std::path::{Path, PathBuf};
 pub fn default_hashdb_path() -> PathBuf {
     dirs::data_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("boru")
+        .join("sandbox")
         .join("hashdb.json")
 }
 

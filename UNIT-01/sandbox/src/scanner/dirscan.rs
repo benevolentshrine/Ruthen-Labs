@@ -1,4 +1,4 @@
-//! BORU Directory Scanner — Recursive file analysis
+﻿//! SANDBOX Directory Scanner — Recursive file analysis
 //!
 //! Scans directories recursively, classifying every file.
 //! Runs entropy check + hash check on each.
@@ -135,7 +135,7 @@ impl ScanReport {
         let total = self.results.len();
 
         let mut output = format!(
-            "# BORU Scan Report\n\nGenerated: {}\nPath: {}\nMode: {:?}\n\n## Summary\n\n- Total files: {}\n- Clean: {}\n- Suspicious: {}\n- Critical: {}\n- Known bad: {}\n\n## Findings\n\n| File | Type | Entropy | Status | Reason |\n|------|------|---------|--------|--------|\n",
+            "# SANDBOX Scan Report\n\nGenerated: {}\nPath: {}\nMode: {:?}\n\n## Summary\n\n- Total files: {}\n- Clean: {}\n- Suspicious: {}\n- Critical: {}\n- Known bad: {}\n\n## Findings\n\n| File | Type | Entropy | Status | Reason |\n|------|------|---------|--------|--------|\n",
             self.timestamp,
             self.scan_path.display(),
             self.mode,

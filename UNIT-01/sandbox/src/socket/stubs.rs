@@ -1,19 +1,19 @@
-//! BORU Socket Stubs — Reserved for YOMI and SUJI
+﻿//! SANDBOX Socket Stubs — Reserved for INDEXER and ORCHESTRATOR
 //!
 //! These are placeholder stubs for the Trinity architecture.
-//! DO NOT implement YOMI or SUJI logic here — that lives in their own repositories.
+//! DO NOT implement INDEXER or ORCHESTRATOR logic here — that lives in their own repositories.
 //!
 //! GATE 3: Socket Contract Freeze
-//! - YOMI socket: [TEMP]/sumi/yomi.sock
-//! - SUJI socket: [TEMP]/sumi/suji.sock
-//! - BORU socket: [TEMP]/sumi/boru.sock (active)
+//! - INDEXER socket: [TEMP]/sumi/indexer.sock
+//! - ORCHESTRATOR socket: [TEMP]/sumi/orchestrator.sock
+//! - SANDBOX socket: [TEMP]/sumi/sandbox.sock (active)
 
 #![allow(dead_code)]
 
 use std::path::Path;
 use crate::socket::config::{sandbox_socket_path, orchestrator_socket_path, indexer_socket_path};
 
-/// Stub function for YOMI socket operations
+/// Stub function for INDEXER socket operations
 ///
 /// INDEXER is the Rust indexer — context retrieval engine.
 /// SANDBOX never calls INDEXER directly. INDEXER may call SANDBOX.

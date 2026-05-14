@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"unit01/clients"
 )
 
-// getAutoContext uses Yomi's semantic/fuzzy search to pre-fetch context based on the raw user input.
+// getAutoContext uses Indexer's semantic/fuzzy search to pre-fetch context based on the raw user input.
 func getAutoContext(input string, ws *Workspace) string {
 	if !ws.Active {
 		return ""

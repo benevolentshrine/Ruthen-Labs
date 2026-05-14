@@ -1,4 +1,4 @@
-//! BORU Threat Intelligence — Malware detection and hash database
+﻿//! SANDBOX Threat Intelligence — Malware detection and hash database
 //!
 //! Provides:
 //! - Local hash database for known malware detection

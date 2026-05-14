@@ -1,6 +1,6 @@
-//! BORU Pre-Execution Gate (v2.0)
+﻿//! SANDBOX Pre-Execution Gate (v2.0)
 //!
-//! This is the first enforcement point in the BORU security pipeline.
+//! This is the first enforcement point in the SANDBOX security pipeline.
 //! It validates tool call categories against the `security_policy.yaml` manifest
 //! BEFORE any fork() happens — before the kernel even sees the request.
 //!
@@ -10,7 +10,7 @@
 //! If the answer is NO, the execution is blocked immediately with a structured
 //! audit log entry, and no child process is ever created.
 //!
-//! Policy file location: `~/.config/boru/security_policy.yaml`
+//! Policy file location: `~/.config/sandbox/security_policy.yaml`
 //! A default policy is seeded from `src/config/security_policy.yaml` on first run.
 
 use anyhow::{Context, Result};
@@ -229,7 +229,7 @@ impl PreExecutionGate {
             .or_else(|| dirs::home_dir().map(|h| h.join(".config")))
             .context("Could not find config directory")?;
 
-        Ok(config_dir.join("boru").join("security_policy.yaml"))
+        Ok(config_dir.join("sandbox").join("security_policy.yaml"))
     }
 
     /// Seed the default policy file to disk so the user can inspect/edit it.
@@ -254,9 +254,9 @@ impl PreExecutionGate {
         SecurityManifest {
             version: "2.0".to_string(),
             invisible_inside_sandbox: vec![
-                "~/.config/boru".to_string(),
+                "~/.config/sandbox".to_string(),
                 "~/.antigravity".to_string(),
-                "~/.boru".to_string(),
+                "~/.sandbox".to_string(),
                 "~/.claude".to_string(),
                 "~/.gemini".to_string(),
                 "~/.ssh".to_string(),
@@ -386,7 +386,7 @@ mod tests {
         let path = PreExecutionGate::policy_path();
         assert!(path.is_ok());
         let p = path.unwrap();
-        assert!(p.to_str().unwrap().contains("boru"));
+        assert!(p.to_str().unwrap().contains("sandbox"));
         assert!(p.to_str().unwrap().contains("security_policy.yaml"));
     }
 }

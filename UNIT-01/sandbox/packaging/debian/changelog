@@ -1,4 +1,4 @@
-boru (0.3.0) stable; urgency=medium
+﻿boru (0.3.0) stable; urgency=medium
 
   * Initial Debian package release
   * WASM sandboxing with wasmtime
@@ -8,4 +8,4 @@ boru (0.3.0) stable; urgency=medium
   * Hash database for threat detection
   * Agent IAM system
 
- -- BORU Team <boru@projectmomo.dev>  Wed, 24 Apr 2026 00:00:00 +0000
+ -- BORU Team <boru@projectruthenlabs.dev>  Wed, 24 Apr 2026 00:00:00 +0000

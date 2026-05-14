@@ -1,16 +1,16 @@
-Source: boru
+﻿Source: boru
 Section: utils
 Priority: optional
-Maintainer: BORU Team <boru@projectmomo.dev>
+Maintainer: BORU Team <boru@projectruthenlabs.dev>
 Build-Depends: debhelper (>= 13), cargo, rustc, librust-wasmtime-dev
 Standards-Version: 4.6.0
-Homepage: https://github.com/sayan5069/Momo.co
+Homepage: https://github.com/sayan5069/RuthenLabs.co
 
 Package: boru
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Security Cage engine for AI-generated code
- BORU is the Security Cage engine of Project MOMO, a local-first sovereign
+ BORU is the Security Cage engine of Project RUTHENLABS, a local-first sovereign
  AI development suite. It intercepts and sandboxes AI-generated code before
  it touches your system using WebAssembly (wasmtime) sandboxing.
  .

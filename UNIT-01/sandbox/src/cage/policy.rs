@@ -1,4 +1,4 @@
-//! BORU Security Policy — 5 security modes with absolute invariants
+﻿//! SANDBOX Security Policy — 5 security modes with absolute invariants
 //!
 //! Security Modes:
 //! - HARD (🔴): Auto-block everything, always quarantine

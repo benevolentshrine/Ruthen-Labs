@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ import (
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-// Config holds all user-persisted preferences for Suji.
+// Config holds all user-persisted preferences for Orchestrator.
 type Config struct {
 	// ModelEndpoint is the base URL of the Ollama (or compatible) API.
 	ModelEndpoint string `toml:"model_endpoint"`
